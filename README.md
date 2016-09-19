@@ -149,8 +149,8 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
 6. 광고 이벤트 등록
   * ``setAdListener(OnBannerAdListener)``
     - ``onAdLoaded()`` : 광고가 로딩된 시점에 호출 됩니다.
-    -	``onAdFailed(ExelBidError)`` : 서버로부터 광고를 가져오지 못한 경우에 호출 됩니다.
-    -	``onAdClicked()`` : 광고 클릭시 호출 됩니다.
+    - ``onAdFailed(ExelBidError)`` : 서버로부터 광고를 가져오지 못한 경우에 호출 됩니다.
+    - ``onAdClicked()`` : 광고 클릭시 호출 됩니다.
 
 7. 기본적으로 띠배너의 광고의 경우 유닛에 설정한 리플래쉬 시간에 따라 자동으로 갱신 됩니다. 해당 기능을 사용하지 않게 하기 위해서는 리플래쉬 기능을 해제해 주어야 합니다.
   ```java
@@ -198,26 +198,26 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
 
 ### 네이티브
 1.	네이티브 광고 인스턴스를 생성합니다.
-```java
-	ExelBidNative mNativeAd = new ExelBidNative(this, mUnitId, new OnAdNativeListener() {
-	    @Override
-	    public void onFailed(ExelBidError error) {
-    	}
+    ```java
+    ExelBidNative mNativeAd = new ExelBidNative(this, mUnitId, new OnAdNativeListener() {
+        @Override
+        public void onFailed(ExelBidError error) {
+        }
         @Override
         public void onShow() {
-    	}
+        }
         @Override
         public void onClick() {
-    	}
+        }
         @Override
         public void onLoaded() {
-    	}
-});
-```
-	-	``onFailed`` : 광고 요청 실패시 호출 됩니다.
-	-	``onShow`` : 광고가 사용자에게 노출 되었을 경우에 호출 됩니다.
-	-	``onClick`` : 사용자가 광고를 클릭할 경우에 호출됩니다.
-	-	``onLoaded`` :  서버로부터 광고를 가져 왔을 경우에 호출 됩니다.
+        }
+    });
+    ```
+    -	``onFailed`` : 광고 요청 실패시 호출 됩니다.
+    -	``onShow`` : 광고가 사용자에게 노출 되었을 경우에 호출 됩니다.
+    -	``onClick`` : 사용자가 광고를 클릭할 경우에 호출됩니다.
+    -	``onLoaded`` :  서버로부터 광고를 가져 왔을 경우에 호출 됩니다.
 
 2.	광고가 노출될 영역에 대한 정보를 바인딩 합니다.
 ```java
