@@ -257,16 +257,16 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
 	광고 메인 이미지와 아이콘 Bitmap을 수정해야 하는 일이 있을경우에 해당 Controllor를 등록합니다.
     ```java
     setNativeImageController(new NativeImageControllor() {
-            @Override
-            public Bitmap mainImageDisplay(Bitmap bitmap, int width, int height) {
-                return bitmap;
-            }
+        @Override
+        public Bitmap mainImageDisplay(Bitmap bitmap, int width, int height) {
+            return bitmap;
+        }
 
-            @Override
-            public Bitmap iconImageDisplay(Bitmap bitmap, int width, int height) {
-                return bitmap;
-            }
-        });)
+        @Override
+        public Bitmap iconImageDisplay(Bitmap bitmap, int width, int height) {
+            return bitmap;
+        }
+    });)
     ```
 	- ``Bitmap mainImageDisplay(Bitmap bitmap, int width, int height)`` :
      	메인 이미지가 이미지뷰에 바인딩 되기전에 호출 됩니다. bitmap은 다운받은 메인이미지이며 이미지뷰의 width, height값이 넘어 옵니다.
@@ -311,8 +311,8 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
     ```java
     setPositionning()
     ```
-        - ``ExelBidClientPositioning`` : 클라이언트에서 설정한 fixed position과 repeat interval을 적용해 광고가 노출 된다.
-        - ``ExelBidServerPositioning`` : 유닛등록시 서버에서 설정한 fixed position과 repeat interval을 적용해 광고가 노출 된다.
+    - ``ExelBidClientPositioning`` : 클라이언트에서 설정한 fixed position과 repeat interval을 적용해 광고가 노출 된다.
+    - ``ExelBidServerPositioning`` : 유닛등록시 서버에서 설정한 fixed position과 repeat interval을 적용해 광고가 노출 된다.
 
 4. 리스트뷰에 어뎁터를 설정한다.
     ```java
