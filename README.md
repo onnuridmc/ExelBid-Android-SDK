@@ -243,7 +243,7 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
 
 3.	네이티브 광고 요청시 어플리케이션에서 필수로 요청할 항목들을 설정합니다.
     ```java
-        setRequiredAsset(NativeAsset[])
+    setRequiredAsset(NativeAsset[])
     ```
 
 	- ``TITLE`` : 제목
@@ -256,17 +256,17 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
 4.	네이티브 광고 이미지를 조작합니다.
 	광고 메인 이미지와 아이콘 Bitmap을 수정해야 하는 일이 있을경우에 해당 Controllor를 등록합니다.
     ```java
-        setNativeImageController(new NativeImageControllor() {
-                @Override
-                public Bitmap mainImageDisplay(Bitmap bitmap, int width, int height) {
-                    return bitmap;
-                }
+    setNativeImageController(new NativeImageControllor() {
+        @Override
+        public Bitmap mainImageDisplay(Bitmap bitmap, int width, int height) {
+            return bitmap;
+        }
 
-                @Override
-                public Bitmap iconImageDisplay(Bitmap bitmap, int width, int height) {
-                    return bitmap;
-                }
-            });)
+        @Override
+        public Bitmap iconImageDisplay(Bitmap bitmap, int width, int height) {
+            return bitmap;
+        }
+    });)
     ```
 	- ``Bitmap mainImageDisplay(Bitmap bitmap, int width, int height)`` :
      	메인 이미지가 이미지뷰에 바인딩 되기전에 호출 됩니다. bitmap은 다운받은 메인이미지이며 이미지뷰의 width, height값이 넘어 옵니다.
@@ -275,20 +275,20 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
 
 5.	네이티브 광고 요청
     ```java
-        loadAd()
+    loadAd()
     ```
 
 6.	네이티브 광고 노출
     ```java
-        show() //네이티브 광고가 올바르게 로딩 된 경우에 Binder에 등록된 정보에 광고 데이터를 바인딩 합니다.
+    show() //네이티브 광고가 올바르게 로딩 된 경우에 Binder에 등록된 정보에 광고 데이터를 바인딩 합니다.
     ```
 
 ### 네이티브 Adapter
-	>ListView등과 같이 한 BaseAdapter를 이용한 컴포넌트 활용시에 사용할수 있는 방법입니다.
+>ListView등과 같이 한 BaseAdapter를 이용한 컴포넌트 활용시에 사용할수 있는 방법입니다.
 
 1.	AdNativeAdapter 객체 생성
     ```java
-    	AdNativeAdapter mAdapter = new AdNativeAdapter(this, {네이티브 유닛 아이디}, inAdapter);
+    AdNativeAdapter mAdapter = new AdNativeAdapter(this, {네이티브 유닛 아이디}, inAdapter);
     ```
 	- 생성자의 세번째 인자값으로 기존에 사용하고 있는 Adapter를 등록합니다.
 
@@ -308,95 +308,95 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
 	- ``setRequiredAsset`` : 네이티브 광고 요청시 어플리케이션에서 필수로 요청할 항목들을 설정합니다.
 
 3.	광고가 노출될 영역을 설정 한다. fixed position은 정해진 포지션에 광고가 노출되고 repeatinterval은 fixed position 이후로 interval 마다 광고가 노출 된다.
-```java
-	setPositionning()
-```
-	- ``ExelBidClientPositioning`` : 클라이언트에서 설정한 fixed position과 repeat interval을 적용해 광고가 노출 된다.
-	- ``ExelBidServerPositioning`` : 유닛등록시 서버에서 설정한 fixed position과 repeat interval을 적용해 광고가 노출 된다.
+    ```java
+    setPositionning()
+    ```
+    - ``ExelBidClientPositioning`` : 클라이언트에서 설정한 fixed position과 repeat interval을 적용해 광고가 노출 된다.
+    - ``ExelBidServerPositioning`` : 유닛등록시 서버에서 설정한 fixed position과 repeat interval을 적용해 광고가 노출 된다.
 
 4. 리스트뷰에 어뎁터를 설정한다.
-```java
-	mListView.setAdapter(mAdapter)
-```
+    ```java
+    mListView.setAdapter(mAdapter)
+	```
 
 
 
 ### 다이얼로그 공통 메소드
-    - ``loadAd()`` : 광고를 가져옵니다.
-    - ``show()`` : 다이얼로그를 노출합니다.
-    - ``(boolean) isReady()`` : 광고를 노출할 준비가 되었는지 체크합니다.
+- ``loadAd()`` : 광고를 가져옵니다.
+- ``show()`` : 다이얼로그를 노출합니다.
+- ``(boolean) isReady()`` : 광고를 노출할 준비가 되었는지 체크합니다.
 
 
 <a name="다이얼로그-광고-전면"></a>
 ### 다이얼로그 광고 (전면)
-    >ExelBidInterstitialDialog를 상속받은 클래스를 생성해야 합니다.
-    어플리케이션에서 Dialog의 UI를 설정해야 합니다.
+>ExelBidInterstitialDialog를 상속받은 클래스를 생성해야 합니다.
+어플리케이션에서 Dialog의 UI를 설정해야 합니다.
 
 1.	다이얼로그의 레이아웃을 설정합니다.
     ```java
-    	@Override
-        protected void onCreate() {
-            setContentView(R.layout.dialog_interstitial_layout);
-            ...
-        }
+    @Override
+    protected void onCreate() {
+        setContentView(R.layout.dialog_interstitial_layout);
+        ...
+    }
     ```
 
 2.	광고가 들어갈 영역을 설정한다.
 	setContentView에 설정한 레이아웃의 항목 중 광고가 들어갈 영역의 View를 리턴 시킵니다.
     ```java
-    	(ViewGroup) getAdBindLayout();
+    (ViewGroup) getAdBindLayout();
     ```
 	xml에 광고가 노출될 레이아웃 설정
 	```xml
-        <FrameLayout
-            android:id="@+id/dialog_native_layout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="#FFFFFF"
-            android:layout_weight="1"
-            >
-        </FrameLayout>
+    <FrameLayout
+        android:id="@+id/dialog_native_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#FFFFFF"
+        android:layout_weight="1"
+        >
+    </FrameLayout>
     ```
 	ExelBidinterstitialDialog를 상속받은 클래스에서 getAdBindLayout을 설정
     ```java
-        @Override
-        public ViewGroup getAdBindLayout() {
-               return (ViewGroup) findViewById(R.id.dialog_bodylayout);
-        }
+    @Override
+    public ViewGroup getAdBindLayout() {
+           return (ViewGroup) findViewById(R.id.dialog_bodylayout);
+    }
     ```
 
 3.	Activit 종료시 destory를 호출합니다.
     ```java
-	    destroy()
+    destroy()
     ```
 
 <a name="다이얼로그-광고-네이티브"></a>
 ### 다이얼로그 광고 (네이티브)
-    >ExelBidNativeDialog를 상속받은 클래스를 생성해야 합니다.
-    어플리케이션에서 Dialog의 UI를 설정해야 합니다.
+>ExelBidNativeDialog를 상속받은 클래스를 생성해야 합니다.
+어플리케이션에서 Dialog의 UI를 설정해야 합니다.
 
 1.	다이얼로그의 레이아웃을 설정합니다.
     ```java
-	    @Override
-        protected void onCreate() {
-            setContentView(R.layout.dialog_native_layout);
-            ...
-        }
+    @Override
+    protected void onCreate() {
+        setContentView(R.layout.dialog_native_layout);
+        ...
+    }
     ```
 
 2.	(NativeViewBinder) getNativeViewBinder()
 	네이티브 광고 데이터가 바인딩 될 뷰의 정보를 설정합니다.
     ```java
-        @Override
-        protected NativeViewBinder getNativeViewBinder() {
-                return new NativeViewBinder.Builder(findViewById(R.id.dialog_native_layout))
-                    .mainImageId(R.id.native_main_image)
-                    .callToActionButtonId(R.id.native_cta)
-                    .titleTextViewId(R.id.native_title)
-                    .textTextViewId(R.id.native_text)
-                    .iconImageId(R.id.native_icon_image)
-                    .build();
-        }
+    @Override
+    protected NativeViewBinder getNativeViewBinder() {
+            return new NativeViewBinder.Builder(findViewById(R.id.dialog_native_layout))
+                .mainImageId(R.id.native_main_image)
+                .callToActionButtonId(R.id.native_cta)
+                .titleTextViewId(R.id.native_title)
+                .textTextViewId(R.id.native_text)
+                .iconImageId(R.id.native_icon_image)
+                .build();
+    }
     ```
 
 
