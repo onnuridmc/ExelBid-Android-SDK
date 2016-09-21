@@ -32,11 +32,17 @@
 ## 어플리케이션 설정
 
 ### ExelBid SDK 추가하기
+* Android Studio
+	1. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
+	```java
+    dependencies {
+        	compile 'com.onnuridmc.exelbid:exelbid:0.1.1'
+	}
+    ```
 
-1. 홈페이지에서 SDK를 다운로드 받습니다.
-2. espresso-sdk.jar를 복사하여 프로젝트의 /libs폴더에 저장합니다.
-3. android studio의 경우 project structure -> dependencies -> add -> file dependency에서 espresso-sdk.jar를 선택하여 추가합니다.
-![sdk dependencies](./img/sdk-2.png)
+* 이클립스
+    1. 홈페이지에서 SDK를 다운로드 받습니다.
+    2. espresso-sdk.jar를 복사하여 프로젝트의 /libs폴더에 저장합니다.
 
 <br/>
 ### Google Library 추가하기
