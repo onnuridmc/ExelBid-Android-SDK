@@ -32,11 +32,17 @@
 ## 어플리케이션 설정
 
 ### ExelBid SDK 추가하기
+* Android Studio
+	1. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
+	```java
+    dependencies {
+        	compile 'com.onnuridmc.exelbid:exelbid:0.1.2'
+	}
+    ```
 
-1. 홈페이지에서 SDK를 다운로드 받습니다.
-2. espresso-sdk.jar를 복사하여 프로젝트의 /libs폴더에 저장합니다.
-3. android studio의 경우 project structure -> dependencies -> add -> file dependency에서 espresso-sdk.jar를 선택하여 추가합니다.
-![sdk dependencies](./img/sdk-2.png)
+* 이클립스
+    1. 홈페이지에서 SDK를 다운로드 받습니다.
+    2. espresso-sdk.jar를 복사하여 프로젝트의 /libs폴더에 저장합니다.
 
 <br/>
 ### Google Library 추가하기
@@ -154,7 +160,7 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
 
 7. 기본적으로 띠배너의 광고의 경우 유닛에 설정한 리플래쉬 시간에 따라 자동으로 갱신 됩니다. 해당 기능을 사용하지 않게 하기 위해서는 리플래쉬 기능을 해제해 주어야 합니다.
   ```java
-  setAutorelashDisable()
+  setAutoreflashDisable()
   ```
 
 8. Activity 종료시 destroy를 호출해야 합니다.
