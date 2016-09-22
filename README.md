@@ -160,7 +160,7 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
 
 7. 기본적으로 띠배너의 광고의 경우 유닛에 설정한 리플래쉬 시간에 따라 자동으로 갱신 됩니다. 해당 기능을 사용하지 않게 하기 위해서는 리플래쉬 기능을 해제해 주어야 합니다.
   ```java
-  setAutorelashDisable()
+  setAutoreflashDisable()
   ```
 
 8. Activity 종료시 destroy를 호출해야 합니다.
