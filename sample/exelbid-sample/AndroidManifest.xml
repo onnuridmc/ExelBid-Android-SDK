@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest package="com.onnuridmc.sample"
+          xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name="com.onnuridmc.sample.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="com.onnuridmc.sample.activity.SampleBannerView">
+        </activity>
+        <activity android:name="com.onnuridmc.sample.activity.SampleInterstitialView">
+        </activity>
+        <activity android:name=".activity.SampleNativeMulti">
+        </activity>
+        <activity android:name=".activity.SampleNativeSingle">
+        </activity>
+        <activity android:name=".activity.SampleNativeAdapter">
+        </activity>
+        <activity android:name=".activity.SampleDialog">
+        </activity>
+        <activity android:name="com.onnuridmc.exelbid.common.ExelBidActivity"
+                  android:configChanges="keyboardHidden|orientation|screenSize"
+            >
+        </activity>
+
+        <meta-data android:name="com.exelbid.appkey"
+                   android:value="1ad5be0d"/>
+    </application>
+</manifest>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="fill_parent"
+             android:layout_height="fill_parent">
+
+    <RelativeLayout
+        android:id="@+id/ad_cardLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/ad_imageLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/image_bg">
+
+            <ImageView
+                android:id="@+id/ad_image"
+                android:layout_width="fill_parent"
+                android:layout_height="173.0dip"
+                android:layout_alignParentTop="true"
+                android:scaleType="center"
+                android:src="@mipmap/ic_launcher"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/contentLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ad_imageLayout"
+            android:background="@drawable/tri_ad_white_background"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ad_textLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20.0dip"
+                android:layout_marginLeft="25.0dip"
+                android:layout_marginRight="25.0dip"
+                android:layout_marginTop="15.0dip"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/ad_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="title"
+                    android:textColor="#ff666666"
+                    android:textSize="16.0sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/ad_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="this is subtitle"
+                    android:textColor="#ffbbbbbb"
+                    android:textSize="14.0sp"/>
+
+                <RatingBar
+                    android:id="@+id/ad_ratingBar"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginTop="2.0dip"
+                    android:isIndicator="true"
+                    android:rating="5.0"
+                    android:stepSize="0.1"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ad_fbIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_margin="7.0dip"
+                android:orientation="vertical"/>
+
+
+            <LinearLayout
+                android:id="@+id/ad_callToActionLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="50.0dip"
+                android:layout_below="@id/ad_textLayout"
+                android:layout_marginLeft="20.0dip"
+                android:layout_marginRight="20.0dip">
+
+                <Button
+                    android:id="@+id/ad_btCallToAction"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/gift_cta_button_background_selector"
+                    android:text="Download"
+                    android:textColor="@android:color/white"
+                    android:textSize="18.0sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="20.0dip"
+                android:layout_below="@id/ad_callToActionLayout"
+                android:orientation="vertical"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="60.0dip"
+            android:layout_height="60.0dip"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/ad_imageLayout"
+            android:layout_marginLeft="25.0dip"
+            android:layout_marginTop="-40.0dip"
+            android:background="@drawable/gift_ad_icon_bg"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/ad_icon"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_margin="8.0dip"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|right|top"
+        >
+
+        <ImageView
+            android:id="@+id/ad_ivCross"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/gift_close_button_new"/>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/ad_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_gravity="center|left|top"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:alpha="0.6"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:src="@drawable/more_ad"/>
+
+    </FrameLayout>
+
+
+</FrameLayout>
