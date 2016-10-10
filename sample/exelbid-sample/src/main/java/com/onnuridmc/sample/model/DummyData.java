@@ -1,12 +1,11 @@
 package com.onnuridmc.sample.model;
 
 import com.onnuridmc.exelbid.common.AdNativeData;
-import com.onnuridmc.exelbid.common.IAdNativeData;
 
 /**
  * Created by Administrator on 2016-07-19.
  */
-public class DummyData implements IAdNativeData{
+public class DummyData {
     private boolean isAd = false;
 
     // 광고가 아닌 경우의 데이터
@@ -38,7 +37,6 @@ public class DummyData implements IAdNativeData{
         return mData;
     }
 
-    @Override
     public AdNativeData getAdNativeData() {
         return mAdData;
     }

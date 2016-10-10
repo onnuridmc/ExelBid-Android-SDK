@@ -25,9 +25,17 @@
         </activity>
         <activity android:name=".activity.SampleNativeMulti">
         </activity>
-        <activity android:name=".activity.SampleNativeSingle">
+        <activity android:name=".activity.SampleNative">
         </activity>
-        <activity android:name=".activity.SampleNativeAdapter">
+        <activity android:name=".activity.SampleNativeBanner">
+        </activity>
+        <activity android:name=".activity.SampleNativeArray">
+        </activity>
+        <activity android:name=".activity.SampleNativeListView">
+        </activity>
+        <activity android:name=".activity.SampleNativeRecycler">
+        </activity>
+        <activity android:name=".activity.SampleNativeRecyclerArray">
         </activity>
         <activity android:name=".activity.SampleDialog">
         </activity>

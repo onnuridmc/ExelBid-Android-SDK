@@ -28,7 +28,7 @@ public class SampleInterstitialView extends Activity {
 
         mEdtAdUnit = (EditText) findViewById(R.id.editText);
 
-        mUnitId = PrefManager.getInterstialAd(this, PrefManager.KEY_INTERSTIAL_AD, "9a86243f08e9ca5a59bfa37f79fc16e120e65b6e");
+        mUnitId = PrefManager.getInterstialAd(this, PrefManager.KEY_INTERSTIAL_AD, AppConstants.UNIT_ID_INTERSTITIAL);
 
         mEdtAdUnit.setText(mUnitId);
 
@@ -61,7 +61,7 @@ public class SampleInterstitialView extends Activity {
         });
 
 
-        mInterstitialAd.setAge(30);
+        mInterstitialAd.setYob("1990");
         mInterstitialAd.setGender(true);
         mInterstitialAd.addKeyword("level", "10");
         mInterstitialAd.setTestMode(AppConstants.TEST_MODE);

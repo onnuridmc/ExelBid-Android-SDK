@@ -15,35 +15,32 @@ import com.onnuridmc.exelbid.lib.utils.ExelLog;
 import com.onnuridmc.sample.AppConstants;
 import com.onnuridmc.sample.R;
 import com.onnuridmc.sample.utils.PrefManager;
+import com.onnuridmc.sample.view.NativeBannerView;
 
-/**
- * 네이티브 광고를 하나씩 요청하는 샘플입니다.
- */
-public class SampleNativeSingle extends Activity implements View.OnClickListener{
+public class SampleNativeBanner extends Activity  implements View.OnClickListener{
 
-    private static final String TAG = "SampleNativeSingle";
-
-    private ExelBidNative mNativeAd;
-
-    private View mNativeRootLayout;
+    private static final String TAG = "SampleNativeBanner";
 
     private String mUnitId;
     private EditText mEdtAdUnit;
 
+    private NativeBannerView mBannerView;
+
+    private ExelBidNative mNativeAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.act_native);
+        setContentView(R.layout.act_native_banner);
 
         mEdtAdUnit = (EditText)findViewById(R.id.editText);
-
-        mUnitId = PrefManager.getNativeAd(this, PrefManager.KEY_NATIVE_AD,"b3720be2da2e10438b63af6f4e0ace4881992597");
-
+        mUnitId = PrefManager.getNativeAd(this, PrefManager.KEY_NATIVE_AD, AppConstants.UNIT_ID_NATIVE);
         mEdtAdUnit.setText(mUnitId);
 
+        mBannerView = (NativeBannerView) findViewById(R.id.native_banner);
+
         // 네이티브 요청 객체를 생성한다.
-         mNativeAd = new ExelBidNative(this, mUnitId, new OnAdNativeListener() {
+        mNativeAd = new ExelBidNative(this, mUnitId, new OnAdNativeListener() {
 
             @Override
             public void onFailed(ExelBidError error) {
@@ -63,8 +60,10 @@ public class SampleNativeSingle extends Activity implements View.OnClickListener
             @Override
             public void onLoaded() {
                 ExelLog.d(TAG, "onLoaded");
-                mNativeRootLayout.setVisibility(View.VISIBLE);
                 mNativeAd.show();
+
+                mBannerView.start();
+                mBannerView.setVisibility(View.VISIBLE);
             }
         });
 
@@ -73,13 +72,13 @@ public class SampleNativeSingle extends Activity implements View.OnClickListener
         // 광고가 바인딩 됩니다.
         // 바인딩 되지 않아도 되는 항목이 있을시 builder에 id를 셋팅하지 않으면 됩니다.
 
-        mNativeRootLayout = findViewById(R.id.native_layout);
-        mNativeAd.setNativeViewBinder(new NativeViewBinder.Builder(mNativeRootLayout)
-                .mainImageId(R.id.native_main_image)
-                .callToActionButtonId(R.id.native_cta)
-                .titleTextViewId(R.id.native_title)
-                .textTextViewId(R.id.native_text)
-                .iconImageId(R.id.native_icon_image)
+        findViewById(R.id.button).setOnClickListener(this);
+
+        mNativeAd.setNativeViewBinder(new NativeViewBinder.Builder(mBannerView)
+                .callToActionButtonId(R.id.button)
+                .titleTextViewId(R.id.textView1)
+                .textTextViewId(R.id.textView2)
+                .iconImageId(R.id.imageView)
                 .build());
 
         findViewById(R.id.button).setOnClickListener(this);
@@ -87,12 +86,13 @@ public class SampleNativeSingle extends Activity implements View.OnClickListener
         // 네이티브 요청시 필수로 존재해야 하는 값을 셋팅한다. 해당 조건 셋팅으로 인해서 광고가 존재하지 않을 확률이 높아집니다.
         mNativeAd.setRequiredAsset(new NativeAsset[] {NativeAsset.TITLE, NativeAsset.CTATEXT, NativeAsset.ICON, NativeAsset.MAINIMAGE, NativeAsset.DESC});
 
-        mNativeAd.setAge(30);
+        mNativeAd.setYob("1990");
         mNativeAd.setGender(true);
         mNativeAd.addKeyword("level", "10");
         mNativeAd.setTestMode(AppConstants.TEST_MODE);
 
-        mNativeRootLayout.setVisibility(View.GONE);
+        mBannerView.setVisibility(View.GONE);
+
     }
 
     @Override
@@ -103,7 +103,9 @@ public class SampleNativeSingle extends Activity implements View.OnClickListener
             if(TextUtils.isEmpty(unitID)) {
                 return;
             }
+
             mNativeAd.setAdUnitId(unitID);
+
             if(!unitID.equals(mUnitId)) {
                 PrefManager.setPref(this, PrefManager.KEY_NATIVE_AD, unitID);
             }
@@ -114,4 +116,5 @@ public class SampleNativeSingle extends Activity implements View.OnClickListener
             mNativeAd.loadAd();
         }
     }
+
 }

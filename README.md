@@ -36,7 +36,7 @@
 	1. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	compile 'com.onnuridmc.exelbid:exelbid:0.1.2'
+        	compile 'com.onnuridmc.exelbid:exelbid:0.1.4'
 	}
     ```
 
@@ -114,7 +114,7 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
 
 >광고의 효율을 높이기 위해 나이, 성별을 설정하는 것이 좋습니다.
 
-*	setAge(int) : 나이
+*	setYob(String) : 태어난 연도 4자리(2016)
 *	setGender(boolean) : 성별 (true : 남자, false : 여자)
 *	addKeyword(String, String) : Custom 메타 데이터 (Key, Value)
 *	setTestMode(Boolean) : 광고의 테스트를 위해 설정하는 값입니다. 통계에 적용 되지 않으며 항상 광고가 노출되게 됩니다.
@@ -284,6 +284,16 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
     loadAd()
     ```
 
+6.	네이티브 광고 데이터 가져오기
+	```java
+    mNativeAd.getNativeAdData()
+    ```
+
+3.	광고 로딩 확인
+	```java
+	(Boolean) isReady() //광고를 노출시킬 준비가 되어있는지 체크한다.
+	```
+
 6.	네이티브 광고 노출
     ```java
     show() //네이티브 광고가 올바르게 로딩 된 경우에 Binder에 등록된 정보에 광고 데이터를 바인딩 합니다.
@@ -324,6 +334,69 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
     ```java
     mListView.setAdapter(mAdapter)
 	```
+
+### 네이티브 Manager
+> 네이티브 광고를 디테일하게 조작할수 있습니다.
+
+1.	네이티브 광고 인스턴스를 생성합니다.
+    ```java
+      ExelBidNativeManager mNativeAd = new ExelBidNativeManager(this, mUnitId, new OnAdNativeManagerListener() {
+
+            @Override
+            public void onFailed(String key, ExelBidError error) {}
+
+            @Override
+            public void onShow(String key) {}
+
+            @Override
+            public void onClick(String key) {}
+
+            @Override
+            public void onLoaded(String key) {}
+        });
+    ```
+    -	key : 네이티브 광고 요청시 전달한 key값
+
+2.	네이티브 광고 요청시 어플리케이션에서 필수로 요청할 항목들을 설정합니다.
+
+3.	광고가 노출될 영역에 대한 정보를 바인딩 합니다.(바인딩하는 방법에 따라 optional)
+
+4.	네이티브 광고 이미지를 조작합니다.
+
+5.	네이티브 광고 요청
+    ```java
+    loadAd()
+    loadAd(String key)
+    ```
+
+6. 네이티브 광고 데이터 가져오기
+	```java
+	getAdNativeData(String key)
+	```
+    - key : loadAd요청시 지정한 값
+
+7. 네이티브 광고 노출
+	1. 직접 노출
+        ```java
+        bindViewByAdNativeData(final AdNativeData data, NativeViewBinder viewBinder)
+        ```
+        - 네이티브 광고 데이터의 정보를 가지고 Binder의 정보에 데이터를 바인딩합니다.
+
+	2. RecyclerView를 이용
+		```java
+        onCreateViewHolder(final ViewGroup parent, final int viewType)
+        onBindViewHolder(final RecyclerView.ViewHolder holder, final int position)
+        onBindViewHolder(final RecyclerView.ViewHolder holder, AdNativeData data, final int position)
+        ```
+        - RecyclerView.Adapter에서 알맞게 메소드를 호출 합니다.
+
+	3. BaseAdapter를 이용한 ListView등일경우
+		```java
+        getView(AdNativeData data, View convertView);
+        ```
+        - covertView가 Null일경우에는 Binder에 등록한 layout id의 뷰가 생성됩니다.
+
+
 
 
 

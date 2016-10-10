@@ -40,8 +40,8 @@ public class SampleDialog extends Activity implements View.OnClickListener{
         mEdtInterstitial = (EditText)findViewById(R.id.dialog_edtInterstitial);
         mEdtNative = (EditText)findViewById(R.id.dialog_edtNative);
 
-        mInterstitialUnitId = PrefManager.getInterstialAd(this, PrefManager.KEY_DIALOG_INTERSTIAL_AD, "d732e176ed66a0bb1ae8fa6f9f32a775b84dbb5a");
-        mNativeUnitId = PrefManager.getNativeAd(this, PrefManager.KEY_DIALOG_NATIVE_AD, "b3720be2da2e10438b63af6f4e0ace4881992597");
+        mInterstitialUnitId = PrefManager.getInterstialAd(this, PrefManager.KEY_DIALOG_INTERSTIAL_AD, AppConstants.UNIT_ID_INTERSTITIAL);
+        mNativeUnitId = PrefManager.getNativeAd(this, PrefManager.KEY_DIALOG_NATIVE_AD, AppConstants.UNIT_ID_NATIVE);
 
 
         mEdtInterstitial.setText(mInterstitialUnitId);
@@ -90,7 +90,7 @@ public class SampleDialog extends Activity implements View.OnClickListener{
             }
         });
         mInterstitialDialog.setTitle("종료");
-        mInterstitialDialog.setAge(1);
+        mInterstitialDialog.setYob("1990");
         mInterstitialDialog.setGender(true);
         mInterstitialDialog.setTestMode(AppConstants.TEST_MODE);
 
@@ -132,7 +132,7 @@ public class SampleDialog extends Activity implements View.OnClickListener{
                 mNativeDialog.dismiss();
             }
         });
-        mNativeDialog.setAge(1);
+        mNativeDialog.setYob("1990");
         mNativeDialog.setGender(true);
         mNativeDialog.setTestMode(AppConstants.TEST_MODE);
 
@@ -160,7 +160,7 @@ public class SampleDialog extends Activity implements View.OnClickListener{
                 findViewById(R.id.dialog_btnRoundNativeShow).setEnabled(true);
             }
         });
-        mNativeRoundDialog.setAge(1);
+        mNativeRoundDialog.setYob("1990");
         mNativeRoundDialog.setGender(true);
         mNativeRoundDialog.setTestMode(AppConstants.TEST_MODE);
 
@@ -235,59 +235,5 @@ public class SampleDialog extends Activity implements View.OnClickListener{
                 mNativeRoundDialog.show();
             }
         }
-    }
-
-    private void showNativeRoundDialog() {
-        final AdNativeRoundDialog dialog = new AdNativeRoundDialog(SampleDialog.this, mNativeUnitId);
-//        dialog.setAdNativeListener();
-        dialog.setAge(1);
-        dialog.setGender(true);
-        dialog.setTestMode(AppConstants.TEST_MODE);
-        dialog.show();
-    }
-
-    private void showNativeDialog() {
-        final AdNativeDialog dialog = new AdNativeDialog(SampleDialog.this, mNativeUnitId);
-//        dialog.setAdNativeListener();
-        dialog.setTitle("종료");
-        dialog.setOnButton1ClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                finish();
-            }
-        });
-        dialog.setOnButton2ClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.setAge(1);
-        dialog.setGender(true);
-        dialog.setTestMode(AppConstants.TEST_MODE);
-        dialog.show();
-    }
-
-    private void showInterstitialDialog() {
-        final AdInterstitialDialog dialog = new AdInterstitialDialog(SampleDialog.this, mInterstitialUnitId);
-//        dialog.setInterstitialAdListener();
-        dialog.setOnButton1ClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                finish();
-            }
-        });
-        dialog.setOnButton2ClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.setAge(1);
-        dialog.setGender(true);
-        dialog.setTestMode(AppConstants.TEST_MODE);
-        dialog.show();
     }
 }

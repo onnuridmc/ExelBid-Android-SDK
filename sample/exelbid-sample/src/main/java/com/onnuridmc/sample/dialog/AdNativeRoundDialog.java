@@ -57,7 +57,7 @@ public class AdNativeRoundDialog extends ExelBidNativeDialog {
         localLayerDrawable.getDrawable(1).setColorFilter(Color.parseColor("#B7B7B7"), PorterDuff.Mode.SRC_ATOP);
         localLayerDrawable.getDrawable(0).setColorFilter(Color.parseColor("#B7B7B7"), PorterDuff.Mode.SRC_ATOP);
 
-        setRequiredAsset(new NativeAsset[] {NativeAsset.TITLE, NativeAsset.CTATEXT, NativeAsset.ICON, NativeAsset.MAINIMAGE, NativeAsset.DESC, NativeAsset.RATING});
+        setRequiredAsset(new NativeAsset[] {NativeAsset.TITLE, NativeAsset.CTATEXT, NativeAsset.ICON, NativeAsset.MAINIMAGE, NativeAsset.DESC});
 
         mAdTextBg = findViewById(R.id.ad_bg);
 

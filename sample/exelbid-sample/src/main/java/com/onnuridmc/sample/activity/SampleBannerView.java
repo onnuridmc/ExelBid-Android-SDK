@@ -29,13 +29,13 @@ public class SampleBannerView extends Activity {
         mEdtAdUnit = (EditText) findViewById(R.id.banner_adUnit);
         mAdView = (ExelBidAdView) findViewById(R.id.adview);
 
-        mUnitId = PrefManager.getPref(this, PrefManager.KEY_BANNER_AD,"35779eaed4056466172e043aae0ea34e1622e662");
+        mUnitId = PrefManager.getPref(this, PrefManager.KEY_BANNER_AD, AppConstants.UNIT_ID_BANNER);
         mEdtAdUnit.setText(mUnitId);
 
         //TEST MODE 여부
         mAdView.setTestMode(AppConstants.TEST_MODE);
 
-        mAdView.setAge(30);
+        mAdView.setYob("1990");
         //남자면 true 여자면 false
         mAdView.setGender(true);
         mAdView.addKeyword("level", "10");

@@ -15,9 +15,12 @@ import android.widget.TextView;
 import com.onnuridmc.sample.activity.SampleBannerView;
 import com.onnuridmc.sample.activity.SampleDialog;
 import com.onnuridmc.sample.activity.SampleInterstitialView;
-import com.onnuridmc.sample.activity.SampleNativeMulti;
-import com.onnuridmc.sample.activity.SampleNativeSingle;
-import com.onnuridmc.sample.activity.SampleNativeAdapter;
+import com.onnuridmc.sample.activity.SampleNativeArray;
+import com.onnuridmc.sample.activity.SampleNativeBanner;
+import com.onnuridmc.sample.activity.SampleNativeRecycler;
+import com.onnuridmc.sample.activity.SampleNativeRecyclerArray;
+import com.onnuridmc.sample.activity.SampleNative;
+import com.onnuridmc.sample.activity.SampleNativeListView;
 
 public class MainActivity extends ListActivity {
 
@@ -32,10 +35,12 @@ public class MainActivity extends ListActivity {
         mAdapter.add(new Pair<String, Class<?>>("배너광고", SampleBannerView.class));
         mAdapter.add(new Pair<String, Class<?>>("전면광고", SampleInterstitialView.class));
         mAdapter.add(new Pair<String, Class<?>>("다이얼로그광고", SampleDialog.class));
-        mAdapter.add(new Pair<String, Class<?>>("네이티브광고 싱글", SampleNativeSingle.class));
-        mAdapter.add(new Pair<String, Class<?>>("네이티브광고 멀티", SampleNativeMulti.class));
-        mAdapter.add(new Pair<String, Class<?>>("네이티브광고 Adapter", SampleNativeAdapter.class));
-//        mAdapter.add(new Pair<String, Class<?>>("Dex테스트", SampleDexCopy.class));
+        mAdapter.add(new Pair<String, Class<?>>("네이티브", SampleNative.class));
+        mAdapter.add(new Pair<String, Class<?>>("네이티브 Banner", SampleNativeBanner.class));
+        mAdapter.add(new Pair<String, Class<?>>("네이티브 Array", SampleNativeArray.class));
+        mAdapter.add(new Pair<String, Class<?>>("네이티브 ListView", SampleNativeListView.class));
+        mAdapter.add(new Pair<String, Class<?>>("네이티브 Recycler", SampleNativeRecycler.class));
+        mAdapter.add(new Pair<String, Class<?>>("네이티브 Recycler Array", SampleNativeRecyclerArray.class));
 
         setListAdapter(mAdapter);
         getListView().setOnItemClickListener(new OnItemClickListener() {
