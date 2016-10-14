@@ -72,10 +72,9 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
 -keep class com.google.android.gms.common.api.GoogleApiClient$* {public *;}
 -keep class com.google.android.gms.location.LocationServices {public *;}
 -keep class com.google.android.gms.location.FusedLocationProviderApi {public *;}
+
 -keepattributes SourceFile,LineNumberTable,InnerClasses
 -keep class com.onnuridmc.exelbid.** { *; }
--dontwarn com.onnuridmc.exelbid.**
--dontoptimize
 ```
 
 <br>
