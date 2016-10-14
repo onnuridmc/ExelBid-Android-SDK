@@ -44,7 +44,8 @@
             >
         </activity>
 
+        <!-- APP ID를 설정합니다.  -->
         <meta-data android:name="com.exelbid.appkey"
-                   android:value="1ad5be0d"/>
+                   android:value="3f39b042"/>
     </application>
 </manifest>
