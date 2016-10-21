@@ -45,12 +45,12 @@ public class SampleBannerView extends Activity {
 
             @Override
             public void onAdLoaded() {
-                ExelLog.e("dooully", " onAdLoaded ");
+                ExelLog.e("onAdLoaded ");
             }
 
             @Override
             public void onAdClicked() {
-                ExelLog.e("dooully", " onAdClicked ");
+                ExelLog.e("onAdClicked ");
             }
 
             @Override

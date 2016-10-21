@@ -26,5 +26,3 @@
 
 -keepattributes SourceFile,LineNumberTable,InnerClasses
 -keep class com.onnuridmc.exelbid.** { *; }
--dontwarn com.onnuridmc.exelbid.**
--dontoptimize

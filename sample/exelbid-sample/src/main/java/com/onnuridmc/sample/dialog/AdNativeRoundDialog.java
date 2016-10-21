@@ -57,9 +57,13 @@ public class AdNativeRoundDialog extends ExelBidNativeDialog {
         localLayerDrawable.getDrawable(1).setColorFilter(Color.parseColor("#B7B7B7"), PorterDuff.Mode.SRC_ATOP);
         localLayerDrawable.getDrawable(0).setColorFilter(Color.parseColor("#B7B7B7"), PorterDuff.Mode.SRC_ATOP);
 
-        setRequiredAsset(new NativeAsset[] {NativeAsset.TITLE, NativeAsset.CTATEXT, NativeAsset.ICON, NativeAsset.MAINIMAGE, NativeAsset.DESC});
 
         mAdTextBg = findViewById(R.id.ad_bg);
+
+        // rating을 required로 요청하면 fill이 적게 찰수 있다.
+        setRequiredAsset(new NativeAsset[] {NativeAsset.TITLE, NativeAsset.CTATEXT, NativeAsset.ICON, NativeAsset.MAINIMAGE, NativeAsset.DESC});
+        //기본값 셋팅
+        mRatingBar.setRating(4.0f);
 
         // 광고 이미지를 조작할 일이 있을경우에 셋팅합니다.
         setNativeImageController(new NativeImageControllor() {
@@ -78,6 +82,7 @@ public class AdNativeRoundDialog extends ExelBidNativeDialog {
                 return Utils.getRoundedCornerBitmap(getContext(), bitmap, 10, width, height, false, false, false, false);
             }
         });
+
     }
 
     @Override
