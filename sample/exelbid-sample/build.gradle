@@ -44,7 +44,7 @@ dependencies {
     compile 'com.android.support:support-v4:23.1.1'
     compile 'com.google.android.gms:play-services-ads:9.2.1'
     compile 'com.android.support:recyclerview-v7:23.1.1'
-    compile 'com.onnuridmc.exelbid:exelbid:1.0.0'
+    compile 'com.onnuridmc.exelbid:exelbid:1.0.1'
 }
 
 task clean(type: Exec) {

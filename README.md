@@ -36,7 +36,7 @@
 	1. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	compile 'com.onnuridmc.exelbid:exelbid:1.0.0'
+        	compile 'com.onnuridmc.exelbid:exelbid:1.0.1'
 	}
     ```
 
@@ -476,6 +476,3 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
                 .build();
     }
     ```
-
-
-
