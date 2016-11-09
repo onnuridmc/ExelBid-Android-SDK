@@ -65,7 +65,7 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
 
 ### 프로가드 설정
 
-> ```java
+```java
 -keep class com.google.android.gms.ads.identifier.AdvertisingIdClient{public *;}
 -keep class com.google.android.gms.ads.identifier.AdvertisingIdClient$Info{public *;}
 -keep class com.google.android.gms.common.api.GoogleApiClient { public *; }
@@ -232,6 +232,7 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
               .titleTextViewId(R.id.native_title)
               .textTextViewId(R.id.native_text)
               .iconImageId(R.id.native_icon_image)
+              .adInfoImageId(R.id.native_privacy_information_icon_image)
               .build());
     ```
 
@@ -244,6 +245,8 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
 	- ``textTextViewId(int resourceId)`` : 생성자에 설정한 View에 포함되어 있는 광고의 설명이 설정 될 TextView의 id를 설정합니다.
 	- ``iconImageId(int resourceId)`` : 생성자에 설정한 View에 포함되어 있는 광고의 아이콘이 노출될 ImageView의 id를 설정합니다.
 	- ``ratingBarId(int resourceId)`` : 생성자에 설정한 View에 포함되어 있는 광고의 별점이 표시될 RatingBar의 id를 설정합니다.
+	- ``adInfoImageId(int resourceId)`` : 생성자에 설정한 View에 포함되어 있는 광고 정보 표시 아이콘이 노출될 ImageView의 id를 설정합니다.
+  해당 ImageView의 속성에 android:src를 설정하지 않아도 기본 Info 아이콘이 바이딩 됩니다.
 	- ``build();`` : 설정한 항목으로 NativeViewBinder객체를 생성합니다.
 
 3.	네이티브 광고 요청시 어플리케이션에서 필수로 요청할 항목들을 설정합니다.
@@ -316,6 +319,7 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
                 .titleTextViewId(R.id.native_title)
                 .textTextViewId(R.id.native_text)
                 .iconImageId(R.id.native_icon_image)
+                .adInfoImageId(R.id.native_privacy_information_icon_image)
                 .build());
         ```
         ``NativeViewBinder.Builder(int layout_id)`` : Adapter의 getView에서 생성할 layout의 ResourceId를 설정합니다.
@@ -473,6 +477,7 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
                 .titleTextViewId(R.id.native_title)
                 .textTextViewId(R.id.native_text)
                 .iconImageId(R.id.native_icon_image)
+                .adInfoImageId(R.id.native_privacy_information_icon_image)
                 .build();
     }
     ```
