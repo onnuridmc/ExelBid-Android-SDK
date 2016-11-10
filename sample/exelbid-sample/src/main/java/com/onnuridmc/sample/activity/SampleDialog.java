@@ -1,9 +1,11 @@
 package com.onnuridmc.sample.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.onnuridmc.exelbid.common.ExelBidError;
@@ -193,6 +195,10 @@ public class SampleDialog extends Activity implements View.OnClickListener{
             mInterstitialDialog.setAdUnitId(mInterstitialUnitId);
 
             mInterstitialDialog.loadAd();
+
+            //키보드 숨기기
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(mEdtInterstitial.getWindowToken(), 0);
         } else if (v.getId() == R.id.dialog_btnNativeLoad) {
             //EspressoNativeDialog를 상속 받아서 네이티브 다이얼로그 디자인을 변경할수 있다.
             String unitID = mEdtNative.getText().toString();
@@ -207,6 +213,10 @@ public class SampleDialog extends Activity implements View.OnClickListener{
             mNativeDialog.setAdUnitId(mNativeUnitId);
 
             mNativeDialog.loadAd();
+
+            //키보드 숨기기
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(mEdtNative.getWindowToken(), 0);
         } else if (v.getId() == R.id.dialog_btnRoundNativeLoad) {
             //EspressoNativeDialog를 상속 받아서 네이티브 다이얼로그 디자인을 변경할수 있다.
             String unitID = mEdtNative.getText().toString();
@@ -221,6 +231,9 @@ public class SampleDialog extends Activity implements View.OnClickListener{
             mNativeRoundDialog.setAdUnitId(mNativeUnitId);
 
             mNativeRoundDialog.loadAd();
+            //키보드 숨기기
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(mEdtNative.getWindowToken(), 0);
 
         } else if (v.getId() == R.id.dialog_btnInterstitialShow) {
             if(mInterstitialDialog.isReady()) {

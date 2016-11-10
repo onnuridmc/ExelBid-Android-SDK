@@ -1,6 +1,7 @@
 package com.onnuridmc.sample.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -120,6 +122,7 @@ public class SampleNativeRecyclerArray extends Activity implements View.OnClickL
                 .titleTextViewId(R.id.native_title)
                 .textTextViewId(R.id.native_text)
                 .iconImageId(R.id.native_icon_image)
+                .adInfoImageId(R.id.native_privacy_information_icon_image)
                 .build());
 
         mNativeAd.setYob("1990");
@@ -161,6 +164,10 @@ public class SampleNativeRecyclerArray extends Activity implements View.OnClickL
 
             //광고를 요청한다.
             requestNativeAd();
+
+            //키보드 숨기기
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(mEdtAdUnit.getWindowToken(), 0);
         }
     }
 
@@ -205,6 +212,7 @@ public class SampleNativeRecyclerArray extends Activity implements View.OnClickL
                         .titleTextViewId(R.id.textView1)
                         .textTextViewId(R.id.textView2)
                         .iconImageId(R.id.imageView)
+                        .adInfoImageId(R.id.native_privacy_information_icon_image)
                         .build());
             } else {
                 ((DemoViewHolder)holder).textView.setText(demoData.text);

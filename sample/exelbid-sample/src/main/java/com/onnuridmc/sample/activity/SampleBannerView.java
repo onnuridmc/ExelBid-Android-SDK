@@ -1,9 +1,11 @@
 package com.onnuridmc.sample.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -79,6 +81,10 @@ public class SampleBannerView extends Activity {
 
         mUnitId = unitID;
         mAdView.loadAd();
+
+        //키보드 숨기기
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mEdtAdUnit.getWindowToken(), 0);
     }
 
 

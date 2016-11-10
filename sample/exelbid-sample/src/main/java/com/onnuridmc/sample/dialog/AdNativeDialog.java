@@ -54,6 +54,7 @@ public class AdNativeDialog extends ExelBidNativeDialog {
                 .titleTextViewId(R.id.native_title)
                 .textTextViewId(R.id.native_text)
                 .iconImageId(R.id.native_icon_image)
+                .adInfoImageId(R.id.native_privacy_information_icon_image)
                 .build();
     }
 

@@ -19,23 +19,32 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.onnuridmc.sample.activity.SampleBannerView">
+        <activity android:name="com.onnuridmc.sample.activity.SampleBannerView"
+            android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
-        <activity android:name="com.onnuridmc.sample.activity.SampleInterstitialView">
+        <activity android:name="com.onnuridmc.sample.activity.SampleInterstitialView"
+            android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
-        <activity android:name=".activity.SampleNativeMulti">
+        <activity android:name=".activity.SampleNativeMulti"
+            android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
-        <activity android:name=".activity.SampleNative">
+        <activity android:name=".activity.SampleNative"
+            android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
-        <activity android:name=".activity.SampleNativeBanner">
+        <activity android:name=".activity.SampleNativeBanner"
+            android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
-        <activity android:name=".activity.SampleNativeArray">
+        <activity android:name=".activity.SampleNativeArray"
+            android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
-        <activity android:name=".activity.SampleNativeListView">
+        <activity android:name=".activity.SampleNativeListView"
+            android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
-        <activity android:name=".activity.SampleNativeRecycler">
+        <activity android:name=".activity.SampleNativeRecycler"
+            android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
-        <activity android:name=".activity.SampleNativeRecyclerArray">
+        <activity android:name=".activity.SampleNativeRecyclerArray"
+            android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
         <activity android:name=".activity.SampleDialog">
         </activity>
@@ -44,7 +53,6 @@
             >
         </activity>
 
-        <!-- APP ID를 설정합니다.  -->
         <meta-data android:name="com.exelbid.appkey"
                    android:value="3f39b042"/>
     </application>

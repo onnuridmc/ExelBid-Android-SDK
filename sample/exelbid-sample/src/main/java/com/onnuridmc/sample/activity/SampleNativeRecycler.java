@@ -1,6 +1,7 @@
 package com.onnuridmc.sample.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +9,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -97,6 +99,7 @@ public class SampleNativeRecycler extends Activity implements View.OnClickListen
                 .titleTextViewId(R.id.native_title)
                 .textTextViewId(R.id.native_text)
                 .iconImageId(R.id.native_icon_image)
+                .adInfoImageId(R.id.native_privacy_information_icon_image)
                 .build());
 
 
@@ -127,6 +130,10 @@ public class SampleNativeRecycler extends Activity implements View.OnClickListen
 
             //광고를 요청한다.
             mNativeAd.loadAd();
+
+            //키보드 숨기기
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(mEdtAdUnit.getWindowToken(), 0);
         }
     }
 

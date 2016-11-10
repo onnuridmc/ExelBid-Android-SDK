@@ -1,6 +1,7 @@
 package com.onnuridmc.sample.dialog;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -74,6 +75,14 @@ public class AdNativeRoundDialog extends ExelBidNativeDialog {
 
                 mAdTextBg.setBackgroundDrawable(new BitmapDrawable(getContext().getResources(), Utils.getRoundedAdBitmap(getContext(), adbg, 20, mAdTextBg.getWidth(), mAdTextBg.getHeight(), width, height)));
                 mAdTextBg.setVisibility(View.VISIBLE);
+
+                mAdTextBg.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startInfo();
+                    }
+                });
+
                 return Utils.getRoundedCornerBitmap(getContext(), bitmap, 20, width, height, false, false, true, true);
             }
 

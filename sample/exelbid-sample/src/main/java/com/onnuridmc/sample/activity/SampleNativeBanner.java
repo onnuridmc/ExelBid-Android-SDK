@@ -1,9 +1,11 @@
 package com.onnuridmc.sample.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.onnuridmc.exelbid.ExelBidNative;
@@ -79,6 +81,7 @@ public class SampleNativeBanner extends Activity  implements View.OnClickListene
                 .titleTextViewId(R.id.textView1)
                 .textTextViewId(R.id.textView2)
                 .iconImageId(R.id.imageView)
+                .adInfoImageId(R.id.native_privacy_information_icon_image)
                 .build());
 
         findViewById(R.id.button).setOnClickListener(this);
@@ -114,6 +117,10 @@ public class SampleNativeBanner extends Activity  implements View.OnClickListene
 
             //광고를 요청한다.
             mNativeAd.loadAd();
+
+            //키보드 숨기기
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(mEdtAdUnit.getWindowToken(), 0);
         }
     }
 
