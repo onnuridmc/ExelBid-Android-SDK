@@ -82,14 +82,17 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
 ### AndroidManifest 설정
 
 >MetaData와 com.onnuridmc.exelbid.common.ExelBidActivity를 AndroidManifest.xml의 <applicatrion> 태그 안에 추가합니다. 이 Activity는 전면광고를 표시하는데 사용됩니다.
+
 ```xml
 <activity android:name="com.onnuridmc.exelbid.common.ExelBidActivity"
           android:configChanges="keyboardHidden|orientation|screenSize">
 </activity>
 ```
+
 <br>
 ### AppKey 설정
 >홈페이지에 등록된 어플리케이션의 아이디를 설정한다. (필수)
+
 * Manifest 에 meta-data 등록
 ```xml
 ....
