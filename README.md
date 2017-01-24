@@ -7,7 +7,8 @@
   * [ExelBid SDK 추가하기](#exelbid-sdk-추가하기)
   * [Google Library 추가하기](#google-library-추가하기)
   * [프로가드 설정](#프로가드-설정)
-  * [AndroidManafest 설정](#androidmanafest-설정)
+  * [AndroidManifest 설정](#androidmanifest-설정)
+  * [AppKey 설정](#appkey-설정)
   * [Permission 설정](#permission-설정)
 * [광고 적용하기](#광고-적용하기)
   * [인스턴스 공통 메소드](#인스턴스-공통-메소드)
@@ -36,7 +37,7 @@
 	1. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	compile 'com.onnuridmc.exelbid:exelbid:1.0.2'
+        	compile 'com.onnuridmc.exelbid:exelbid:1.0.3'
 	}
     ```
 
@@ -78,17 +79,29 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
 ```
 
 <br>
-### AndroidManafest 설정
+### AndroidManifest 설정
 
->MetaData와 com.onnuridmc.exelbid.common.ExelBidActivity를 AndroidManafest.xml의 <applicatrion> 태그 안에 추가합니다. 이 Activity는 전면광고를 표시하는데 사용됩니다.
+>MetaData와 com.onnuridmc.exelbid.common.ExelBidActivity를 AndroidManifest.xml의 <applicatrion> 태그 안에 추가합니다. 이 Activity는 전면광고를 표시하는데 사용됩니다.
 ```xml
 <activity android:name="com.onnuridmc.exelbid.common.ExelBidActivity"
           android:configChanges="keyboardHidden|orientation|screenSize">
 </activity>
+```
+<br>
+### AppKey 설정
+>홈페이지에 등록된 어플리케이션의 아이디를 설정한다. (필수)
+* Manifest 에 meta-data 등록
+```xml
+....
 <meta-data android:name="com.exelbid.appkey"
            android:value="{홈페이지에 등록한 어플리케이션의 아이디}"/>
+....
 ```
 
+*	 동적 설정 - 앱 실행시 최초 한번만 설정
+```xml
+ExelBid.setAppKey(String) // 홈페이지에 등록한 어플리케이션의 아이디
+```
 <br>
 ### Permission 설정
 

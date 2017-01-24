@@ -18,12 +18,12 @@ import android.widget.TextView;
 import com.onnuridmc.sample.activity.SampleBannerView;
 import com.onnuridmc.sample.activity.SampleDialog;
 import com.onnuridmc.sample.activity.SampleInterstitialView;
+import com.onnuridmc.sample.activity.SampleNative;
 import com.onnuridmc.sample.activity.SampleNativeArray;
 import com.onnuridmc.sample.activity.SampleNativeBanner;
+import com.onnuridmc.sample.activity.SampleNativeListView;
 import com.onnuridmc.sample.activity.SampleNativeRecycler;
 import com.onnuridmc.sample.activity.SampleNativeRecyclerArray;
-import com.onnuridmc.sample.activity.SampleNative;
-import com.onnuridmc.sample.activity.SampleNativeListView;
 
 public class MainActivity extends ListActivity {
 
@@ -45,6 +45,9 @@ public class MainActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // manifest에 등록하지 않았다면 하기와 같이 최초 한번 앱캐 등록 처리
+//        ExelBid.setAppKey(this,"3f39b042");
 
         mAdapter = new InAdapter(this);
 
