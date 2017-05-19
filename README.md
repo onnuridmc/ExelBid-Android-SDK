@@ -40,11 +40,6 @@
         	compile 'com.onnuridmc.exelbid:exelbid:1.1.0'
 	}
     ```
-
-* 이클립스
-    1. 홈페이지에서 SDK를 다운로드 받습니다.
-    2. espresso-sdk.jar를 복사하여 프로젝트의 /libs폴더에 저장합니다.
-
 <br/>
 ### Google Library 추가하기
 > ExelBid Android SDK가 제대로 작동하려면 Google Play Service 4.0 이상의 라이브러리가 필요합니다. 광고 식별자 수집에 대한 Google Play 콘텐츠 가이드라인을 준수하기 위한 것입니다.
