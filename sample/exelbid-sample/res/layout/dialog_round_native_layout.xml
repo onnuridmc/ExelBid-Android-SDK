@@ -128,6 +128,25 @@
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"/>
         </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/ad_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:alpha="0.6"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:src="@drawable/more_ad"/>
+
+        </FrameLayout>
     </RelativeLayout>
 
     <LinearLayout
@@ -143,24 +162,6 @@
             android:layout_height="wrap_content"
             android:src="@drawable/gift_close_button_new"/>
     </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/ad_bg"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_gravity="center|left|top"
-        android:gravity="center">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:alpha="0.6"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:src="@drawable/more_ad"/>
-
-    </FrameLayout>
 
 
 </FrameLayout>

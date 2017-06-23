@@ -1,7 +1,6 @@
 package com.onnuridmc.sample.dialog;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -71,17 +70,12 @@ public class AdNativeRoundDialog extends ExelBidNativeDialog {
             @Override
             public Bitmap mainImageDisplay(Bitmap bitmap, int width, int height) {
 
-                Bitmap adbg = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.adbg);
+                // 2017-06-22 광고에 따라 mAdTextBg 사용 가능 여부에 따른 처리
+                if(mAdTextBg.getWidth() > 0 && mAdTextBg.getHeight() >0) {
+                    Bitmap adbg = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.adbg);
 
-                mAdTextBg.setBackgroundDrawable(new BitmapDrawable(getContext().getResources(), Utils.getRoundedAdBitmap(getContext(), adbg, 20, mAdTextBg.getWidth(), mAdTextBg.getHeight(), width, height)));
-                mAdTextBg.setVisibility(View.VISIBLE);
-
-                mAdTextBg.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startInfo();
-                    }
-                });
+                    mAdTextBg.setBackgroundDrawable(new BitmapDrawable(getContext().getResources(), Utils.getRoundedAdBitmap(getContext(), adbg, 20, mAdTextBg.getWidth(), mAdTextBg.getHeight(), width, height)));
+                }
 
                 return Utils.getRoundedCornerBitmap(getContext(), bitmap, 20, width, height, false, false, true, true);
             }
