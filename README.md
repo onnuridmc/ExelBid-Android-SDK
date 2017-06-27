@@ -2,7 +2,7 @@
 목차
 =================
 
-* [Version History](#Version-History)
+* [Version History](#version-history)
 * [시작하기](#시작하기)
 * [어플리케이션 설정](#어플리케이션-설정)
   * [ExelBid SDK 추가하기](#exelbid-sdk-추가하기)
@@ -265,7 +265,8 @@ ExelBid.setAppKey(String) // 홈페이지에 등록한 어플리케이션의 아
 	- ``adInfoImageId(int resourceId)`` : 생성자에 설정한 View에 포함되어 있는 광고 정보 표시 아이콘이 노출될 ImageView의 id를 설정합니다.
   해당 ImageView의 속성에 android:src를 설정하지 않아도 기본 Info 아이콘이 바인딩 됩니다.
   _**2017/07 방송통신위원회에서 시행되는 '온라인 맞춤형 광고 개인정보보호 가이드라인' 에 따라서 필수 적용 되어야 합니다.
-  광고주측에서 제공하는 해당 광고의 타입(맞춤형 광고 여부)에 따라 정보 표시 아이콘(Opt-out)의 노출이 결정됩니다.**_
+  광고주측에서 제공하는 해당 광고의 타입(맞춤형 광고 여부)에 따라 정보 표시 아이콘(Opt-out)의 노출이 결정됩니다.
+  ※ 광고 정보 표시 아이콘이 노출될 ImageView의 사이즈는 NxN(권장 20x20)으로 설정 되어야 합니다.**_
 	- ``build();`` : 설정한 항목으로 NativeViewBinder객체를 생성합니다.
 
 3.	네이티브 광고 요청시 어플리케이션에서 필수로 요청할 항목들을 설정합니다.
