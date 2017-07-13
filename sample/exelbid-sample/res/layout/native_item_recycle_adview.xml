@@ -75,7 +75,7 @@
         android:background="@null"
         android:contentDescription="native_main_image"
         android:minWidth="350dp"
-        android:scaleType="centerCrop"/>
+        android:scaleType="fitCenter"/>
 
     <LinearLayout
         android:layout_width="fill_parent"

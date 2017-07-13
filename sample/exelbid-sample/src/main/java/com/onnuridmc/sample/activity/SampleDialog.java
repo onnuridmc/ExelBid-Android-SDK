@@ -193,6 +193,7 @@ public class SampleDialog extends Activity implements View.OnClickListener{
 
             mInterstitialUnitId = unitID;
             mInterstitialDialog.setAdUnitId(mInterstitialUnitId);
+            mInterstitialDialog.setTestMode(AppConstants.TEST_MODE);
 
             mInterstitialDialog.loadAd();
 
@@ -211,6 +212,7 @@ public class SampleDialog extends Activity implements View.OnClickListener{
 
             mNativeUnitId = unitID;
             mNativeDialog.setAdUnitId(mNativeUnitId);
+            mInterstitialDialog.setTestMode(AppConstants.TEST_MODE);
 
             mNativeDialog.loadAd();
 
