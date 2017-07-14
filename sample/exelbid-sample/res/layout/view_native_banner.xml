@@ -36,12 +36,13 @@
             android:text="TextView"
             android:textSize="13sp"/>
     </RelativeLayout>
-
+    
     <ImageView
         android:id="@+id/native_privacy_information_icon_image"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         android:contentDescription="native_privacy_information_icon_image"
+        android:layout_gravity="center_vertical"
         android:layout_margin="10dp"
         android:visibility="gone"/>
 
