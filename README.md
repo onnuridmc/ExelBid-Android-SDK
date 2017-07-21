@@ -24,6 +24,9 @@
 
 
 ## Version History
+**Version 1.2.1**
+  * _SDK minSdkVersion 9로 적용._
+
 **Version 1.2.0**
   * _인스턴스 공통 메소드에 [setCoppa](#인스턴스-공통-메소드) 함수 추가._
   * _방송통신위원회 시행령 '온라인 맞춤형 광고 개인정보보호 가이드라인' 에 따라서 네이티브 adInfoImageId 관련  추가 안내_
@@ -43,7 +46,7 @@
 	1. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	compile 'com.onnuridmc.exelbid:exelbid:1.2.0'
+        	compile 'com.onnuridmc.exelbid:exelbid:1.2.1'
 	}
     ```
 <br/>
