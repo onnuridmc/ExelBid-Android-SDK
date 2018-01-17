@@ -15,10 +15,8 @@ import android.widget.TextView;
 
 import com.onnuridmc.exelbid.ExelBidNativeManager;
 import com.onnuridmc.exelbid.common.ExelBidError;
-import com.onnuridmc.exelbid.common.ExelBidServerPositioning;
 import com.onnuridmc.exelbid.common.NativeAsset;
 import com.onnuridmc.exelbid.common.NativeViewBinder;
-import com.onnuridmc.exelbid.common.OnAdNativeListener;
 import com.onnuridmc.exelbid.common.OnAdNativeManagerListener;
 import com.onnuridmc.sample.AppConstants;
 import com.onnuridmc.sample.R;
