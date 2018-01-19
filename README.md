@@ -24,8 +24,11 @@
 
 
 ## Version History
-**Version 1.2.1**
-  * _SDK minSdkVersion 9로 적용._
+  **Version 1.2.2**
+    * _AdNativeRecyclerAdapter 에서 화면 갱신 바로 안되는 오류 수정_
+
+  **Version 1.2.1**
+    * _SDK minSdkVersion 9로 적용._
 
 **Version 1.2.0**
   * _인스턴스 공통 메소드에 [setCoppa](#인스턴스-공통-메소드) 함수 추가._
@@ -46,7 +49,7 @@
 	1. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	compile 'com.onnuridmc.exelbid:exelbid:1.2.1'
+        	compile 'com.onnuridmc.exelbid:exelbid:1.2.2'
 	}
     ```
 <br/>
