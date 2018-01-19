@@ -24,6 +24,7 @@ import com.onnuridmc.sample.activity.SampleNativeBanner;
 import com.onnuridmc.sample.activity.SampleNativeListView;
 import com.onnuridmc.sample.activity.SampleNativeRecycler;
 import com.onnuridmc.sample.activity.SampleNativeRecyclerArray;
+import com.onnuridmc.sample.activity.SampleNativeRecyclerAuto;
 
 public class MainActivity extends ListActivity {
 
@@ -59,6 +60,7 @@ public class MainActivity extends ListActivity {
         mAdapter.add(new Pair<String, Class<?>>("네이티브 Array", SampleNativeArray.class));
         mAdapter.add(new Pair<String, Class<?>>("네이티브 ListView", SampleNativeListView.class));
         mAdapter.add(new Pair<String, Class<?>>("네이티브 Recycler", SampleNativeRecycler.class));
+        mAdapter.add(new Pair<String, Class<?>>("네이티브 Recycler Auto", SampleNativeRecyclerAuto.class));
         mAdapter.add(new Pair<String, Class<?>>("네이티브 Recycler Array", SampleNativeRecyclerArray.class));
 
         setListAdapter(mAdapter);

@@ -43,8 +43,11 @@
         <activity android:name=".activity.SampleNativeRecycler"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
+        <activity android:name=".activity.SampleNativeRecyclerAuto"
+                  android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
         <activity android:name=".activity.SampleNativeRecyclerArray"
-            android:windowSoftInputMode="stateAlwaysHidden">
+                  android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
         <activity android:name=".activity.SampleDialog">
         </activity>
