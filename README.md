@@ -24,11 +24,16 @@
 
 
 ## Version History
-  **Version 1.2.2**
-    * _AdNativeRecyclerAdapter 에서 화면 갱신 바로 안되는 오류 수정_
+**Version 1.3.0**
+  * _AdNativeRecyclerAdapter 사용시 최초 화면 광고 없을시, 다음 인덱스 못가져오는 오류 수정_
+  * _배너형 광고 노출 확인 시점 명확하게 수정(실제 뷰가 노출되는 시점)_
+  * _Tracking(Impression, click) 클라이언트 처리_
 
-  **Version 1.2.1**
-    * _SDK minSdkVersion 9로 적용._
+**Version 1.2.2**
+  * _AdNativeRecyclerAdapter 에서 화면 갱신 바로 안되는 오류 수정_
+
+**Version 1.2.1**
+  * _SDK minSdkVersion 9로 적용._
 
 **Version 1.2.0**
   * _인스턴스 공통 메소드에 [setCoppa](#인스턴스-공통-메소드) 함수 추가._
@@ -369,7 +374,7 @@ ExelBid.setAppKey(String) // 홈페이지에 등록한 어플리케이션의 아
 
 1.	네이티브 광고 인스턴스를 생성합니다.
     ```java
-      ExelBidNativeManager mNativeAd = new ExelBidNativeManager(this, mUnitId, new OnAdNativeManagerListener() {
+      ExelBidNativeManager mNativeAdMgr = new ExelBidNativeManager(this, mUnitId, new OnAdNativeManagerListener() {
 
             @Override
             public void onFailed(String key, ExelBidError error) {}
