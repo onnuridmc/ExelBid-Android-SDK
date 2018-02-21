@@ -75,6 +75,13 @@ public class AdNativeRoundDialog extends ExelBidNativeDialog {
                     Bitmap adbg = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.adbg);
 
                     mAdTextBg.setBackgroundDrawable(new BitmapDrawable(getContext().getResources(), Utils.getRoundedAdBitmap(getContext(), adbg, 20, mAdTextBg.getWidth(), mAdTextBg.getHeight(), width, height)));
+//                    mAdTextBg.setVisibility(View.VISIBLE);
+//                    mAdTextBg.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            startInfo();
+//                        }
+//                    });
                 }
 
                 return Utils.getRoundedCornerBitmap(getContext(), bitmap, 20, width, height, false, false, true, true);
@@ -101,6 +108,7 @@ public class AdNativeRoundDialog extends ExelBidNativeDialog {
                 .textTextViewId(R.id.ad_subtitle)
                 .iconImageId(R.id.ad_icon)
                 .ratingBarId(R.id.ad_ratingBar)
+                .adInfoImageId(R.id.ad_bg)
                 .build();
     }
 

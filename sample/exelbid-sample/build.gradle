@@ -44,6 +44,6 @@ dependencies {
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.google.android.gms:play-services-ads:9.2.1'
     compile 'com.android.support:recyclerview-v7:25.3.1'
-    compile 'com.onnuridmc.exelbid:exelbid:1.2.1'
-//    compile files('libs/exelbid-sdk.jar')
+//    compile 'com.onnuridmc.exelbid:exelbid:1.2.2'
+    compile files('libs/exelbid-sdk.jar')
 }

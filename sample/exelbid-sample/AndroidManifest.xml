@@ -57,6 +57,6 @@
         </activity>
 
         <meta-data android:name="com.exelbid.appkey"
-                   android:value="3f39b042"/>
+                   android:value="1db87a14"/>
     </application>
 </manifest>

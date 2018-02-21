@@ -6,7 +6,11 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.onnuridmc.exelbid.ExelBidInterstitial;
 import com.onnuridmc.exelbid.common.ExelBidError;
@@ -28,8 +32,22 @@ public class SampleInterstitialView extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_interstitialview);
 
+        String title = getIntent().getStringExtra(getString(R.string.str_title));
+        if(!title.isEmpty()) {
+            ((TextView) findViewById(R.id.title)).setText(title);
+        }
+
         mEdtAdUnit = (EditText) findViewById(R.id.editText);
 
+        CheckBox isTestCheckBox = (CheckBox) findViewById(R.id.test_check);
+        isTestCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                //TEST MODE 여부
+                mInterstitialAd.setTestMode(isChecked);
+            }
+        });
         mUnitId = PrefManager.getInterstialAd(this, PrefManager.KEY_INTERSTIAL_AD, AppConstants.UNIT_ID_INTERSTITIAL);
 
         mEdtAdUnit.setText(mUnitId);
@@ -66,7 +84,7 @@ public class SampleInterstitialView extends Activity {
         mInterstitialAd.setYob("1990");
         mInterstitialAd.setGender(true);
         mInterstitialAd.addKeyword("level", "10");
-        mInterstitialAd.setTestMode(AppConstants.TEST_MODE);
+        mInterstitialAd.setTestMode(isTestCheckBox.isChecked());
 
         findViewById(R.id.interstitial_show).setEnabled(false);
     }

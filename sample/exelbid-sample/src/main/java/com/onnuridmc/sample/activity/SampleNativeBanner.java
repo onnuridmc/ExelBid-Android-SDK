@@ -4,16 +4,18 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.onnuridmc.exelbid.ExelBidNative;
 import com.onnuridmc.exelbid.common.ExelBidError;
 import com.onnuridmc.exelbid.common.NativeAsset;
 import com.onnuridmc.exelbid.common.NativeViewBinder;
 import com.onnuridmc.exelbid.common.OnAdNativeListener;
-import com.onnuridmc.exelbid.lib.utils.ExelLog;
 import com.onnuridmc.sample.AppConstants;
 import com.onnuridmc.sample.R;
 import com.onnuridmc.sample.utils.PrefManager;
@@ -29,11 +31,18 @@ public class SampleNativeBanner extends Activity  implements View.OnClickListene
     private NativeBannerView mBannerView;
 
     private ExelBidNative mNativeAd;
+    CheckBox mIsTestCheckBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_native_banner);
+
+        String title = getIntent().getStringExtra(getString(R.string.str_title));
+        if(!title.isEmpty()) {
+            ((TextView) findViewById(R.id.title)).setText(title);
+        }
+        mIsTestCheckBox = (CheckBox) findViewById(R.id.test_check);
 
         mEdtAdUnit = (EditText)findViewById(R.id.editText);
         mUnitId = PrefManager.getNativeAd(this, PrefManager.KEY_NATIVE_AD, AppConstants.UNIT_ID_NATIVE);
@@ -46,22 +55,22 @@ public class SampleNativeBanner extends Activity  implements View.OnClickListene
 
             @Override
             public void onFailed(ExelBidError error) {
-                ExelLog.d(TAG, "onFailed" + error.toString());
+                Log.d(TAG, "onFailed" + error.toString());
             }
 
             @Override
             public void onShow() {
-                ExelLog.d(TAG, "onShow");
+                Log.d(TAG, "onShow");
             }
 
             @Override
             public void onClick() {
-                ExelLog.d(TAG, "onClick");
+                Log.d(TAG, "onClick");
             }
 
             @Override
             public void onLoaded() {
-                ExelLog.d(TAG, "onLoaded");
+                Log.d(TAG, "onLoaded");
                 mNativeAd.show();
 
                 mBannerView.start();
@@ -92,7 +101,6 @@ public class SampleNativeBanner extends Activity  implements View.OnClickListene
         mNativeAd.setYob("1990");
         mNativeAd.setGender(true);
         mNativeAd.addKeyword("level", "10");
-        mNativeAd.setTestMode(AppConstants.TEST_MODE);
 
         mBannerView.setVisibility(View.GONE);
 
@@ -106,7 +114,7 @@ public class SampleNativeBanner extends Activity  implements View.OnClickListene
             if(TextUtils.isEmpty(unitID)) {
                 return;
             }
-
+            mNativeAd.setTestMode(mIsTestCheckBox.isChecked());
             mNativeAd.setAdUnitId(unitID);
 
             if(!unitID.equals(mUnitId)) {

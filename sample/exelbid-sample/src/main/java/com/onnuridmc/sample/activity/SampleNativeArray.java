@@ -5,12 +5,15 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.onnuridmc.exelbid.ExelBidNativeManager;
 import com.onnuridmc.exelbid.common.AdNativeData;
@@ -18,20 +21,31 @@ import com.onnuridmc.exelbid.common.ExelBidError;
 import com.onnuridmc.exelbid.common.NativeAsset;
 import com.onnuridmc.exelbid.common.NativeViewBinder;
 import com.onnuridmc.exelbid.common.OnAdNativeManagerListener;
-import com.onnuridmc.exelbid.lib.utils.ExelLog;
 import com.onnuridmc.sample.AppConstants;
 import com.onnuridmc.sample.R;
 import com.onnuridmc.sample.utils.PrefManager;
 
 /**
  * 네이티브 광고를 여러개 요청 하는 샘플입니다.
+ *  SampleNativeArray
+ *  ListView 가운데 네이티브 광고 여러개를 로드 하여 바이딩하는 예제
+ *  1. ExelBidNativeManager mNativeAdMgr 생성 (unitId 와 OnAdNativeManagerListener를 인수로 전달)
+ *  2. mNativeAdMgr.setNativeViewBinder 이용하여 네이티브 광고 데이터가 바인딩 될 뷰의 정보를 셋팅한다.
+ *  3. mNativeAdMgr.setRequiredAsset 네이티브 요청시 필수로 존재해야 하는 값을 셋팅한다. 해당 조건 셋팅으로 인해서 광고가 존재하지 않을 확률이 높아집니다.
+ *  4. mNativeAdMgr 에 추가 Arg 세팅 (ex. setYob, setGender 등)
+ *  5. mNativeAdMgr.loadAd(key) 여러개의 광고개수만큼 요청
+ *  6. OnAdNativeManagerListener 을 통한 결과 Callback에서 성공시 기존 데이터 리스트에 key값을 가지고 광고 설정
+ *  7. getView에서 광고 설정된 포지션 일 경우에
+ *      key값을 가지고 mNativeAdMgr.getAdNativeData(key) 하여 AdNativeData를 가져온다
+ *      mNativeAdMgr.getView(adNativeData, convertView); 호출
  */
 public class SampleNativeArray extends Activity implements View.OnClickListener {
 
     private static final String TAG = "SampleNativeArray";
 
     private ListView mListView;
-    private ExelBidNativeManager mNativeAd;
+    private ExelBidNativeManager mNativeAdMgr;
+    CheckBox mIsTestCheckBox;
 
     private String mUnitId;
     private EditText mEdtAdUnit;
@@ -44,6 +58,12 @@ public class SampleNativeArray extends Activity implements View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_native_array);
+
+        String title = getIntent().getStringExtra(getString(R.string.str_title));
+        if(!title.isEmpty()) {
+            ((TextView) findViewById(R.id.title)).setText(title);
+        }
+        mIsTestCheckBox = (CheckBox) findViewById(R.id.test_check);
 
         mEdtAdUnit = (EditText) findViewById(R.id.editText);
         mUnitId = PrefManager.getNativeAd(this, PrefManager.KEY_NATIVE_AD, AppConstants.UNIT_ID_NATIVE);
@@ -60,33 +80,33 @@ public class SampleNativeArray extends Activity implements View.OnClickListener 
         mListView.setAdapter(mAdapter);
 
         // 네이티브 요청 객체를 생성한다.
-        mNativeAd = new ExelBidNativeManager(this, mUnitId, new OnAdNativeManagerListener() {
+        mNativeAdMgr = new ExelBidNativeManager(this, mUnitId, new OnAdNativeManagerListener() {
             @Override
             public void onFailed(String key, ExelBidError error) {
-                ExelLog.d(TAG, "onFailed : " + key + "  " + error.toString());
+                Log.d(TAG, "onFailed : " + key + "  " + error.toString());
             }
 
             @Override
             public void onShow(String key) {
-                ExelLog.d(TAG, "onShow : " + key);
+                Log.d(TAG, "onShow : " + key);
             }
 
             @Override
             public void onClick(String key) {
-                ExelLog.d(TAG, "onClick : " + key);
+                Log.d(TAG, "onClick : " + key);
             }
 
             @Override
             public void onLoaded(String key) {
-                ExelLog.d(TAG, "onLoaded : " + key);
+                Log.d(TAG, "onLoaded : " + key);
                 // 이 데이터로 Custom하게 사용할수 있습니다.
                 insertPosition += 3;
                 mAdapter.insert(new DemoData(true, key), insertPosition);
 
                 //Adapter가 아닐경우에는 해당 뷰를 바로 설정 한다.
                 if(false) {
-                    AdNativeData adNativeData = mNativeAd.getAdNativeData(key);
-//                    mNativeAd.bindViewByAdNativeData(adNativeData,
+                    AdNativeData adNativeData = mNativeAdMgr.getAdNativeData(key);
+//                    mNativeAdMgr.bindViewByAdNativeData(adNativeData,
 //                            new NativeViewBinder.Builder(rootView)
 //                            .mainImageId(R.id.native_main_image)
 //                            .callToActionButtonId(R.id.native_cta)
@@ -98,17 +118,14 @@ public class SampleNativeArray extends Activity implements View.OnClickListener 
             }
         });
 
-        findViewById(R.id.button).setOnClickListener(this);
-
         // 네이티브 요청시 필수로 존재해야 하는 값을 셋팅한다. 해당 조건 셋팅으로 인해서 광고가 존재하지 않을 확률이 높아집니다.
-        mNativeAd.setRequiredAsset(new NativeAsset[]{NativeAsset.TITLE, NativeAsset.CTATEXT, NativeAsset.ICON, NativeAsset.MAINIMAGE, NativeAsset.DESC});
+        mNativeAdMgr.setRequiredAsset(new NativeAsset[]{NativeAsset.TITLE, NativeAsset.CTATEXT, NativeAsset.ICON, NativeAsset.MAINIMAGE, NativeAsset.DESC});
 
-        mNativeAd.setYob("1990");
-        mNativeAd.setGender(true);
-        mNativeAd.addKeyword("level", "10");
-        mNativeAd.setTestMode(AppConstants.TEST_MODE);
+        mNativeAdMgr.setYob("1990");
+        mNativeAdMgr.setGender(true);
+        mNativeAdMgr.addKeyword("level", "10");
 
-        mNativeAd.setNativeViewBinder(new NativeViewBinder.Builder(R.layout.native_item_adview)
+        mNativeAdMgr.setNativeViewBinder(new NativeViewBinder.Builder(R.layout.native_item_adview)
                 .mainImageId(R.id.native_main_image)
                 .callToActionButtonId(R.id.native_cta)
                 .titleTextViewId(R.id.native_title)
@@ -116,6 +133,9 @@ public class SampleNativeArray extends Activity implements View.OnClickListener 
                 .iconImageId(R.id.native_icon_image)
                 .adInfoImageId(R.id.native_privacy_information_icon_image)
                 .build());
+
+        findViewById(R.id.button).setOnClickListener(this);
+        findViewById(R.id.button2).setOnClickListener(this);
     }
 
     @Override
@@ -127,7 +147,8 @@ public class SampleNativeArray extends Activity implements View.OnClickListener 
                 return;
             }
 
-            mNativeAd.setAdUnitId(unitID);
+            mNativeAdMgr.setTestMode(mIsTestCheckBox.isChecked());
+            mNativeAdMgr.setAdUnitId(unitID);
 
             if (!unitID.equals(mUnitId)) {
                 PrefManager.setPref(this, PrefManager.KEY_NATIVE_AD, unitID);
@@ -142,7 +163,21 @@ public class SampleNativeArray extends Activity implements View.OnClickListener 
 
             //광고를 요청한다.
             for(int i = 0 ; i < 10 ; i ++ ) {
-                mNativeAd.loadAd(String.valueOf(i));
+                mNativeAdMgr.loadAd(String.valueOf(i));
+            }
+        } else if (v.getId() == R.id.button2) {
+
+            mAdapter.clear();
+            for(int i = 0 ; i < 100 ; i ++) {
+                mAdapter.add(new DemoData(false, "reload Item : " + i));
+            }
+            mAdapter.notifyDataSetChanged();
+
+            insertPosition = 0;
+            mNativeAdMgr.clear();
+            //광고를 요청한다.
+            for(int i = 0 ; i < 10 ; i ++ ) {
+                mNativeAdMgr.loadAd(String.valueOf(i));
             }
         }
     }
@@ -172,8 +207,8 @@ public class SampleNativeArray extends Activity implements View.OnClickListener 
             if(getItemViewType(position) == 1) {
                 DemoData demoData = getItem(position);
                 // 요청할때 사용했던 key로 adNativeData를 가져온다.
-                AdNativeData adNativeData = mNativeAd.getAdNativeData(demoData.text);
-                return mNativeAd.getView(adNativeData, convertView);
+                AdNativeData adNativeData = mNativeAdMgr.getAdNativeData(demoData.text);
+                return mNativeAdMgr.getView(adNativeData, convertView);
             } else {
                 return super.getView(position, convertView, parent);
             }

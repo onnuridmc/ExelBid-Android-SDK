@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.onnuridmc.exelbid.common.ExelBidError;
 import com.onnuridmc.exelbid.common.OnAdNativeListener;
@@ -21,11 +23,11 @@ import com.onnuridmc.sample.utils.PrefManager;
 /**
  * 다이얼로그 형태의 광고를 노출할경우 사용
  */
-public class SampleDialog extends Activity implements View.OnClickListener{
+public class SampleDialog extends Activity implements View.OnClickListener {
 
     private EditText mEdtInterstitial;
     private EditText mEdtNative;
-    private EditText mEdtRoundNative;
+    private CheckBox mIsTestCheckBoxInterstitial;
 
     private String mNativeUnitId;
     private String mInterstitialUnitId;
@@ -33,14 +35,24 @@ public class SampleDialog extends Activity implements View.OnClickListener{
     private AdNativeDialog mNativeDialog;
     private AdNativeRoundDialog mNativeRoundDialog;
     private AdInterstitialDialog mInterstitialDialog;
+    private CheckBox mIsTestCheckBoxNative;
+    private CheckBox mIsTestCheckBoxNativeDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_dialog);
 
+        String title = getIntent().getStringExtra(getString(R.string.str_title));
+        if(!title.isEmpty()) {
+            ((TextView) findViewById(R.id.title)).setText(title);
+        }
+
         mEdtInterstitial = (EditText)findViewById(R.id.dialog_edtInterstitial);
         mEdtNative = (EditText)findViewById(R.id.dialog_edtNative);
+        mIsTestCheckBoxInterstitial = (CheckBox) findViewById(R.id.interstitial_test_check);
+        mIsTestCheckBoxNative = (CheckBox) findViewById(R.id.native_test_check);
+        mIsTestCheckBoxNativeDialog = (CheckBox) findViewById(R.id.native_round_test_check);
 
         mInterstitialUnitId = PrefManager.getInterstialAd(this, PrefManager.KEY_DIALOG_INTERSTIAL_AD, AppConstants.UNIT_ID_INTERSTITIAL);
         mNativeUnitId = PrefManager.getNativeAd(this, PrefManager.KEY_DIALOG_NATIVE_AD, AppConstants.UNIT_ID_NATIVE);
@@ -75,7 +87,7 @@ public class SampleDialog extends Activity implements View.OnClickListener{
 
             @Override
             public void onInterstitialFailed(ExelBidError errorCode) {
-
+                findViewById(R.id.dialog_btnInterstitialShow).setEnabled(false);
             }
         });
         mInterstitialDialog.setOnButton1ClickListener(new View.OnClickListener() {
@@ -94,7 +106,6 @@ public class SampleDialog extends Activity implements View.OnClickListener{
         mInterstitialDialog.setTitle("종료");
         mInterstitialDialog.setYob("1990");
         mInterstitialDialog.setGender(true);
-        mInterstitialDialog.setTestMode(AppConstants.TEST_MODE);
 
         //네이티브 다이얼로그
         mNativeDialog = new AdNativeDialog(SampleDialog.this, mNativeUnitId);
@@ -102,7 +113,7 @@ public class SampleDialog extends Activity implements View.OnClickListener{
 
             @Override
             public void onFailed(ExelBidError error) {
-
+                findViewById(R.id.dialog_btnNativeShow).setEnabled(false);
             }
 
             @Override
@@ -136,7 +147,6 @@ public class SampleDialog extends Activity implements View.OnClickListener{
         });
         mNativeDialog.setYob("1990");
         mNativeDialog.setGender(true);
-        mNativeDialog.setTestMode(AppConstants.TEST_MODE);
 
 
         //네이티브 라운드 다이얼로그
@@ -144,7 +154,7 @@ public class SampleDialog extends Activity implements View.OnClickListener{
         mNativeRoundDialog.setAdNativeListener(new OnAdNativeListener() {
             @Override
             public void onFailed(ExelBidError error) {
-
+                findViewById(R.id.dialog_btnRoundNativeShow).setEnabled(false);
             }
 
             @Override
@@ -164,7 +174,6 @@ public class SampleDialog extends Activity implements View.OnClickListener{
         });
         mNativeRoundDialog.setYob("1990");
         mNativeRoundDialog.setGender(true);
-        mNativeRoundDialog.setTestMode(AppConstants.TEST_MODE);
 
         findViewById(R.id.dialog_btnInterstitialShow).setEnabled(false);
         findViewById(R.id.dialog_btnRoundNativeShow).setEnabled(false);
@@ -193,7 +202,7 @@ public class SampleDialog extends Activity implements View.OnClickListener{
 
             mInterstitialUnitId = unitID;
             mInterstitialDialog.setAdUnitId(mInterstitialUnitId);
-            mInterstitialDialog.setTestMode(AppConstants.TEST_MODE);
+            mInterstitialDialog.setTestMode(mIsTestCheckBoxInterstitial.isChecked());
 
             mInterstitialDialog.loadAd();
 
@@ -212,7 +221,7 @@ public class SampleDialog extends Activity implements View.OnClickListener{
 
             mNativeUnitId = unitID;
             mNativeDialog.setAdUnitId(mNativeUnitId);
-            mInterstitialDialog.setTestMode(AppConstants.TEST_MODE);
+            mNativeDialog.setTestMode(mIsTestCheckBoxNative.isChecked());
 
             mNativeDialog.loadAd();
 
@@ -231,6 +240,7 @@ public class SampleDialog extends Activity implements View.OnClickListener{
 
             mNativeUnitId = unitID;
             mNativeRoundDialog.setAdUnitId(mNativeUnitId);
+            mNativeRoundDialog.setTestMode(mIsTestCheckBoxNativeDialog.isChecked());
 
             mNativeRoundDialog.loadAd();
             //키보드 숨기기

@@ -1,18 +1,20 @@
 package com.onnuridmc.sample;
 
 import android.annotation.TargetApi;
-import android.app.ListActivity;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.onnuridmc.sample.activity.SampleBannerView;
@@ -26,10 +28,10 @@ import com.onnuridmc.sample.activity.SampleNativeRecycler;
 import com.onnuridmc.sample.activity.SampleNativeRecyclerArray;
 import com.onnuridmc.sample.activity.SampleNativeRecyclerAuto;
 
-public class MainActivity extends ListActivity {
+public class MainActivity extends Activity {
 
+    private ListView mListView;
     private InAdapter mAdapter;
-
 
     // Sample app web views are debuggable.
     static {
@@ -47,8 +49,15 @@ public class MainActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // manifest에 등록하지 않았다면 하기와 같이 최초 한번 앱캐 등록 처리
-//        ExelBid.setAppKey(this,"3f39b042");
+        setContentView(R.layout.act_main);
+        TextView titleView = (TextView) findViewById(R.id.title);
+        titleView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        mListView = (ListView) findViewById(R.id.listview);
 
         mAdapter = new InAdapter(this);
 
@@ -60,18 +69,21 @@ public class MainActivity extends ListActivity {
         mAdapter.add(new Pair<String, Class<?>>("네이티브 Array", SampleNativeArray.class));
         mAdapter.add(new Pair<String, Class<?>>("네이티브 ListView", SampleNativeListView.class));
         mAdapter.add(new Pair<String, Class<?>>("네이티브 Recycler", SampleNativeRecycler.class));
-        mAdapter.add(new Pair<String, Class<?>>("네이티브 Recycler Auto", SampleNativeRecyclerAuto.class));
         mAdapter.add(new Pair<String, Class<?>>("네이티브 Recycler Array", SampleNativeRecyclerArray.class));
+        mAdapter.add(new Pair<String, Class<?>>("네이티브 Recycler Auto", SampleNativeRecyclerAuto.class));
 
-        setListAdapter(mAdapter);
-        getListView().setOnItemClickListener(new OnItemClickListener() {
+        mListView.setAdapter(mAdapter);
+        mListView.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> paramAdapterView, View paramView, int position, long paramLong) {
                 Pair<String, Class<?>> item = mAdapter.getItem(position);
-                startActivity(new Intent(MainActivity.this, item.second));
+                Intent intent = new Intent(MainActivity.this, item.second);
+                intent.putExtra(getString(R.string.str_title), item.first);
+                startActivity(intent);
             }
         });
+
     }
 
     private class InAdapter extends ArrayAdapter<Pair<String, Class<?>>> {

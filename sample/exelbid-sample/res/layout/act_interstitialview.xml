@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.onnuridmc.sample.MainActivity">
+    tools:context="com.onnuridmc.sample.activity.SampleInterstitialView">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,6 +14,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -44,6 +45,14 @@
                 android:onClick="onClick"
                 android:text="Show"
                 />
+
+            <CheckBox
+                android:id="@+id/test_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginLeft="10dp"
+                android:text="Test"/>
 
         </LinearLayout>
     </LinearLayout>
