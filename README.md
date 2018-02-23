@@ -24,6 +24,8 @@
 
 
 ## Version History
+**Version 1.3.1**
+  * _네이티브 어댑터 사용시 클릭 버그 수정 적용(v1.3.0발생)_
 **Version 1.3.0**
   * _AdNativeRecyclerAdapter 사용시 최초 화면 광고 없을시, 다음 인덱스 못가져오는 오류 수정_
   * _배너형 광고 노출 확인 시점 명확하게 수정(실제 뷰가 노출되는 시점)_
@@ -54,7 +56,7 @@
 	1. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	compile 'com.onnuridmc.exelbid:exelbid:1.3.0'
+        	compile 'com.onnuridmc.exelbid:exelbid:1.3.1'
 	}
     ```
 <br/>
