@@ -24,6 +24,10 @@
 
 
 ## Version History
+**Version 1.3.3**
+  * _Manifest 불필요한 속성(android:allowBackup, android:supportsRtl) 제거_
+  * _ExelbidNativeManager 사용 광고 요청시 네트워크 상황에 따라 리스트 순서 설정 안되는 버그 수정_
+
 **Version 1.3.2**
   * _Request시 device정보 parameter 중 Null인 경우에 오류 발생 경우 수정_
 
@@ -60,7 +64,7 @@
 	1. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	compile 'com.onnuridmc.exelbid:exelbid:1.3.2'
+        	compile 'com.onnuridmc.exelbid:exelbid:1.3.3'
 	}
     ```
 <br/>
