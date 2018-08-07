@@ -121,10 +121,8 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
 
 * Manifest 에 meta-data 등록
 ```xml
-....
 <meta-data android:name="com.exelbid.appkey"
            android:value="{홈페이지에 등록한 어플리케이션의 아이디}"/>
-....
 ```
 
 *	 동적 설정 - 앱 실행시 최초 한번만 설정
