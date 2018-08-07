@@ -68,7 +68,7 @@
 	1. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	compile 'com.onnuridmc.exelbid:exelbid:1.3.3'
+        	compile 'com.onnuridmc.exelbid:exelbid:1.3.5'
 	}
     ```
 <br/>
