@@ -71,7 +71,7 @@
         	compile 'com.onnuridmc.exelbid:exelbid:1.3.5'
 	}
     ```
-<br/>
+
 ### Google Library 추가하기
 > ExelBid Android SDK가 제대로 작동하려면 Google Play Service 4.0 이상의 라이브러리가 필요합니다. 광고 식별자 수집에 대한 Google Play 콘텐츠 가이드라인을 준수하기 위한 것입니다.
 
@@ -105,6 +105,7 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
 ```
 
 <br>
+
 ### AndroidManifest 설정
 
 >MetaData와 com.onnuridmc.exelbid.common.ExelBidActivity를 AndroidManifest.xml의 <applicatrion> 태그 안에 추가합니다. 이 Activity는 전면광고를 표시하는데 사용됩니다.
@@ -115,7 +116,6 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
 </activity>
 ```
 
-<br>
 ### AppKey 설정
 >홈페이지에 등록된 어플리케이션의 아이디를 설정한다. (필수)
 
@@ -131,7 +131,7 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
 ```xml
 ExelBid.setAppKey(String) // 홈페이지에 등록한 어플리케이션의 아이디
 ```
-<br>
+
 ### Permission 설정
 
 * 필수권한
@@ -148,7 +148,6 @@ ExelBid.setAppKey(String) // 홈페이지에 등록한 어플리케이션의 아
 <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 ```
 
-<br>
 ## 광고 적용하기
 
 ### 인스턴스 공통 메소드
