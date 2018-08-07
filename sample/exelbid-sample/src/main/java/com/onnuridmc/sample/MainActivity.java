@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.onnuridmc.exelbid.ExelBid;
 import com.onnuridmc.sample.activity.SampleBannerView;
 import com.onnuridmc.sample.activity.SampleDialog;
 import com.onnuridmc.sample.activity.SampleInterstitialView;
@@ -84,6 +85,7 @@ public class MainActivity extends Activity {
             }
         });
 
+        ExelBid.setLocationDisable(true);
     }
 
     private class InAdapter extends ArrayAdapter<Pair<String, Class<?>>> {

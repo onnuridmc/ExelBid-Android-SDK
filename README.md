@@ -24,6 +24,10 @@
 
 
 ## Version History
+**Version 1.3.5**
+  * _다이얼로그 광고 show시 data 로드 오류 수정_
+  * _다이얼로그 광고 Sample추가_
+
 **Version 1.3.3**
   * _Manifest 불필요한 속성(android:allowBackup, android:supportsRtl) 제거_
   * _ExelbidNativeManager 사용 광고 요청시 네트워크 상황에 따라 리스트 순서 설정 안되는 버그 수정_
