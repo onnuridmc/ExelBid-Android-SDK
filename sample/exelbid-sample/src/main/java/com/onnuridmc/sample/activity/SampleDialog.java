@@ -18,7 +18,6 @@ import com.onnuridmc.exelbid.common.OnAdNativeListener;
 import com.onnuridmc.exelbid.common.OnInterstitialAdListener;
 import com.onnuridmc.sample.AppConstants;
 import com.onnuridmc.sample.R;
-import com.onnuridmc.sample.dialog.AdInterstitialDialog;
 import com.onnuridmc.sample.dialog.AdInterstitialDialog2;
 import com.onnuridmc.sample.dialog.AdNativeDialog;
 import com.onnuridmc.sample.dialog.AdNativeRoundDialog;
@@ -91,19 +90,6 @@ public class SampleDialog extends Activity implements View.OnClickListener {
             @Override
             public void onInterstitialLoaded() {
                 findViewById(R.id.dialog_btnInterstitialShow).setEnabled(true);
-                mInterstitialDialog.setOnButton1ClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mInterstitialDialog.dismiss();
-                        finish();
-                    }
-                });
-                mInterstitialDialog.setOnButton2ClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mInterstitialDialog.dismiss();
-                    }
-                });
                 mInterstitialDialog.setTitle("종료하시겠습니까?");
             }
 
@@ -125,6 +111,19 @@ public class SampleDialog extends Activity implements View.OnClickListener {
             @Override
             public void onInterstitialFailed(ExelBidError errorCode) {
                 findViewById(R.id.dialog_btnInterstitialShow).setEnabled(false);
+            }
+        });
+        mInterstitialDialog.setOnButton1ClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mInterstitialDialog.dismiss();
+                finish();
+            }
+        });
+        mInterstitialDialog.setOnButton2ClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mInterstitialDialog.dismiss();
             }
         });
         mInterstitialDialog.setYob("1990");
@@ -214,7 +213,7 @@ public class SampleDialog extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         if(v.getId() == R.id.dialog_btnInterstitialLoad) {
             // 전면 다이얼로그 광고
-            // EspressoInterstitialDialog 상속받아서 다이얼로그 디자인을 변경할수 있다.
+            // ExelbidInterstitialDialog 상속받아서 다이얼로그 디자인을 변경할수 있다.
             String unitID = mEdtInterstitial.getText().toString();
             if(TextUtils.isEmpty(unitID)) {
                 return;
@@ -233,7 +232,7 @@ public class SampleDialog extends Activity implements View.OnClickListener {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(mEdtInterstitial.getWindowToken(), 0);
         } else if (v.getId() == R.id.dialog_btnNativeLoad) {
-            //EspressoNativeDialog를 상속 받아서 네이티브 다이얼로그 디자인을 변경할수 있다.
+            //ExelbidNativeDialog를 상속 받아서 네이티브 다이얼로그 디자인을 변경할수 있다.
             String unitID = mEdtNative.getText().toString();
             if(TextUtils.isEmpty(unitID)) {
                 return;
@@ -252,7 +251,7 @@ public class SampleDialog extends Activity implements View.OnClickListener {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(mEdtNative.getWindowToken(), 0);
         } else if (v.getId() == R.id.dialog_btnRoundNativeLoad) {
-            //EspressoNativeDialog를 상속 받아서 네이티브 다이얼로그 디자인을 변경할수 있다.
+            // ExelbidNativeDialog를 상속 받아서 네이티브 다이얼로그 디자인을 변경할수 있다.
             String unitID = mEdtNative.getText().toString();
             if(TextUtils.isEmpty(unitID)) {
                 return;
@@ -271,14 +270,18 @@ public class SampleDialog extends Activity implements View.OnClickListener {
             imm.hideSoftInputFromWindow(mEdtNative.getWindowToken(), 0);
 
         } else if (v.getId() == R.id.dialog_btnInterstitialShow) {
+
+            // mInterstitialDialog.isReady(60 * 30) 와 같이 사용하여 로드 시간 체크를 할 수 있다
             if(mInterstitialDialog.isReady()) {
                 mInterstitialDialog.show();
             }
         } else if (v.getId() == R.id.dialog_btnNativeShow) {
+            // mNativeDialog.isReady(60 * 30) 와 같이 사용하여 로드 시간 체크를 할 수 있다
             if(mNativeDialog.isReady()) {
                 mNativeDialog.show();
             }
         } else if (v.getId() == R.id.dialog_btnRoundNativeShow) {
+            // mNativeRoundDialog.isReady(60 * 30) 와 같이 사용하여 로드 시간 체크를 할 수 있다
             if(mNativeRoundDialog.isReady()) {
                 mNativeRoundDialog.show();
             }

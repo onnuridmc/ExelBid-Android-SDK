@@ -24,6 +24,10 @@
 
 
 ## Version History
+**Version 1.3.6**
+  * _다이얼로그 광고 노출시 광고 없는 경우도 다이얼로그 창 노출 가능하게 적용_
+  * _Native, 전면 광고등에서 광고 로드후 노출(show)까지의 시간 확인 기능 추가. (전면 광고 - 3.광고확인 등)_
+
 **Version 1.3.5**
   * _다이얼로그 광고 show시 data 로드 오류 수정_
   * _다이얼로그 광고 Sample추가_
@@ -68,7 +72,7 @@
 	1. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	compile 'com.onnuridmc.exelbid:exelbid:1.3.5'
+        	compile 'com.onnuridmc.exelbid:exelbid:1.3.6'
 	}
     ```
 
@@ -155,9 +159,9 @@ ExelBid.setAppKey(String) // 홈페이지에 등록한 어플리케이션의 아
 *	setYob(String) : 태어난 연도 4자리(2016)
 *	setGender(boolean) : 성별 (true : 남자, false : 여자)
 *	addKeyword(String, String) : Custom 메타 데이터 (Key, Value)
-*	setTestMode(Boolean) : 광고의 테스트를 위해 설정하는 값입니다. 통계에 적용 되지 않으며 항상 광고가 노출되게 됩니다.
+*	setTestMode(boolean) : 광고의 테스트를 위해 설정하는 값입니다. 통계에 적용 되지 않으며 항상 광고가 노출되게 됩니다.
 *	setAdUnitId(String) : 광고 아이디를 셋팅 합니다.
-* setCoppa(Boolean) : 선택사항으로 미국 아동 온라인 사생활 보호법에 따라 13세 미만의 사용자를 설정하면 개인 정보를 제한하여 광고 입찰 처리됩니다. (IP, Device ID, Geo 정보등)
+* setCoppa(boolean) : 선택사항으로 미국 아동 온라인 사생활 보호법에 따라 13세 미만의 사용자를 설정하면 개인 정보를 제한하여 광고 입찰 처리됩니다. (IP, Device ID, Geo 정보등)
 
 ### 배너광고
 
@@ -218,12 +222,19 @@ ExelBid.setAppKey(String) // 홈페이지에 등록한 어플리케이션의 아
 	```
 3.	광고 로딩 확인
 	```java
-	(Boolean) isReady() //전면 광고를 노출시킬 준비가 되어있는지 체크한다.
+    //전면 광고를 노출시킬 준비가 되어있는지 체크한다.
+	(boolean) isReady() 
+    /**
+     * 전면 광고를 노출시킬 준비가 되어있는지, 광고 로드후 현재 까지의 시간이 특정 시간이 지났는지를 체크한다.
+     * adCachTimeSecond 광고 로드후 현재 까지의 시간
+     */
+	(boolean) isReady(int adCachTimeSecond) 
 	```
 
 4.	전면 광고 노출
 	```java
-	show() // 전면 광고를 노출합니다.
+    // 전면 광고를 노출합니다.
+	show() 
     ```
 
 5.	광고 이벤트 등록
@@ -335,7 +346,13 @@ ExelBid.setAppKey(String) // 홈페이지에 등록한 어플리케이션의 아
 
 3.	광고 로딩 확인
 	```java
-	(Boolean) isReady() //광고를 노출시킬 준비가 되어있는지 체크한다.
+    //광고를 노출시킬 준비가 되어있는지 체크한다.
+	(boolean) isReady() 
+    /**
+     * 광고를 노출시킬 준비가 되어있는지, 광고 로드후 현재 까지의 시간이 특정 시간이 지났는지를 체크한다.
+     * adCachTimeSecond 광고 로드후 현재 까지의 시간
+     */
+	(boolean) isReady(int adCachTimeSecond) 
 	```
 
 6.	네이티브 광고 노출
@@ -449,6 +466,7 @@ ExelBid.setAppKey(String) // 홈페이지에 등록한 어플리케이션의 아
 - ``loadAd()`` : 광고를 가져옵니다.
 - ``show()`` : 다이얼로그를 노출합니다.
 - ``(boolean) isReady()`` : 광고를 노출할 준비가 되었는지 체크합니다.
+- ``(boolean) isReady(int adCachTimeSecond)`` : 광고를 노출시킬 준비가 되어있는지, 광고 로드후 현재 까지의 시간(adCachTimeSecond)이 특정 시간이 지났는지를 체크한다.
 
 
 <a name="다이얼로그-광고-전면"></a>

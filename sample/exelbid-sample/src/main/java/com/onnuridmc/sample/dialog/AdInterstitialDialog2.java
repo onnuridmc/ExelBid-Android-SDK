@@ -18,6 +18,8 @@ public class AdInterstitialDialog2 extends ExelBidInterstitialDialog {
     private Button mButton1;
     private Button mButton2;
     private TextView mTitle;
+    View.OnClickListener mButton1OnClickListener;
+    View.OnClickListener mButton2OnClickListener;
 
     public AdInterstitialDialog2(Context context, String adUnitId) {
         super(context, adUnitId);
@@ -33,7 +35,7 @@ public class AdInterstitialDialog2 extends ExelBidInterstitialDialog {
 
     @Override
     protected void onCreate() {
-        setContentView(R.layout.dialog_interstitial_layout);
+        setContentView(R.layout.dialog_interstitial_layout4);
 
         mButton1 = (Button) findViewById(R.id.dialog_button1);
         mButton2 = (Button) findViewById(R.id.dialog_button2);
@@ -62,11 +64,13 @@ public class AdInterstitialDialog2 extends ExelBidInterstitialDialog {
     }
 
     public void setOnButton1ClickListener(View.OnClickListener listener) {
-        mButton1.setOnClickListener(listener);
+        mButton1OnClickListener = listener;
+        mButton1.setOnClickListener(mButton1OnClickListener);
     }
 
     public void setOnButton2ClickListener(View.OnClickListener listener) {
-        mButton2.setOnClickListener(listener);
+        mButton2OnClickListener = listener;
+        mButton2.setOnClickListener(mButton2OnClickListener);
     }
 
     public void setSample(int position) {
@@ -105,6 +109,10 @@ public class AdInterstitialDialog2 extends ExelBidInterstitialDialog {
 
         mButton1 = (Button) findViewById(R.id.dialog_button1);
         mButton2 = (Button) findViewById(R.id.dialog_button2);
+        if(mButton1OnClickListener != null)
+            mButton1.setOnClickListener(mButton1OnClickListener);
+        if(mButton2OnClickListener != null)
+            mButton2.setOnClickListener(mButton2OnClickListener);
 
     }
 }

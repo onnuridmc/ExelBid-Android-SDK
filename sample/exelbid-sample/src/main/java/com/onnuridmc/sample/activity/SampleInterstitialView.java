@@ -112,6 +112,8 @@ public class SampleInterstitialView extends Activity {
             }
         } else if(v.getId() == R.id.interstitial_show) {
             if(mInterstitialAd != null) {
+
+                // mInterstitialAd.isReady(60 * 30) 와 같이 사용하여 로드 시간 체크를 할 수 있다
                 if(mInterstitialAd.isReady())
                     mInterstitialAd.show();
             }
