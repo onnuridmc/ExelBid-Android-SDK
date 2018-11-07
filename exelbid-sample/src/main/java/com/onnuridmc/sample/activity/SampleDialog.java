@@ -51,17 +51,17 @@ public class SampleDialog extends Activity {
         mInterstitialUnitId = PrefManager.getInterstialAd(this, PrefManager.KEY_DIALOG_INTERSTIAL_AD, AppConstants.UNIT_ID_INTERSTITIAL);
         mEdtInterstitial = (EditText)findViewById(R.id.dialog_edtInterstitial);
         mEdtInterstitial.setText(mInterstitialUnitId);
-        initInterstitial();
+        settInterstitial();
 
         mNativeUnitId = PrefManager.getNativeAd(this, PrefManager.KEY_DIALOG_NATIVE_AD, AppConstants.UNIT_ID_NATIVE);
         mEdtNative = (EditText)findViewById(R.id.dialog_edtNative);
         mEdtNative.setText(mNativeUnitId);
-        initNative1();
-        initNative2();
-        initNative3();
+        setNative1();
+        setNative2();
+        setNative3();
     }
 
-    private void initInterstitial() {
+    private void settInterstitial() {
 
         final Button btnInterstitialLoad = (Button)findViewById(R.id.dialog_btnInterstitialLoad);
         final Button btnInterstitialShow = (Button)findViewById(R.id.dialog_btnInterstitialShow);
@@ -175,7 +175,7 @@ public class SampleDialog extends Activity {
         mInterstitialDialog.setGender(true);
     }
 
-    private void initNative1() {
+    private void setNative1() {
 
         final Button btnNativeLoad = (Button)findViewById(R.id.dialog_btnNativeLoad);
         final Button btnNativeShow = (Button)findViewById(R.id.dialog_btnNativeShow);
@@ -257,7 +257,7 @@ public class SampleDialog extends Activity {
         nativeDialog.setGender(true);
     }
 
-    private void initNative2() {
+    private void setNative2() {
 
         final Button btnRoundNativeLoad = (Button)findViewById(R.id.dialog_btnRoundNativeLoad);
         final Button btnRoundNativeShow = (Button)findViewById(R.id.dialog_btnRoundNativeShow);
@@ -325,7 +325,7 @@ public class SampleDialog extends Activity {
 
     }
 
-    private void initNative3() {
+    private void setNative3() {
 
         final Button btnRoundNativeLoad = (Button)findViewById(R.id.dialog_btnRoundNativeLoad2);
         final Button btnRoundNativeShow = (Button)findViewById(R.id.dialog_btnRoundNativeShow2);
