@@ -7,7 +7,7 @@
 
     <FrameLayout
         android:id="@+id/dialog_bodylayout"
-        android:layout_width="match_parent"
+        android:layout_width="320dp"
         android:layout_height="0dp"
         android:background="#FFFFFF"
         android:layout_weight="1"

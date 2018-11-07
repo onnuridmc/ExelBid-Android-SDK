@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -21,27 +22,20 @@ import com.onnuridmc.sample.R;
 import com.onnuridmc.sample.dialog.AdInterstitialDialog2;
 import com.onnuridmc.sample.dialog.AdNativeDialog;
 import com.onnuridmc.sample.dialog.AdNativeRoundDialog;
+import com.onnuridmc.sample.dialog.AdNativeRoundDialog2;
 import com.onnuridmc.sample.utils.PrefManager;
 
 /**
  * 다이얼로그 형태의 광고를 노출할경우 사용
  */
-public class SampleDialog extends Activity implements View.OnClickListener {
+public class SampleDialog extends Activity {
 
+    private String mInterstitialUnitId;
     private EditText mEdtInterstitial;
-    private EditText mEdtNative;
-    private CheckBox mIsTestCheckBoxInterstitial;
+    private AdInterstitialDialog2 mInterstitialDialog;
 
     private String mNativeUnitId;
-    private String mInterstitialUnitId;
-
-    private AdNativeDialog mNativeDialog;
-    private AdNativeRoundDialog mNativeRoundDialog;
-    private AdInterstitialDialog2 mInterstitialDialog;
-    private CheckBox mIsTestCheckBoxNative;
-    private CheckBox mIsTestCheckBoxNativeDialog;
-
-    private Spinner mSampleSpinner;
+    private EditText mEdtNative;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,26 +47,76 @@ public class SampleDialog extends Activity implements View.OnClickListener {
             ((TextView) findViewById(R.id.title)).setText(title);
         }
 
-        mEdtInterstitial = (EditText)findViewById(R.id.dialog_edtInterstitial);
-        mEdtNative = (EditText)findViewById(R.id.dialog_edtNative);
-        mIsTestCheckBoxInterstitial = (CheckBox) findViewById(R.id.interstitial_test_check);
-        mIsTestCheckBoxNative = (CheckBox) findViewById(R.id.native_test_check);
-        mIsTestCheckBoxNativeDialog = (CheckBox) findViewById(R.id.native_round_test_check);
 
         mInterstitialUnitId = PrefManager.getInterstialAd(this, PrefManager.KEY_DIALOG_INTERSTIAL_AD, AppConstants.UNIT_ID_INTERSTITIAL);
-        mNativeUnitId = PrefManager.getNativeAd(this, PrefManager.KEY_DIALOG_NATIVE_AD, AppConstants.UNIT_ID_NATIVE);
-
-
+        mEdtInterstitial = (EditText)findViewById(R.id.dialog_edtInterstitial);
         mEdtInterstitial.setText(mInterstitialUnitId);
-        mEdtNative.setText(mNativeUnitId);
+        initInterstitial();
 
+        mNativeUnitId = PrefManager.getNativeAd(this, PrefManager.KEY_DIALOG_NATIVE_AD, AppConstants.UNIT_ID_NATIVE);
+        mEdtNative = (EditText)findViewById(R.id.dialog_edtNative);
+        mEdtNative.setText(mNativeUnitId);
+        initNative1();
+        initNative2();
+        initNative3();
+    }
+
+    private void initInterstitial() {
+
+        final Button btnInterstitialLoad = (Button)findViewById(R.id.dialog_btnInterstitialLoad);
+        final Button btnInterstitialShow = (Button)findViewById(R.id.dialog_btnInterstitialShow);
+        final CheckBox isTestCheckBoxInterstitial = (CheckBox) findViewById(R.id.interstitial_test_check);
+        final Spinner sampleSpinner = (Spinner) findViewById(R.id.spinner_sample);
+
+        btnInterstitialLoad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 전면 다이얼로그 광고
+                // ExelbidInterstitialDialog 상속받아서 다이얼로그 디자인을 변경할수 있다.
+                String unitID = mEdtInterstitial.getText().toString();
+                if(TextUtils.isEmpty(unitID)) {
+                    return;
+                }
+                if(!unitID.equals(mInterstitialUnitId)) {
+                    PrefManager.setPref(SampleDialog.this, PrefManager.KEY_DIALOG_INTERSTIAL_AD, unitID);
+                }
+
+                mInterstitialUnitId = unitID;
+                mInterstitialDialog.setAdUnitId(mInterstitialUnitId);
+                mInterstitialDialog.setTestMode(isTestCheckBoxInterstitial.isChecked());
+
+                mInterstitialDialog.loadAd();
+
+                //키보드 숨기기
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(mEdtInterstitial.getWindowToken(), 0);
+
+            }
+        });
+        btnInterstitialShow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // mInterstitialDialog.isReady(60 * 30) 와 같이 사용하여 로드 시간 체크를 할 수 있다
+                if(mInterstitialDialog.isReady()) {
+                    mInterstitialDialog.show();
+                }
+
+                // 30분이 지났는지 여부 체크
+                if(mInterstitialDialog.isReady(60 * 30)) {
+                    mInterstitialDialog.show();
+                }
+            }
+        });
+        btnInterstitialShow.setEnabled(false);
+
+        mInterstitialDialog = new AdInterstitialDialog2(SampleDialog.this, mInterstitialUnitId);
 
         //전면 다이얼로그
-        mSampleSpinner = (Spinner) findViewById(R.id.spinner_sample);
         ArrayAdapter sampleAdapter = ArrayAdapter.createFromResource(this, R.array.selected, android.R.layout.simple_spinner_item);
         sampleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSampleSpinner.setAdapter(sampleAdapter);
-        mSampleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        sampleSpinner.setAdapter(sampleAdapter);
+        sampleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
@@ -85,11 +129,12 @@ public class SampleDialog extends Activity implements View.OnClickListener {
 
             }
         });
-        mInterstitialDialog = new AdInterstitialDialog2(SampleDialog.this, mInterstitialUnitId);
+
+
         mInterstitialDialog.setInterstitialAdListener(new OnInterstitialAdListener() {
             @Override
             public void onInterstitialLoaded() {
-                findViewById(R.id.dialog_btnInterstitialShow).setEnabled(true);
+                btnInterstitialShow.setEnabled(true);
                 mInterstitialDialog.setTitle("종료하시겠습니까?");
             }
 
@@ -110,7 +155,7 @@ public class SampleDialog extends Activity implements View.OnClickListener {
 
             @Override
             public void onInterstitialFailed(ExelBidError errorCode) {
-                findViewById(R.id.dialog_btnInterstitialShow).setEnabled(false);
+                btnInterstitialShow.setEnabled(false);
             }
         });
         mInterstitialDialog.setOnButton1ClickListener(new View.OnClickListener() {
@@ -128,14 +173,55 @@ public class SampleDialog extends Activity implements View.OnClickListener {
         });
         mInterstitialDialog.setYob("1990");
         mInterstitialDialog.setGender(true);
+    }
+
+    private void initNative1() {
+
+        final Button btnNativeLoad = (Button)findViewById(R.id.dialog_btnNativeLoad);
+        final Button btnNativeShow = (Button)findViewById(R.id.dialog_btnNativeShow);
+        final CheckBox isTestCheckBoxNative = (CheckBox) findViewById(R.id.native_test_check);
 
         //네이티브 다이얼로그
-        mNativeDialog = new AdNativeDialog(SampleDialog.this, mNativeUnitId);
-        mNativeDialog.setAdNativeListener(new OnAdNativeListener() {
+        final AdNativeDialog nativeDialog = new AdNativeDialog(SampleDialog.this, mNativeUnitId);
+
+        btnNativeLoad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //ExelbidNativeDialog를 상속 받아서 네이티브 다이얼로그 디자인을 변경할수 있다.
+                String unitID = mEdtNative.getText().toString();
+                if(TextUtils.isEmpty(unitID)) {
+                    return;
+                }
+                if(!unitID.equals(mNativeUnitId)) {
+                    PrefManager.setPref(SampleDialog.this, PrefManager.KEY_DIALOG_NATIVE_AD, unitID);
+                }
+
+                mNativeUnitId = unitID;
+                nativeDialog.setAdUnitId(mNativeUnitId);
+                nativeDialog.setTestMode(isTestCheckBoxNative.isChecked());
+
+                nativeDialog.loadAd();
+
+                //키보드 숨기기
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(mEdtNative.getWindowToken(), 0);
+            }
+        });
+        btnNativeShow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // nativeDialog.isReady(60 * 30) 와 같이 사용하여 로드 시간 체크를 할 수 있다
+                if(nativeDialog.isReady(60 * 30)) {
+                    nativeDialog.show();
+                }
+            }
+        });
+        btnNativeShow.setEnabled(false);
+        nativeDialog.setAdNativeListener(new OnAdNativeListener() {
 
             @Override
             public void onFailed(ExelBidError error) {
-                findViewById(R.id.dialog_btnNativeShow).setEnabled(false);
+                btnNativeShow.setEnabled(false);
             }
 
             @Override
@@ -150,33 +236,73 @@ public class SampleDialog extends Activity implements View.OnClickListener {
 
             @Override
             public void onLoaded() {
-                findViewById(R.id.dialog_btnNativeShow).setEnabled(true);
+                btnNativeShow.setEnabled(true);
             }
         });
-        mNativeDialog.setTitle("종료");
-        mNativeDialog.setOnButton1ClickListener(new View.OnClickListener() {
+        nativeDialog.setTitle("종료");
+        nativeDialog.setOnButton1ClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mNativeDialog.dismiss();
+                nativeDialog.dismiss();
                 finish();
             }
         });
-        mNativeDialog.setOnButton2ClickListener(new View.OnClickListener() {
+        nativeDialog.setOnButton2ClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mNativeDialog.dismiss();
+                nativeDialog.dismiss();
             }
         });
-        mNativeDialog.setYob("1990");
-        mNativeDialog.setGender(true);
+        nativeDialog.setYob("1990");
+        nativeDialog.setGender(true);
+    }
 
+    private void initNative2() {
 
+        final Button btnRoundNativeLoad = (Button)findViewById(R.id.dialog_btnRoundNativeLoad);
+        final Button btnRoundNativeShow = (Button)findViewById(R.id.dialog_btnRoundNativeShow);
+        final CheckBox isTestCheckBoxRoundNative = (CheckBox) findViewById(R.id.native_round_test_check);
         //네이티브 라운드 다이얼로그
-        mNativeRoundDialog = new AdNativeRoundDialog(SampleDialog.this, mNativeUnitId);
+        final AdNativeRoundDialog mNativeRoundDialog = new AdNativeRoundDialog(SampleDialog.this, mNativeUnitId);
+
+        btnRoundNativeLoad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // ExelbidNativeDialog를 상속 받아서 네이티브 다이얼로그 디자인을 변경할수 있다.
+                String unitID = mEdtNative.getText().toString();
+                if(TextUtils.isEmpty(unitID)) {
+                    return;
+                }
+                if(!unitID.equals(mNativeUnitId)) {
+                    PrefManager.setPref(SampleDialog.this, PrefManager.KEY_DIALOG_NATIVE_AD, unitID);
+                }
+
+                mNativeUnitId = unitID;
+                mNativeRoundDialog.setAdUnitId(mNativeUnitId);
+                mNativeRoundDialog.setTestMode(isTestCheckBoxRoundNative.isChecked());
+
+                mNativeRoundDialog.loadAd();
+                //키보드 숨기기
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(mEdtNative.getWindowToken(), 0);
+            }
+        });
+        btnRoundNativeShow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // mNativeRoundDialog.isReady(60 * 30) 와 같이 사용하여 로드 시간 체크를 할 수 있다
+                if(mNativeRoundDialog.isReady(60 * 30)) {
+                    mNativeRoundDialog.show();
+                }
+            }
+        });
+
+        btnRoundNativeShow.setEnabled(false);
+
         mNativeRoundDialog.setAdNativeListener(new OnAdNativeListener() {
             @Override
             public void onFailed(ExelBidError error) {
-                findViewById(R.id.dialog_btnRoundNativeShow).setEnabled(false);
+                btnRoundNativeShow.setEnabled(false);
             }
 
             @Override
@@ -191,15 +317,94 @@ public class SampleDialog extends Activity implements View.OnClickListener {
 
             @Override
             public void onLoaded() {
-                findViewById(R.id.dialog_btnRoundNativeShow).setEnabled(true);
+                btnRoundNativeShow.setEnabled(true);
             }
         });
         mNativeRoundDialog.setYob("1990");
         mNativeRoundDialog.setGender(true);
 
-        findViewById(R.id.dialog_btnInterstitialShow).setEnabled(false);
-        findViewById(R.id.dialog_btnRoundNativeShow).setEnabled(false);
-        findViewById(R.id.dialog_btnNativeShow).setEnabled(false);
+    }
+
+    private void initNative3() {
+
+        final Button btnRoundNativeLoad = (Button)findViewById(R.id.dialog_btnRoundNativeLoad2);
+        final Button btnRoundNativeShow = (Button)findViewById(R.id.dialog_btnRoundNativeShow2);
+        final CheckBox isTestCheckBoxRoundNative = (CheckBox) findViewById(R.id.native_round_test_check2);
+
+
+        //네이티브 라운드 다이얼로그
+        final AdNativeRoundDialog2 nativeRoundDialog = new AdNativeRoundDialog2(SampleDialog.this, mNativeUnitId);
+
+        btnRoundNativeLoad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // ExelbidNativeDialog를 상속 받아서 네이티브 다이얼로그 디자인을 변경할수 있다.
+                String unitID = mEdtNative.getText().toString();
+                if(TextUtils.isEmpty(unitID)) {
+                    return;
+                }
+                if(!unitID.equals(mNativeUnitId)) {
+                    PrefManager.setPref(SampleDialog.this, PrefManager.KEY_DIALOG_NATIVE_AD, unitID);
+                }
+
+                mNativeUnitId = unitID;
+                nativeRoundDialog.setAdUnitId(mNativeUnitId);
+                nativeRoundDialog.setTestMode(isTestCheckBoxRoundNative.isChecked());
+
+                nativeRoundDialog.loadAd();
+                //키보드 숨기기
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(mEdtNative.getWindowToken(), 0);
+            }
+        });
+        btnRoundNativeShow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // mNativeRoundDialog.isReady(60 * 30) 와 같이 사용하여 로드 시간 체크를 할 수 있다
+                if(nativeRoundDialog.isReady(60 * 30)) {
+                    nativeRoundDialog.show();
+                }
+            }
+        });
+
+        btnRoundNativeShow.setEnabled(false);
+
+        nativeRoundDialog.setAdNativeListener(new OnAdNativeListener() {
+            @Override
+            public void onFailed(ExelBidError error) {
+                btnRoundNativeShow.setEnabled(false);
+            }
+
+            @Override
+            public void onShow() {
+
+            }
+
+            @Override
+            public void onClick() {
+
+            }
+
+            @Override
+            public void onLoaded() {
+                btnRoundNativeShow.setEnabled(true);
+            }
+        });
+        nativeRoundDialog.setOnOkClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nativeRoundDialog.dismiss();
+                finish();
+            }
+        });
+        nativeRoundDialog.setOnCancelClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nativeRoundDialog.dismiss();
+            }
+        });
+        nativeRoundDialog.setYob("1990");
+        nativeRoundDialog.setGender(true);
 
     }
 
@@ -209,82 +414,4 @@ public class SampleDialog extends Activity implements View.OnClickListener {
         super.onDestroy();
     }
 
-    @Override
-    public void onClick(View v) {
-        if(v.getId() == R.id.dialog_btnInterstitialLoad) {
-            // 전면 다이얼로그 광고
-            // ExelbidInterstitialDialog 상속받아서 다이얼로그 디자인을 변경할수 있다.
-            String unitID = mEdtInterstitial.getText().toString();
-            if(TextUtils.isEmpty(unitID)) {
-                return;
-            }
-            if(!unitID.equals(mInterstitialUnitId)) {
-                PrefManager.setPref(SampleDialog.this, PrefManager.KEY_DIALOG_INTERSTIAL_AD, unitID);
-            }
-
-            mInterstitialUnitId = unitID;
-            mInterstitialDialog.setAdUnitId(mInterstitialUnitId);
-            mInterstitialDialog.setTestMode(mIsTestCheckBoxInterstitial.isChecked());
-
-            mInterstitialDialog.loadAd();
-
-            //키보드 숨기기
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(mEdtInterstitial.getWindowToken(), 0);
-        } else if (v.getId() == R.id.dialog_btnNativeLoad) {
-            //ExelbidNativeDialog를 상속 받아서 네이티브 다이얼로그 디자인을 변경할수 있다.
-            String unitID = mEdtNative.getText().toString();
-            if(TextUtils.isEmpty(unitID)) {
-                return;
-            }
-            if(!unitID.equals(mNativeUnitId)) {
-                PrefManager.setPref(SampleDialog.this, PrefManager.KEY_DIALOG_NATIVE_AD, unitID);
-            }
-
-            mNativeUnitId = unitID;
-            mNativeDialog.setAdUnitId(mNativeUnitId);
-            mNativeDialog.setTestMode(mIsTestCheckBoxNative.isChecked());
-
-            mNativeDialog.loadAd();
-
-            //키보드 숨기기
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(mEdtNative.getWindowToken(), 0);
-        } else if (v.getId() == R.id.dialog_btnRoundNativeLoad) {
-            // ExelbidNativeDialog를 상속 받아서 네이티브 다이얼로그 디자인을 변경할수 있다.
-            String unitID = mEdtNative.getText().toString();
-            if(TextUtils.isEmpty(unitID)) {
-                return;
-            }
-            if(!unitID.equals(mNativeUnitId)) {
-                PrefManager.setPref(SampleDialog.this, PrefManager.KEY_DIALOG_NATIVE_AD, unitID);
-            }
-
-            mNativeUnitId = unitID;
-            mNativeRoundDialog.setAdUnitId(mNativeUnitId);
-            mNativeRoundDialog.setTestMode(mIsTestCheckBoxNativeDialog.isChecked());
-
-            mNativeRoundDialog.loadAd();
-            //키보드 숨기기
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(mEdtNative.getWindowToken(), 0);
-
-        } else if (v.getId() == R.id.dialog_btnInterstitialShow) {
-
-            // mInterstitialDialog.isReady(60 * 30) 와 같이 사용하여 로드 시간 체크를 할 수 있다
-            if(mInterstitialDialog.isReady()) {
-                mInterstitialDialog.show();
-            }
-        } else if (v.getId() == R.id.dialog_btnNativeShow) {
-            // mNativeDialog.isReady(60 * 30) 와 같이 사용하여 로드 시간 체크를 할 수 있다
-            if(mNativeDialog.isReady()) {
-                mNativeDialog.show();
-            }
-        } else if (v.getId() == R.id.dialog_btnRoundNativeShow) {
-            // mNativeRoundDialog.isReady(60 * 30) 와 같이 사용하여 로드 시간 체크를 할 수 있다
-            if(mNativeRoundDialog.isReady()) {
-                mNativeRoundDialog.show();
-            }
-        }
-    }
 }
