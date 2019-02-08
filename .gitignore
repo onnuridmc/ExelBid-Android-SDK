@@ -34,3 +34,4 @@ proguard/
 */build
 */.idea
 *.iml
+exelbid-sample/libs/exelbid-sdk.jar

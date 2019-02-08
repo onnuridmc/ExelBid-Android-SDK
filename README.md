@@ -20,10 +20,16 @@
   * [다이얼로그 공통 메소드](#다이얼로그-공통-메소드)
   * [다이얼로그 광고 (전면)](#다이얼로그-광고-전면)
   * [다이얼로그 광고 (네이티브)](#다이얼로그-광고-네이티브)
+* [Mediation](#Mediation)
+  * [Kakao Adfit 추가하기](#Kakao-Adfit-추가하기)
 
 
 
 ## Version History
+**Version 1.4.0**
+  * _Build gradle 3.2.1 적용_
+  * _미디에이션 기능 추가 - Kakao Adfit Mediation 기능 추가_
+
 **Version 1.3.6**
   * _다이얼로그 광고 노출시 광고 없는 경우도 다이얼로그 창 노출 가능하게 적용_
   * _Native, 전면 광고등에서 광고 로드후 노출(show)까지의 시간 확인 기능 추가. (전면 광고 - 3.광고확인 등)_
@@ -539,5 +545,28 @@ ExelBid.setAppKey(String) // 홈페이지에 등록한 어플리케이션의 아
                 .iconImageId(R.id.native_icon_image)
                 .adInfoImageId(R.id.native_privacy_information_icon_image)
                 .build();
+    }
+    ```
+## Mediation
+Exelbid에서 '광고 없음'이 응답되는 경우, 간단한 설정 만으로 타사 SDK에 자동 광고 요청하여 Fill Rate를 증가시킬 수 있습니다.
+### Kakao Adfit 추가하기
+> Exelbid SDK v 1.4.0 버전부터 지원
+
+>Exelbid 운영팀에 사용 제안(아이디 발급등 처리 필요) - 디스플레이 배너 광고에서만 사용 가능
+1. minSdkVersion 14 적용 - Adfit mediation 기능은 <a href="https://developer.android.com/about/versions/android-4.0">Android 4.0(Ice Cream Sandwich, API Level 14)</a> 이상 기기에서 동작합니다.
+
+2. build.gradle 파일에 Maven repository를 추가합니다.
+    ```java
+    repositories {
+        google()
+        jcenter()
+        maven { url 'http://devrepo.kakao.com:8088/nexus/content/groups/public/' }
+    }
+    ```
+3. build.gradle 파일 dependencies에 Adfit SDK Library를 추가
+    ```java
+    dependencies {
+        implementation "com.google.android.gms:play-services-ads-identifier:16.0.0"
+        implementation "com.kakao.adfit:ads-base:3.0.6"
     }
     ```
