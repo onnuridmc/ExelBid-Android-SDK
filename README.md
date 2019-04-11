@@ -26,6 +26,10 @@
 
 
 ## Version History
+**Version 1.4.1**
+  * _다이얼로그 배너 광고 미디에이션 기능 추가 - Kakao Adfit Mediation 기능 추가_
+  * _배너 광고 노출 트래킹 - Scrren Off 상태에서의 노출시 Screen On 상태값 전달시 트래킹 처리_
+
 **Version 1.4.0**
   * _Build gradle 3.2.1 적용_
   * _미디에이션 기능 추가 - Kakao Adfit Mediation 기능 추가_
@@ -78,7 +82,7 @@
 	1. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	compile 'com.onnuridmc.exelbid:exelbid:1.3.6'
+        	implementation 'com.onnuridmc.exelbid:exelbid:1.4.1'
 	}
     ```
 
@@ -552,7 +556,7 @@ Exelbid에서 '광고 없음'이 응답되는 경우, 간단한 설정 만으로
 ### Kakao Adfit 추가하기
 > Exelbid SDK v 1.4.0 버전부터 지원
 
->Exelbid 운영팀에 사용 제안(아이디 발급등 처리 필요) - 디스플레이 배너 광고에서만 사용 가능
+>Exelbid 운영팀에 사용 제안(아이디 발급등 처리 필요) - 디스플레이 배너 광고(다이얼로그 광고 포함)에서만 사용 가능
 1. minSdkVersion 14 적용 - Adfit mediation 기능은 <a href="https://developer.android.com/about/versions/android-4.0">Android 4.0(Ice Cream Sandwich, API Level 14)</a> 이상 기기에서 동작합니다.
 
 2. build.gradle 파일에 Maven repository를 추가합니다.

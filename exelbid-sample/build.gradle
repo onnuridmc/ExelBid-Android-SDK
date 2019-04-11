@@ -47,6 +47,6 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:25.3.1'
     implementation 'com.google.android.gms:play-services-ads-identifier:16.0.0'
     implementation 'com.kakao.adfit:ads-base:3.0.6'
-    implementation 'com.onnuridmc.exelbid:exelbid:1.4.0'
+    implementation 'com.onnuridmc.exelbid:exelbid:1.4.1'
 //    implementation files('libs/exelbid-sdk.jar')
 }
