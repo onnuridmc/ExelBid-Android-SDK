@@ -28,7 +28,7 @@
 ## Version History
 **Version 1.4.1**
   * _다이얼로그 배너 광고 미디에이션 기능 추가 - Kakao Adfit Mediation 기능 추가_
-  * _배너 광고 노출 트래킹 - Scrren Off 상태에서의 노출시 Screen On 상태값 전달시 트래킹 처리_
+  * _배너 광고 노출 트래킹 최적화 - Scrren 상태 확인 처리_
 
 **Version 1.4.0**
   * _Build gradle 3.2.1 적용_
