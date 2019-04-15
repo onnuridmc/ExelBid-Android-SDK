@@ -26,6 +26,8 @@
 
 
 ## Version History
+**Version 1.4.2**
+  * _노출 트래킹 시 Scrren on/off상태 확인 기능 제거(오류 확인)_
 **Version 1.4.1**
   * _다이얼로그 배너 광고 미디에이션 기능 추가 - Kakao Adfit Mediation 기능 추가_
   * _배너 광고 노출 트래킹 최적화 - Scrren 상태 확인 처리_
@@ -82,7 +84,7 @@
 	1. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	implementation 'com.onnuridmc.exelbid:exelbid:1.4.1'
+        	implementation 'com.onnuridmc.exelbid:exelbid:1.4.2'
 	}
     ```
 
