@@ -11,6 +11,7 @@
   * [AndroidManifest 설정](#androidmanifest-설정)
   * [AppKey 설정](#appkey-설정)
   * [Permission 설정](#permission-설정)
+  * [Android 9 Api Level 28+ 사용 설정시 적용 사항](#Android-9-Api-Level-28+-사용-설정시-적용-사항)
 * [광고 적용하기](#광고-적용하기)
   * [인스턴스 공통 메소드](#인스턴스-공통-메소드)
   * [배너광고](#배너광고)
@@ -163,7 +164,7 @@ ExelBid.setAppKey(String) // 홈페이지에 등록한 어플리케이션의 아
 <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 ```
 
-### Android 9(pie) - Api Level 28+ 사용 설정시 적용 사항
+### Android 9 Api Level 28+ 사용 설정시 적용 사항
 * Api Level 28+ 부터 적용된 보안 정책 
 <br>Android P를 대상으로 하는 앱이 암호화되지 않은 연결을 허용하지 않는것을 기본으로 합니다.
 <br>http:// -> https:// 전환을 필요로 한니다. 
