@@ -133,16 +133,16 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
 </activity>
 ```
 
-### AppKey 설정
->홈페이지에 등록된 어플리케이션의 아이디를 설정한다. (필수)
+### ~~AppKey 설정~~
+>~~홈페이지에 등록된 어플리케이션의 아이디를 설정한다. (필수)~~
 
-* Manifest 에 meta-data 등록
+* ~~Manifest 에 meta-data 등록~~
 ```xml
 <meta-data android:name="com.exelbid.appkey"
            android:value="{홈페이지에 등록한 어플리케이션의 아이디}"/>
 ```
 
-*	 동적 설정 - 앱 실행시 최초 한번만 설정
+*	 ~~동적 설정 - 앱 실행시 최초 한번만 설정~~
 ```xml
 ExelBid.setAppKey(String) // 홈페이지에 등록한 어플리케이션의 아이디
 ```
@@ -162,6 +162,53 @@ ExelBid.setAppKey(String) // 홈페이지에 등록한 어플리케이션의 아
 <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 ```
+
+### Android 9(pie) - Api Level 28+ 사용 설정시 적용 사항
+* Api Level 28+ 부터 적용된 보안 정책 
+<br>Android P를 대상으로 하는 앱이 암호화되지 않은 연결을 허용하지 않는것을 기본으로 합니다.
+<br>http:// -> https:// 전환을 필요로 한니다. 
+<br>Exelbid에서는 광고 요청등의 Api에 https를 사용하지만 Exelbid에 연결된 많은 광고주 플랫폼사들의 광고 소재 리소스(image, js등)의 원할한 활용을 위해 http사용 허가 설정이 필요합니다.
+
+```xml
+// 1번 혹은 2번 형태로 적용 가능
+
+1. res/xml 에 networkSecurityConfig 파일 구성후 AndroidManifest.xml에 application 속성에 
+   android:networkSecurityConfig="@xml/network_security_config" 설정
+    
+    //res/network_security_config.xml (networkSecurityConfig 파일)
+    <?xml version="1.0" encoding="utf-8"?>
+    <network-security-config>
+        <base-config cleartextTrafficPermitted="true" />
+    </network-security-config>
+
+
+    // AndroidManifest.xml
+    <application
+        .
+        .
+        android:networkSecurityConfig="@xml/network_security_config">
+
+2.  AndroidManifest.xml에 application 속성에 
+   android:networkSecurityConfig="@xml/network_security_config" 설정 
+      <application
+        .
+        .
+        android:usesCleartextTraffic="true">      
+```
+
+* Apache HTTP 클라이언트 지원 중단에 대한 설정 필요
+<br>Exelbid SDK에서 사용하는 Network 모듈은 Apache HTTP를 사용하고 있습니다. 
+<br>따라서 Android 9 이상을 대상으로 하는 앱이 Apache HTTP 클라이언트를 계속 사용하려면 다음을 AndroidManifest.xml에 추가해야 합니다.
+```xml
+      <application
+        .
+        .
+      >
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false"/>
+```
+
 
 ## 광고 적용하기
 
