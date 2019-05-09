@@ -27,6 +27,9 @@
 
 
 ## Version History
+**Version 1.4.3**
+  * _Android 6.0이하에서 전면 클릭시 오류 케이스 수정_
+
 **Version 1.4.2**
   * _노출 트래킹 시 Scrren on/off상태 확인 기능 제거(오류 확인)_
   
@@ -86,7 +89,7 @@
 	1. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	implementation 'com.onnuridmc.exelbid:exelbid:1.4.2'
+        	implementation 'com.onnuridmc.exelbid:exelbid:1.4.3'
 	}
     ```
 
