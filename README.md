@@ -196,7 +196,7 @@ ExelBid.setAppKey(String) // 홈페이지에 등록한 어플리케이션의 아
         android:networkSecurityConfig="@xml/network_security_config">
 
 2.  AndroidManifest.xml에 application 속성에 
-   android:networkSecurityConfig="@xml/network_security_config" 설정 
+    android:usesCleartextTraffic="true" 직접 설정 
       <application
         .
         .
@@ -613,7 +613,7 @@ Exelbid에서 '광고 없음'이 응답되는 경우, 간단한 설정 만으로
 ### Kakao Adfit 추가하기
 > ~~Exelbid SDK v 1.4.0 버전부터 지원~~
 
-> Exelbid SDK v 1.4.4버전, adfit 버전 3.0.8 적용 필수(Adfit 정책상 구버전 지원 중단됨(9월 이후 예정)
+> Exelbid SDK v 1.4.4버전, adfit 버전 3.0.8 적용 필수(Adfit 정책상 구버전 지원 중단됨(2019년 9월 이후 예정)
 
 >Exelbid 운영팀에 사용 제안(아이디 발급등 처리 필요) - 디스플레이 배너 광고(다이얼로그 광고 포함)에서만 사용 가능
 1. minSdkVersion 14 적용 - Adfit mediation 기능은 <a href="https://developer.android.com/about/versions/android-4.0">Android 4.0(Ice Cream Sandwich, API Level 14)</a> 이상 기기에서 동작합니다.
