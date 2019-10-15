@@ -641,3 +641,13 @@ Exelbid에서 '광고 없음'이 응답되는 경우, 간단한 설정 만으로
     ```
 >이 문서는 온누리DMC Exelbid 제휴 당사자에 한해 제공되는 자료로 가이드 라인을 포함한 모든 자료의 지적재산권은 주식회사 온누리DMC가 보유합니다.<br>
 Copyright © OnnuriDmc Corp. All rights reserved.
+
+## Ads.txt, App-ads.txt 적용하기
+Exelbid에서도 웹지면에서의 App.txt 그리고 앱지면을 위한 App-ads.txt를 적극 권장하며 지원하고 있습니다.<br/>
+Ads.txt, App-ads.txt에 대해서, 그리고 Exelbid에서 적용하는 방법은 아래에 링크 페이지를 참고해 주세요.
+
+[1. Ads.txt란 무엇인가?](ads.txt.md)
+
+[2. App-ads.txt 알아보기](app-ads.txt.md)
+
+[3. Exelbid에서 ads.txt, app_ads.txt 적용하기](exelbid_ads.txt_guide.md)

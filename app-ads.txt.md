@@ -1,6 +1,8 @@
-[1. Ads.txt란 무엇인가?](ads.txt.md)<br/>
-[2. App-ads.txt 알아보기](app-ads.txt.md)<br/>
-[3. Exelbid에서 ads.txt, app_ads.txt 적용하기](ads.txt.md)
+[1. Ads.txt란 무엇인가?](ads.txt.md)
+
+[2. App-ads.txt 알아보기](app-ads.txt.md)
+
+[3. Exelbid 매체에서 ads.txt, app_ads.txt 적용하기](exelbid_ads.txt_guide.md)
 
 # App-ads.txt
 
