@@ -24,6 +24,7 @@
   * [다이얼로그 광고 (네이티브)](#다이얼로그-광고-네이티브)
 * [Mediation](#Mediation)
   * [Kakao Adfit 추가하기](#Kakao-Adfit-추가하기)
+* [Ads.txt, App-ads.txt 적용하기](#Ads.txt,-App-ads.txt-적용하기)
 
 
 
