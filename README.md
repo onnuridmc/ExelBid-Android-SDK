@@ -11,6 +11,7 @@
   * [프로가드 설정](#프로가드-설정)
   * [AndroidManifest 설정](#androidmanifest-설정)
   * [AppKey 설정](#appkey-설정)
+  * [광고 클릭시 브라우저 앱 선택 설정](#광고-클릭시-브라우저-앱-선택-설정)
   * [Permission 설정](#permission-설정)
   * [Android 9 Api Level 28+ 사용 설정시 적용 사항](#Android-9-Api-Level-28+-사용-설정시-적용-사항)
 * [광고 적용하기](#광고-적용하기)
@@ -29,6 +30,9 @@
 
 
 ## Version History
+**Version 1.4.6**
+  * _광고 클릭시 브라우저 설정 기능 추가_
+
 **Version 1.4.4**
   * _Kakao Adfit 버전 3.0.8업데이트_
 
@@ -99,7 +103,7 @@
 	1. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	implementation 'com.onnuridmc.exelbid:exelbid:1.4.3'
+        	implementation 'com.onnuridmc.exelbid:exelbid:1.4.6'
 	}
     ```
 
@@ -157,9 +161,21 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
 ```
 
 *	 ~~동적 설정 - 앱 실행시 최초 한번만 설정~~
-```xml
+```java
 ExelBid.setAppKey(String) // 홈페이지에 등록한 어플리케이션의 아이디
 ```
+
+### 광고 클릭시 브라우저 앱 선택 설정
+>광고 클릭시 랜딩이 이루어지는 브라우저 앱을 설정한다.<br/>
+최초 앱 실행시(MainActivity등) 한번 설정하며, 등록 순서가 호출 순서이다
+```java
+ExelBid.addTargetBrowser("com.android.chrome"); // 크롬 브라우저
+ExelBid.addTargetBrowser("com.sec.android.app.sbrowser"); // 삼성 브라우저
+```
+* 위와 같시 설정후 광고 클릭시 
+1. 크롬 브라우저로 선택 호출
+2. 크롬 브라우저 앱이 없을 경우 두번째 삼성 브라우저 선택 호출
+3. 삼성 브라우저 앱이 없을 경우 기본 브라우저 호출
 
 ### Permission 설정
 
