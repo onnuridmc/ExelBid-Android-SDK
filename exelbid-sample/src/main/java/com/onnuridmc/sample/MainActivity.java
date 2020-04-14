@@ -84,8 +84,6 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
         });
-
-        ExelBid.setLocationDisable(true);
     }
 
     private class InAdapter extends ArrayAdapter<Pair<String, Class<?>>> {

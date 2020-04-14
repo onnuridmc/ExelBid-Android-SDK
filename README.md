@@ -30,6 +30,10 @@
 
 
 ## Version History
+
+**Version 1.4.7**
+  * _광고 클릭시 브라우저 설정 기능 업데이트_
+
 **Version 1.4.6**
   * _광고 클릭시 브라우저 설정 기능 추가_
 
@@ -103,7 +107,7 @@
 	1. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	implementation 'com.onnuridmc.exelbid:exelbid:1.4.6'
+        	implementation 'com.onnuridmc.exelbid:exelbid:1.4.7'
 	}
     ```
 
@@ -167,15 +171,29 @@ ExelBid.setAppKey(String) // 홈페이지에 등록한 어플리케이션의 아
 
 ### 광고 클릭시 브라우저 앱 선택 설정
 >광고 클릭시 랜딩이 이루어지는 브라우저 앱을 설정한다.<br/>
-최초 앱 실행시(MainActivity등) 한번 설정하며, 등록 순서가 호출 순서이다
+최초 앱 실행시(MainActivity등) 한번 설정하며, 등록 순서가 호출 순서이다<br/>
+※ Ver 1.4.7 이후 부터는 설정값을 파일(Preference)에 저장
+
 ```java
-ExelBid.addTargetBrowser("com.android.chrome"); // 크롬 브라우저
-ExelBid.addTargetBrowser("com.sec.android.app.sbrowser"); // 삼성 브라우저
+ExelBid.addTargetBrowser(context, "com.android.chrome"); // 크롬 브라우저
+ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브라우저
 ```
 * 위와 같시 설정후 광고 클릭시 
 1. 크롬 브라우저로 선택 호출
 2. 크롬 브라우저 앱이 없을 경우 두번째 삼성 브라우저 선택 호출
 3. 삼성 브라우저 앱이 없을 경우 기본 브라우저 호출
+
+* 브라우저 설정 및 관리 함수<br/>
+    - ``boolean clearTargetBrowser(Context context)`` : 브라우저 설정을 초기화(설정 없음) 한다.
+    - ``boolean addTargetBrowser(Context context, String packagename)`` : 기존 설정된 리스트에 추가 설정한다. 기존에 해당 브라우저가 존재하면 false 반환.
+    - ``boolean addTargetBrowser(Context context, String packagename, int index)`` : 기존 설정된 리스트 특정 위치(index)에 추가 설정한다. 존에 해당 브라우저가 존재하거나, index가 범위 밖이면 false 반환.
+    - ``boolean addTargetBrowserList(Context context, ArrayList<String> packageList)`` : 기존 설정된 리스트에 packageList를 순서대로 추가 설정한다.(중복 제외)
+    - ``boolean setTargetBrowser(Context context, String packagename)`` : 초기화 후 전달된 브라우저(packagename)를 설정한다.
+    - ``boolean setTargetBrowserList(Context context, ArrayList<String> packageList)`` : 초기화 후 전달된 브라우저 패키지명 리스트를 설정한다.(중복 제외)
+    - ``ArrayList<String> getTargetBrowserList(Context context)`` : 저장된 브라우저 패키지명 리스트를 가져온다.
+    - ``String getTargetBrowser(Context context, int index)`` : 해당 index에 저장된 브라우저 패키지명을 가져온다.
+    - ``boolean removeTargetBrowser(Context context, String packagename)`` : 전달된 packagename 브라우저를 삭제한다. 삭제 시 true 반환
+    - ``boolean removeTargetBrowser(Context context, int index)`` : 전달된 index에 저장된 브라우저를 삭제한다. 삭제 시 true 반환
 
 ### Permission 설정
 
@@ -196,7 +214,7 @@ ExelBid.addTargetBrowser("com.sec.android.app.sbrowser"); // 삼성 브라우저
 ### Android 9 Api Level 28+ 사용 설정시 적용 사항
 * Api Level 28+ 부터 적용된 보안 정책 
 <br>Android P를 대상으로 하는 앱이 암호화되지 않은 연결을 허용하지 않는것을 기본으로 합니다.
-<br>http:// -> https:// 전환을 필요로 한니다. 
+<br>http:// -> https:// 전환을 필요로 한니다.
 <br>Exelbid에서는 광고 요청등의 Api에 https를 사용하지만 Exelbid에 연결된 많은 광고주 플랫폼사들의 광고 소재 리소스(image, js등)의 원할한 활용을 위해 http사용 허가 설정이 필요합니다.
 
 ```xml
@@ -246,12 +264,12 @@ ExelBid.addTargetBrowser("com.sec.android.app.sbrowser"); // 삼성 브라우저
 
 >광고의 효율을 높이기 위해 나이, 성별을 설정하는 것이 좋습니다.
 
-*	setYob(String) : 태어난 연도 4자리(2016)
-*	setGender(boolean) : 성별 (true : 남자, false : 여자)
-*	addKeyword(String, String) : Custom 메타 데이터 (Key, Value)
-*	setTestMode(boolean) : 광고의 테스트를 위해 설정하는 값입니다. 통계에 적용 되지 않으며 항상 광고가 노출되게 됩니다.
-*	setAdUnitId(String) : 광고 아이디를 셋팅 합니다.
-* setCoppa(boolean) : 선택사항으로 미국 아동 온라인 사생활 보호법에 따라 13세 미만의 사용자를 설정하면 개인 정보를 제한하여 광고 입찰 처리됩니다. (IP, Device ID, Geo 정보등)
+*	``setYob(String)`` : 태어난 연도 4자리(2016)
+*	``setGender(boolean)`` : 성별 (true : 남자, false : 여자)
+*	``addKeyword(String, String)`` : Custom 메타 데이터 (Key, Value)
+*	``setTestMode(boolean)`` : 광고의 테스트를 위해 설정하는 값입니다. 통계에 적용 되지 않으며 항상 광고가 노출되게 됩니다.
+*	``setAdUnitId(String)`` : 광고 아이디를 셋팅 합니다.
+* ``setCoppa(boolean)`` : 선택사항으로 미국 아동 온라인 사생활 보호법에 따라 13세 미만의 사용자를 설정하면 개인 정보를 제한하여 광고 입찰 처리됩니다. (IP, Device ID, Geo 정보등)
 
 ### 배너광고
 
@@ -656,8 +674,6 @@ Exelbid에서 '광고 없음'이 응답되는 경우, 간단한 설정 만으로
         implementation "com.kakao.adfit:ads-base:3.0.8"
     }
     ```
->이 문서는 온누리DMC Exelbid 제휴 당사자에 한해 제공되는 자료로 가이드 라인을 포함한 모든 자료의 지적재산권은 주식회사 온누리DMC가 보유합니다.<br>
-Copyright © OnnuriDmc Corp. All rights reserved.
 
 ## Ads.txt App-ads.txt 적용하기
 Exelbid에서도 웹지면에서의 App.txt 그리고 앱지면을 위한 App-ads.txt를 적극 권장하며 지원하고 있습니다.<br/>
@@ -668,3 +684,6 @@ Ads.txt, App-ads.txt에 대해서, 그리고 Exelbid에서 적용하는 방법�
 [2. App-ads.txt 알아보기](https://github.com/onnuridmc/Exelbid_Ads.txt/blob/master/app-ads.txt.md)
 
 [3. Exelbid에서 ads.txt, app_ads.txt 적용하기](https://github.com/onnuridmc/Exelbid_Ads.txt/blob/master/README.md)
+
+>이 문서는 온누리DMC Exelbid 제휴 당사자에 한해 제공되는 자료로 가이드 라인을 포함한 모든 자료의 지적재산권은 주식회사 온누리DMC가 보유합니다.<br>
+Copyright © OnnuriDmc Corp. All rights reserved.

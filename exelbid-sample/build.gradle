@@ -10,14 +10,15 @@ repositories {
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 26
     buildToolsVersion '28.0.3'
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 28
+        targetSdkVersion 26
         versionCode 1
         versionName version
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -43,10 +44,11 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.support:support-v4:25.3.1'
-    implementation 'com.android.support:recyclerview-v7:25.3.1'
+    implementation 'com.android.support:multidex:1.0.0'
+    implementation 'com.android.support:support-v4:26.1.0'
+    implementation 'com.android.support:recyclerview-v7:26.1.0'
     implementation 'com.google.android.gms:play-services-ads-identifier:16.0.0'
     implementation 'com.kakao.adfit:ads-base:3.0.8'
-    implementation 'com.onnuridmc.exelbid:exelbid:1.4.5'
-    implementation files('libs/exelbid-sdk.jar')
+    implementation 'com.onnuridmc.exelbid:exelbid:1.4.7'
+//    implementation files('libs/exelbid-sdk.jar')
 }
