@@ -31,6 +31,9 @@
 
 ## Version History
 
+**Version 1.4.8**
+  * _광고 클릭시 인앱 브라우저(ExBrowser) 랜딩 케이스 구현_
+
 **Version 1.4.7**
   * _광고 클릭시 브라우저 설정 기능 업데이트_
 
@@ -107,7 +110,7 @@
 	1. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	implementation 'com.onnuridmc.exelbid:exelbid:1.4.7'
+        	implementation 'com.onnuridmc.exelbid:exelbid:1.4.8'
 	}
     ```
 
@@ -147,10 +150,14 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
 
 ### AndroidManifest 설정
 
->MetaData와 com.onnuridmc.exelbid.common.ExelBidActivity를 AndroidManifest.xml의 <applicatrion> 태그 안에 추가합니다. 이 Activity는 전면광고를 표시하는데 사용됩니다.
+>MetaData와 com.onnuridmc.exelbid.common.ExelBidActivity를 AndroidManifest.xml의 <applicatrion> 태그 안에 추가합니다. 이 Activity는 전면광고를 표시하는데 사용됩니다.<br/>
+필요에 따라서 com.onnuridmc.exelbid.common.ExBrowser를 추가합니다. 이 Activity는 인앱 브라우저(WebView)를 구현한 것으로 광고 클릭시 사용 될 수 있습니다.(자세한 가이드는 개별 문의)
 
 ```xml
 <activity android:name="com.onnuridmc.exelbid.common.ExelBidActivity"
+          android:configChanges="keyboardHidden|orientation|screenSize">
+</activity>
+<activity android:name="com.onnuridmc.exelbid.common.ExBrowser"
           android:configChanges="keyboardHidden|orientation|screenSize">
 </activity>
 ```
