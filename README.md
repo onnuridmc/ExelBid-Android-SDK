@@ -31,6 +31,10 @@
 
 ## Version History
 
+**Version 1.5.1**
+  * _광고 클릭시 랜딩 프로세스 성능 개선_
+  * _인앱 브라우저 딥링크 처리 케이스 추가 적용_
+
 **Version 1.4.8**
   * _광고 클릭시 인앱 브라우저(ExBrowser) 랜딩 케이스 구현_
 
@@ -110,7 +114,7 @@
 	1. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	implementation 'com.onnuridmc.exelbid:exelbid:1.4.8'
+        	implementation 'com.onnuridmc.exelbid:exelbid:1.5.1'
 	}
     ```
 
