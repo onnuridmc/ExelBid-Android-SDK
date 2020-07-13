@@ -31,6 +31,9 @@
 
 ## Version History
 
+**Version 1.5.3**
+  * _로그 처리등 내부 기능 업데이트_
+
 **Version 1.5.2**
   * _인앱 브라우저 호출 버그 수정_
   * _AndroidManifest Activity 설정시 ExBrowser -> ExelbidBrowser로  명칭 변경_
@@ -118,7 +121,7 @@
 	1. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	implementation 'com.onnuridmc.exelbid:exelbid:1.5.2'
+        	implementation 'com.onnuridmc.exelbid:exelbid:1.5.3'
 	}
     ```
 
