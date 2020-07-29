@@ -31,6 +31,9 @@
 
 ## Version History
 
+**Version 1.5.4**
+  * _X509TrustManager 관련 보안 이슈 수정(Image Downloader 최신 업데이트 버전 적용)_
+
 **Version 1.5.3**
   * _로그 처리등 내부 기능 업데이트_
 
@@ -121,7 +124,7 @@
 	1. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	implementation 'com.onnuridmc.exelbid:exelbid:1.5.3'
+        	implementation 'com.onnuridmc.exelbid:exelbid:1.5.4'
 	}
     ```
 
