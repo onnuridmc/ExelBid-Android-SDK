@@ -132,8 +132,8 @@
     ```
 ### 빌드 API 수준
 * Google Play의 타겟 API 수준 요구사항 및 Android Supported Library 28 이후 지원 중단에 따른 AndroidX Migrate 적용
-* 참조 1 : [Google Play의 타겟 API 수준 요구사항](#https://developer.android.com/distribute/best-practices/develop/target-sdk.html) 
-* 참조 2 : [Play Console의 대상 API 레벨 요구사항](#)
+* 참조 1 : [Google Play의 타겟 API 수준 요구사항](https://developer.android.com/distribute/best-practices/develop/target-sdk.html) 
+* 참조 2 : [Play Console의 대상 API 레벨 요구사항](https://support.google.com/googleplay/android-developer/answer/113469#targetsdk)
 
     API 레벨 요구사항 | 시작일
     :-----|:-------------
