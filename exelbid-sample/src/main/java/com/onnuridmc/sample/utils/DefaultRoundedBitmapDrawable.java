@@ -3,9 +3,9 @@ package com.onnuridmc.sample.utils;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
-import android.support.v4.graphics.BitmapCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewCompat;
+import androidx.core.graphics.BitmapCompat;
+import androidx.core.view.GravityCompat;
+import androidx.core.view.ViewCompat;
 
 public class DefaultRoundedBitmapDrawable extends RoundedBitmapDrawable {
     public DefaultRoundedBitmapDrawable(Resources res, Bitmap bitmap) {

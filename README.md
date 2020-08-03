@@ -7,6 +7,7 @@
 * [시작하기](#시작하기)
 * [어플리케이션 설정](#어플리케이션-설정)
   * [ExelBid SDK 추가하기](#exelbid-sdk-추가하기)
+  * [빌드 API 수준](#빌드-api-수준)
   * [Google Library 추가하기](#google-library-추가하기)
   * [프로가드 설정](#프로가드-설정)
   * [AndroidManifest 설정](#androidmanifest-설정)
@@ -25,11 +26,13 @@
   * [다이얼로그 광고 (네이티브)](#다이얼로그-광고-네이티브)
 * [Mediation](#Mediation)
   * [Kakao Adfit 추가하기](#Kakao-Adfit-추가하기)
-* [Ads.txt App-ads.txt 적용하기](#Ads.txt-App\-ads.txt-적용하기)
-
+* [Ads.txt App-ads.txt 적용하기](#ads.txt-App\-ads.txt-적용하기)
 
 
 ## Version History
+
+**Version 1.6.0**
+  * _SDK 최적화를 위해서 TargetSdkVersion 29, MinSdkVersion 16 설정 및 빌드 API 수준 안내_
 
 **Version 1.5.4**
   * _X509TrustManager 관련 보안 이슈 수정(Image Downloader 최신 업데이트 버전 적용)_
@@ -124,9 +127,34 @@
 	1. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	implementation 'com.onnuridmc.exelbid:exelbid:1.5.4'
+        	implementation 'com.onnuridmc.exelbid:exelbid:1.6.0'
 	}
     ```
+### 빌드 API 수준
+* Google Play의 타겟 API 수준 요구사항 및 Android Supported Library 28 이후 지원 중단에 따른 AndroidX Migrate 적용
+* 참조 1 : [Google Play의 타겟 API 수준 요구사항](#https://developer.android.com/distribute/best-practices/develop/target-sdk.html) 
+* 참조 2 : [Play Console의 대상 API 레벨 요구사항](#)
+
+    API 레벨 요구사항 | 시작일
+    :-----|:-------------
+    Android 8.0(API 레벨 26)  | * 2018년 8월 1일: 새로운 앱에 필요<br/> * 2018년 11월 1일: 앱 업데이트에 필요
+    Android 9(API 레벨 28) | * 2019년 8월 1일: 새로운 앱에 필요<br/> * 2019년 11월 1일: 앱 업데이트에 필요
+    Android 10(API 레벨 29) | * 2020년 8월 1일: 새로운 앱에 필요<br/> * 2020년 11월 1일: 앱 업데이트에 필요
+
+* v1.6.0 미만 버전 (v1.5.4 이하) 
+```xml
+    defaultConfig {
+        minSdkVersion 9
+        targetSdkVersion 28
+    }
+```    
+* v1.6.0 이상 버전 ( AndroidX Migrate 적용)
+```xml
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 29
+    }
+```
 
 ### Google Library 추가하기
 > ExelBid Android SDK가 제대로 작동하려면 Google Play Service 4.0 이상의 라이브러리가 필요합니다. 광고 식별자 수집에 대한 Google Play 콘텐츠 가이드라인을 준수하기 위한 것입니다.
