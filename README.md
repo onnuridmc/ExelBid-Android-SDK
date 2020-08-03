@@ -141,14 +141,14 @@
     Android 9(API 레벨 28) | * 2019년 8월 1일: 새로운 앱에 필요<br/> * 2019년 11월 1일: 앱 업데이트에 필요
     Android 10(API 레벨 29) | * 2020년 8월 1일: 새로운 앱에 필요<br/> * 2020년 11월 1일: 앱 업데이트에 필요
 
-* v1.6.0 미만 버전 (v1.5.4 이하) 
+* v1.6.0 미만 버전 - v1.5.4 이하 - (참조)
 ```xml
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 28
     }
 ```    
-* v1.6.0 이상 버전 ( AndroidX Migrate 적용)
+* v1.6.0 이상 버전 - AndroidX Migrate 적용 - (참조)
 ```xml
     defaultConfig {
         minSdkVersion 16
