@@ -31,6 +31,9 @@
 
 ## Version History
 
+**Version 1.6.1**
+  * _Bug Fix - WebView UserAgnet 조회 관련_
+
 **Version 1.6.0**
   * _SDK 최적화를 위해서 TargetSdkVersion 29, MinSdkVersion 16 설정 및 빌드 API 수준 안내_
 
@@ -127,7 +130,7 @@
 	1. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	implementation 'com.onnuridmc.exelbid:exelbid:1.6.0'
+        	implementation 'com.onnuridmc.exelbid:exelbid:1.6.1'
 	}
     ```
 ### 빌드 API 수준
