@@ -7,14 +7,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kakao.adfit.ads.na.AdFitAdInfoIconPosition;
-import com.kakao.adfit.ads.na.AdFitMediaView;
 import com.kakao.adfit.ads.na.AdFitNativeAdLayout;
 import com.kakao.adfit.ads.na.AdFitNativeAdView;
 import com.onnuridmc.exelbid.ExelBidNative;
@@ -63,7 +60,7 @@ public class SampleNativeMediation extends Activity implements View.OnClickListe
 
             @Override
             public void onFailed(ExelBidError error) {
-                Log.d(TAG, "onFailed" + error.toString());
+                Log.d(TAG, "onFailed : " + error.toString());
             }
 
             @Override
