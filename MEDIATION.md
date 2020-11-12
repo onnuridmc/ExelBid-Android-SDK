@@ -26,8 +26,8 @@
     }
     ```
     
-4. Android Gradle 플러그인 업데이트 권장
-    - 플러그인 버전 4.0.0+, Gradle 버전 6.1.1+ 이상 사용 권장 <a href="https://developer.android.com/studio/releases/gradle-plugin?hl=ko#updating-plugin">(Android Gradle 플러그인 출시 노트)</a>
+4. ~~Android Gradle 플러그인 업데이트 권장~~
+    - ~~플러그인 버전 4.0.0+, Gradle 버전 6.1.1+ 이상 사용 권장 <a href="https://developer.android.com/studio/releases/gradle-plugin?hl=ko#updating-plugin">(Android Gradle 플러그인 출시 노트)</a>~~
 
 ## Kakao Adfit 배너 미디에이션 적용하기
 > 배너의 경우 위 설정만으로 동작한다.
