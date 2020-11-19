@@ -71,7 +71,7 @@
 
     <!-- default Layout -->
     <LinearLayout
-        android:id="@+id/native_layout"
+        android:id="@+id/default_native_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
