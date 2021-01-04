@@ -31,8 +31,8 @@
 ## Version History
 
 **Version 1.6.2**
-  * _Adfit Native Mediation 기능 구현 적용_
-  * _Mediation 가이드 별도 적용_
+  * _~~Adfit Native Mediation 기능 구현 적용~~_
+  * _~~Mediation 가이드 별도 적용~~_
 
 **Version 1.6.1**
   * _Bug Fix - WebView UserAgnet 조회 관련_
