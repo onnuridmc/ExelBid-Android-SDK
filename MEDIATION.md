@@ -1,5 +1,5 @@
-# Mediation - Native 추가 지원 버전
-- Exelbid에서 '광고 없음'이 응답되는 경우, 간단한 설정 만으로 타사 SDK에 자동 광고 요청하여 Fill Rate를 증가시킬 수 있습니다.
+# ~~Mediation - Native 추가 지원 버전~~
+- ~~Exelbid에서 '광고 없음'이 응답되는 경우, 간단한 설정 만으로 타사 SDK에 자동 광고 요청하여 Fill Rate를 증가시킬 수 있습니다.~~
 
 ## Kakao Adfit 추가하기
 - ~~Exelbid SDK v 1.4.0 버전부터 지원~~<br>
