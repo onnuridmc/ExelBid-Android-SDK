@@ -36,9 +36,6 @@
         <activity android:name=".activity.SampleNative"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
-        <activity android:name=".activity.SampleNativeMediation"
-            android:windowSoftInputMode="stateAlwaysHidden">
-        </activity>
         <activity android:name=".activity.SampleNativeBanner"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>

@@ -17,7 +17,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.onnuridmc.exelbid.ExelBid;
 import com.onnuridmc.sample.activity.SampleBannerView;
 import com.onnuridmc.sample.activity.SampleDialog;
 import com.onnuridmc.sample.activity.SampleInterstitialView;
@@ -25,7 +24,6 @@ import com.onnuridmc.sample.activity.SampleNative;
 import com.onnuridmc.sample.activity.SampleNativeArray;
 import com.onnuridmc.sample.activity.SampleNativeBanner;
 import com.onnuridmc.sample.activity.SampleNativeListView;
-import com.onnuridmc.sample.activity.SampleNativeMediation;
 import com.onnuridmc.sample.activity.SampleNativeRecycler;
 import com.onnuridmc.sample.activity.SampleNativeRecyclerArray;
 import com.onnuridmc.sample.activity.SampleNativeRecyclerAuto;
@@ -67,7 +65,6 @@ public class MainActivity extends Activity {
         mAdapter.add(new Pair<String, Class<?>>("전면광고", SampleInterstitialView.class));
         mAdapter.add(new Pair<String, Class<?>>("다이얼로그광고", SampleDialog.class));
         mAdapter.add(new Pair<String, Class<?>>("네이티브", SampleNative.class));
-        mAdapter.add(new Pair<String, Class<?>>("네이티브 미디에이션", SampleNativeMediation.class));
         mAdapter.add(new Pair<String, Class<?>>("네이티브 Banner", SampleNativeBanner.class));
         mAdapter.add(new Pair<String, Class<?>>("네이티브 Array", SampleNativeArray.class));
         mAdapter.add(new Pair<String, Class<?>>("네이티브 ListView", SampleNativeListView.class));
