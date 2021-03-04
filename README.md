@@ -121,7 +121,7 @@
 ## 시작하기
 
 1. 계정을 생성합니다
-2. Inventory -> New App을 선택합니다.<br/>
+2.  Inventory -> App -> + Create New App을 선택합니다.<br/>
 ![new app](./img/sdk-1.png)
 
 3. 앱정보를 등록한 후, unit을 생성 합니다.
