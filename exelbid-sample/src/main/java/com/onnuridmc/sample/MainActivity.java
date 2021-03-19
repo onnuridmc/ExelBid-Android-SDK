@@ -27,6 +27,7 @@ import com.onnuridmc.sample.activity.SampleNativeListView;
 import com.onnuridmc.sample.activity.SampleNativeRecycler;
 import com.onnuridmc.sample.activity.SampleNativeRecyclerArray;
 import com.onnuridmc.sample.activity.SampleNativeRecyclerAuto;
+import com.onnuridmc.sample.activity.SampleNativeVideo;
 
 public class MainActivity extends Activity {
 
@@ -65,6 +66,7 @@ public class MainActivity extends Activity {
         mAdapter.add(new Pair<String, Class<?>>("전면광고", SampleInterstitialView.class));
         mAdapter.add(new Pair<String, Class<?>>("다이얼로그광고", SampleDialog.class));
         mAdapter.add(new Pair<String, Class<?>>("네이티브", SampleNative.class));
+        mAdapter.add(new Pair<String, Class<?>>("네이티브 비디오", SampleNativeVideo.class));
         mAdapter.add(new Pair<String, Class<?>>("네이티브 Banner", SampleNativeBanner.class));
         mAdapter.add(new Pair<String, Class<?>>("네이티브 Array", SampleNativeArray.class));
         mAdapter.add(new Pair<String, Class<?>>("네이티브 ListView", SampleNativeListView.class));

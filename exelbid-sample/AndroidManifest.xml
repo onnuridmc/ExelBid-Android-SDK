@@ -36,6 +36,9 @@
         <activity android:name=".activity.SampleNative"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
+        <activity android:name=".activity.SampleNativeVideo"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
         <activity android:name=".activity.SampleNativeBanner"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
@@ -60,6 +63,9 @@
                   android:configChanges="keyboardHidden|orientation|screenSize"
             >
         </activity>
+        <activity
+            android:name="com.onnuridmc.exelbid.lib.vast.VideoPlayerActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"></activity>
 
         <meta-data android:name="com.exelbid.appkey"
                    android:value="1db87a14"/>
