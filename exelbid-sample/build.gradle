@@ -1,6 +1,6 @@
 repositories {
     google()
-    jcenter()
+    mavenCentral()
     maven{ url 'http://devrepo.kakao.com:8088/nexus/content/groups/public/'}
     flatDir {
         dirs '../libs'
@@ -14,7 +14,7 @@ android {
     buildToolsVersion '29.0.3'
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
         versionName version
@@ -48,15 +48,18 @@ android {
     }
 }
 
-def exoplayer_version = '2.9.6'
+def exoplayer_version = '2.13.3'
 dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
     implementation 'com.kakao.adfit:ads-base:3.5.2'
-    implementation 'com.onnuridmc.exelbid:exelbid:1.6.4'
+    implementation 'com.onnuridmc.exelbid:exelbid:1.6.6'
     implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
     implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
-//    api files('libs/exelbid-sdk.jar')
+    // Mopub
+    implementation('com.mopub:mopub-sdk:+@aar') {
+        transitive = true
+    }
 }

@@ -20,13 +20,9 @@ import android.widget.TextView;
 import com.onnuridmc.sample.activity.SampleBannerView;
 import com.onnuridmc.sample.activity.SampleDialog;
 import com.onnuridmc.sample.activity.SampleInterstitialView;
+import com.onnuridmc.sample.activity.SampleMopubBanner;
 import com.onnuridmc.sample.activity.SampleNative;
-import com.onnuridmc.sample.activity.SampleNativeArray;
 import com.onnuridmc.sample.activity.SampleNativeBanner;
-import com.onnuridmc.sample.activity.SampleNativeListView;
-import com.onnuridmc.sample.activity.SampleNativeRecycler;
-import com.onnuridmc.sample.activity.SampleNativeRecyclerArray;
-import com.onnuridmc.sample.activity.SampleNativeRecyclerAuto;
 import com.onnuridmc.sample.activity.SampleNativeVideo;
 
 public class MainActivity extends Activity {
@@ -68,11 +64,8 @@ public class MainActivity extends Activity {
         mAdapter.add(new Pair<String, Class<?>>("네이티브", SampleNative.class));
         mAdapter.add(new Pair<String, Class<?>>("네이티브 비디오", SampleNativeVideo.class));
         mAdapter.add(new Pair<String, Class<?>>("네이티브 Banner", SampleNativeBanner.class));
-        mAdapter.add(new Pair<String, Class<?>>("네이티브 Array", SampleNativeArray.class));
-        mAdapter.add(new Pair<String, Class<?>>("네이티브 ListView", SampleNativeListView.class));
-        mAdapter.add(new Pair<String, Class<?>>("네이티브 Recycler", SampleNativeRecycler.class));
-        mAdapter.add(new Pair<String, Class<?>>("네이티브 Recycler Array", SampleNativeRecyclerArray.class));
-        mAdapter.add(new Pair<String, Class<?>>("네이티브 Recycler Auto", SampleNativeRecyclerAuto.class));
+
+        mAdapter.add(new Pair<String, Class<?>>("모펍 Custom Banner", SampleMopubBanner.class));
 
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(new OnItemClickListener() {

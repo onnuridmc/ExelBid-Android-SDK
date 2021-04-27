@@ -61,13 +61,6 @@
                 android:layout_gravity="center_horizontal"
                 android:contentDescription="native_main_image" />
 
-            <com.onnuridmc.exelbid.lib.vast.NativeVideoView
-                android:id="@+id/native_video"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:layout_gravity="center_horizontal"
-                />
-
         </RelativeLayout>
 
        <!-- <ImageView
