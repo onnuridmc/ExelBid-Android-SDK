@@ -2,6 +2,12 @@
 ## 지원 버전 및 Ad Format
 - Exelbid SDK v1.6.6
 - Banner, Native
+```xml
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 29
+    }
+```
 
 ## App 기본적인 mediation 광로를 위한 설정
   ```xml
