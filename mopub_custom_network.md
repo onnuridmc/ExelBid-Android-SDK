@@ -1,6 +1,6 @@
 # Mopub에서의 Ad Mediation
 ## 지원 버전 및 Ad Format
-- Exelbid SDK v1.6.6
+- Exelbid SDK v1.6.7
 - Banner, Native
 ```xml
     defaultConfig {
@@ -9,10 +9,10 @@
     }
 ```
 
-## App 기본적인 mediation 광로를 위한 설정
+## App 기본적인 mediation 광고를 위한 설정
   ```xml
   dependencies {
-    implementation 'com.onnuridmc.exelbid:exelbid:1.6.6'
+    implementation 'com.onnuridmc.exelbid:exelbid:1.6.7'
     // Mopub
     implementation('com.mopub:mopub-sdk:+@aar') {
         transitive = true
@@ -34,7 +34,7 @@
   4. **Network**는 **Custom SDK network**를 선택합니다.
   ![import](./img/mopub_newlineitem_2.jpg)
   5. **Custom event class**을 기입합니다. <br/>
-    * Banner : ***com.mopub.adapter.ExelbidCutomBaseAd***<br/>
+    * Banner : ***com.mopub.adapter.ExelbidCustomBaseAd***<br/>
     * Native : ***com.mopub.adapter.ExelbidCustomEventNative***<br/>
   6. **Custom event data**를 아래화 같은 형식으로 작성합니다.<br/>
     * ***{"unitid":"3cef64be38845c4fcdbc2313579d30f2d1f8453a"}***<br/>

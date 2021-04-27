@@ -30,7 +30,7 @@
 
 ## Version History
 
-**Version 1.6.6**
+**Version 1.6.7**
   * _JCenter 종료에 따른 이관 작업 (to MavenCental)_
   * _Native 응답 Data 제공 함수 추가 적용(click data 등)_
 
@@ -144,7 +144,7 @@
 	2. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	implementation 'com.onnuridmc.exelbid:exelbid:1.6.6'
+        	implementation 'com.onnuridmc.exelbid:exelbid:1.6.7'
 	}
     ```
 ### 빌드 API 수준
