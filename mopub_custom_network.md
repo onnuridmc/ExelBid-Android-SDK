@@ -28,15 +28,15 @@
   2. 생성된 **Ad unit ID**를 확인합니다.
 ### Creating a Network Lineitem
   1. **Orders**로 가서 **Create Order**를 선택 생성합니다.
-  2. 해당 Orders로 이동 후 New line item을 선택 합니다.
-  3. Line item name을 적절히 설정 후 Type을 Network line item으로 설정합니다.
+  2. 해당 **Orders** 이동 후 **New line item**을 선택 합니다.
+  3. **Line item name**을 적절히 설정 후 **Type**을 **Network line item**으로 설정합니다.
   ![import](./img/mopub_newlineitem_1.jpg)
-  4. Network는 Custom SDK network를 선택합니다.
+  4. **Network**는 **Custom SDK network**를 선택합니다.
   ![import](./img/mopub_newlineitem_2.jpg)
-  5. Custom event class을 기입합니다. <br/>
+  5. **Custom event class**을 기입합니다. <br/>
     * Banner : ***com.mopub.adapter.ExelbidCutomBaseAd***<br/>
     * Native : ***com.mopub.adapter.ExelbidCustomEventNative***<br/>
-  6. Custom event data를 아래화 같은 형식으로 작성합니다.<br/>
+  6. **Custom event data**를 아래화 같은 형식으로 작성합니다.<br/>
     * ***{"unitid":"3cef64be38845c4fcdbc2313579d30f2d1f8453a"}***<br/>
     * 위 unitid는 Exelbid에서 생성된 unitid로 반드시 Json형태로 위와 같이 적용 되어야 합니다.
     <br/><br/>
