@@ -32,6 +32,7 @@
 
 **Version 1.6.8**
   * Bug Fix(Custom Adapter 노출 관련)_
+  
 **Version 1.6.7**
   * _JCenter 종료에 따른 이관 작업 (to MavenCental)_
   * _Native 응답 Data 제공 함수 추가 적용(click data 등)_
