@@ -30,10 +30,13 @@
 
 ## Version History
 
-**Version 1.6.8**
+**Version 1.7.0**
+  * Apache HTTP( org.apache.http.legacy) 클라이언트 사용 제거, Android 기본 지원 HttpURLConnection으로 대체 적용
+
+**~~Version 1.6.8~~**
   * Bug Fix(Custom Adapter 노출 관련)
 
-**Version 1.6.7**
+**~~Version 1.6.7~~**
   * _JCenter 종료에 따른 이관 작업 (to MavenCental)_
   * _Native 응답 Data 제공 함수 추가 적용(click data 등)_
 
@@ -147,7 +150,7 @@
 	2. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	implementation 'com.onnuridmc.exelbid:exelbid:1.6.8'
+        	implementation 'com.onnuridmc.exelbid:exelbid:1.7.0'
 	}
     ```
 ### 빌드 API 수준
@@ -313,7 +316,7 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
         android:usesCleartextTraffic="true">      
 ```
 
-* Apache HTTP 클라이언트 지원 중단에 대한 설정 필요
+* Apache HTTP 클라이언트 지원 중단에 대한 설정 필요 (Ver 1.7.0 이상에서는 설정 필요 없음)
 <br>Exelbid SDK에서 사용하는 Network 모듈은 Apache HTTP를 사용하고 있습니다. 
 <br>따라서 Android 9 이상을 대상으로 하는 앱이 Apache HTTP 클라이언트를 계속 사용하려면 다음을 AndroidManifest.xml에 추가해야 합니다.
 ```xml
