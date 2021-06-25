@@ -30,6 +30,10 @@
 
 ## Version History
 
+**Version 1.7.3**
+  * 전면 비디오 노출 체크 오류 수정
+  * 미디에이션 기능 업데이트 및 샘플 추가
+
 **Version 1.7.0**
   * Apache HTTP( org.apache.http.legacy) 클라이언트 사용 제거, Android 기본 지원 HttpURLConnection으로 대체 적용
 
@@ -150,7 +154,7 @@
 	2. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	implementation 'com.onnuridmc.exelbid:exelbid:1.7.0'
+        	implementation 'com.onnuridmc.exelbid:exelbid:1.7.3'
 	}
     ```
 ### 빌드 API 수준

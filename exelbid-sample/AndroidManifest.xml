@@ -54,6 +54,17 @@
         </activity>
         <activity android:name=".activity.SampleDialog">
         </activity>
+        <!-- Mediation Sample -->
+        <activity android:name=".activity.SampleBannerMediation"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+        <activity android:name=".activity.SampleInterstitialMediation"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+        <activity android:name=".activity.SampleNativeMediation"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+
         <activity android:name="com.onnuridmc.exelbid.common.ExelBidActivity"
                   android:configChanges="keyboardHidden|orientation|screenSize"
             >
@@ -65,7 +76,9 @@
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
 
-        <meta-data android:name="com.exelbid.appkey"
-                   android:value="1db87a14"/>
+        <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-9668530497062401~3970992844"/>
     </application>
 </manifest>

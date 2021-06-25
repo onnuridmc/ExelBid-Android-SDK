@@ -50,16 +50,22 @@ android {
 
 def exoplayer_version = '2.13.3'
 dependencies {
+//    implementation fileTree(dir: 'libs', include: ['exelbid-release.aar'])
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
     implementation 'com.kakao.adfit:ads-base:3.5.2'
-    implementation 'com.onnuridmc.exelbid:exelbid:1.7.0'
+    implementation 'com.onnuridmc.exelbid:exelbid:1.7.2'
     implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
     implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
+
+    // AdMob
+    implementation 'com.google.android.gms:play-services-ads:19.6.0'
     // Mopub
     implementation('com.mopub:mopub-sdk:+@aar') {
         transitive = true
     }
+    // Facebook
+    implementation 'com.facebook.android:audience-network-sdk:6.2.0'
 }
