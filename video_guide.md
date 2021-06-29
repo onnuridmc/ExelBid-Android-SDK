@@ -5,6 +5,7 @@
     1. 전면 비디오 - 기존 전면 배너와 마찬가지의 지면 형태
     2. 네이티브 비디오 - 기존 네이티브 형식에 MainImage Asset 대시 Video Asset을 대신 활용
 
+- Video 지원은 <b>Exelbid SDK v1.7.3</b> 이상 버전을 사용
 ## ExelBid-Android-SDK 광고 기본 연동
  ExelBid-Android-SDK 연동 가이드를 통한 기본 연동 
 - [ExelBid-Android-SDK 연동 가이드 참조](https://github.com/onnuridmc/ExelBid-Android-SDK)
