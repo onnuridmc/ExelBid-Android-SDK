@@ -15,12 +15,19 @@
 - Exelbid에서는 비디오 플레이어를 ExoPlayer2 기반으로 동작 적용된다.
 - 미 적용시 Exception발생 혹은 광고 노출 되지 않음
 ```java
-def exoplayer_version = '2.9.6'
+def exoplayer_version = '2.13.3'
 dependencies {
     implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
     implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
 }
 ```
+
+## minSdkVersion 24 미만 버전 (비디오 광고 공통)
+- minSdkVersion 24 미만 버전에서는 gradle.properties 에 아래와 같이 적용 필요 (Gradle 플러그인 버그로 인한)
+```java
+    android.enableDexingArtifactTransform=false
+```
+
 
 ## 전면 비디오
 >전면 Video 광고 노출시 적용 - 기존 전면 노출시 사용되는 ExelbidActivity 대신 비디오 노출을 처리하는 VideoPlayerActivity를 manifest에 등록
