@@ -22,5 +22,5 @@
 
 ### Edit  Ad Unit
   1. **Manage->-Ad Units**에서 해당 unit id를 선택 후 설정합니다.
-  2. 생성한 Custom Network에 아래와 같이 설정합니다.
+  2. 생성한 Custom Network에 아래와 같이 Placement ID에 연결 되어질 Exelbid Unit id를  설정합니다.
   ![import](./img/applovin_unit_setting_network.jpg)
