@@ -30,6 +30,11 @@
 
 ## Version History
 
+**Version 1.7.4**
+  * 미디에이션 기능 버그 수정
+  * 노출 트래킹 업데이트(추가 매크로 반영)
+  * 앱러빈 커스텀 네트워크 어댑터 적용
+
 **Version 1.7.3**
   * 전면 비디오 노출 체크 오류 수정
   * 미디에이션 기능 업데이트 및 샘플 추가
@@ -154,7 +159,7 @@
 	2. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	implementation 'com.onnuridmc.exelbid:exelbid:1.7.3'
+        	implementation 'com.onnuridmc.exelbid:exelbid:1.7.4'
 	}
     ```
 ### 빌드 API 수준
