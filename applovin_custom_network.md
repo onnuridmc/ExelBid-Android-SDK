@@ -17,10 +17,10 @@
 
 ### Creating a Custom Network for Exelbid
   1. **Manage->Networks**로 가서 최 하단  **Click here to add a Custom Network**를 선택 생성합니다.
-  2. 생성시 Exelbid 1.7.4 이상 버전에 포한된 Adapter Class Name **com.applovin.adapter.ExelbidMediationAdapter**를 적용합니다.
+  2. 생성시 Exelbid 1.7.4 이상 버전에 포함된 Adapter Class Name : **com.applovin.adapter.ExelbidMediationAdapter**를 적용합니다.
   ![import](./img/applovin_create_network.jpg)
 
 ### Edit  Ad Unit
   1. **Manage->-Ad Units**에서 해당 unit id를 선택 후 설정합니다.
-  2. **위 에서 생성한 Custom Network에 아래와 같이 설정합니다.
+  2. 생성한 Custom Network에 아래와 같이 설정합니다.
   ![import](./img/applovin_unit_setting_network.jpg)
