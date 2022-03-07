@@ -282,6 +282,9 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+// 구글 정책에 따라 대상 API 수준을 31(Android 12)로 업데이트하는 앱은 다음과 같이 매니페스트 파일에서 Google Play 서비스 일반 권한을 선언해야 합니다.
+<uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
 ```
 
 * 권장권한
