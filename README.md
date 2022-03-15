@@ -224,14 +224,16 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
 
 ### AndroidManifest 설정
 
->MetaData와 com.onnuridmc.exelbid.common.ExelBidActivity를 AndroidManifest.xml의 <applicatrion> 태그 안에 추가합니다. 이 Activity는 전면광고를 표시하는데 사용됩니다.<br/>
-필요에 따라서 com.onnuridmc.exelbid.common.ExelbidBrowser를 추가합니다. 이 Activity는 인앱 브라우저(WebView)를 구현한 것으로 광고 클릭시 사용 될 수 있습니다.(자세한 가이드는 개별 문의)
+>com.onnuridmc.exelbid.common.ExelbidBrowser를 추가합니다. 이 Activity는 인앱 브라우저(WebView)를 구현한 것으로 특정 DeepLink 광고 클릭시에만 사용 됩니다.<br/>
+MetaData와 com.onnuridmc.exelbid.common.ExelBidActivity를 AndroidManifest.xml의 <applicatrion> 태그 안에 추가합니다. 이 Activity는 전면광고를 표시하는데 사용됩니다.<br/>
 
 ```xml
-<activity android:name="com.onnuridmc.exelbid.common.ExelBidActivity"
+<!-- 필수 -->
+<activity android:name="com.onnuridmc.exelbid.common.ExelbidBrowser"
           android:configChanges="keyboardHidden|orientation|screenSize">
 </activity>
-<activity android:name="com.onnuridmc.exelbid.common.ExelbidBrowser"
+<!-- 필수(전면 광고시) -->
+<activity android:name="com.onnuridmc.exelbid.common.ExelBidActivity"
           android:configChanges="keyboardHidden|orientation|screenSize">
 </activity>
 ```
@@ -283,7 +285,7 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
 <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-// 구글 정책에 따라 대상 API 수준을 31(Android 12)로 업데이트하는 앱은 다음과 같이 매니페스트 파일에서 Google Play 서비스 일반 권한을 선언해야 합니다.
+// 구글 정책(2022.03.15 발표)에 따라 대상 API 수준을 32(Android 13)로 업데이트하는 앱은 다음과 같이 매니페스트 파일에서 Google Play 서비스 일반 권한을 선언해야 합니다.(정책 적용 2022년 말 예정)
 <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
 ```
 
