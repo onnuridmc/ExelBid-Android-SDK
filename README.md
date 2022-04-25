@@ -19,8 +19,9 @@
   * [인스턴스 공통 메소드](#인스턴스-공통-메소드)
   * [배너광고](#배너광고)
   * [전면 광고](#전면-광고)
+  * [전면 비디오 광고](#전면-비디오-광고)
   * [네이티브](#네이티브)
-  * [네이티브 Adapter](#네이티브-adapter)
+  * [네이티브 비디오](#네이티브-비디오)
   * [다이얼로그 공통 메소드](#다이얼로그-공통-메소드)
   * [다이얼로그 광고 (전면)](#다이얼로그-광고-전면)
   * [다이얼로그 광고 (네이티브)](#다이얼로그-광고-네이티브)
@@ -444,6 +445,32 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
 	destroy()
 	```
 
+### 전면 비디오 광고
+1. build.gradle 에 비디오 컨포넌트 라이브러리 종속성 추가 (비디오 광고 공통)
+
+    - Exelbid에서는 비디오 플레이어를 ExoPlayer2 기반으로 동작 적용된다.
+    - 미 적용시 Exception발생 혹은 광고 노출 되지 않음
+    ```java
+    def exoplayer_version = '2.13.3'
+    dependencies {
+        implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
+        implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
+    }
+    ```
+2. minSdkVersion 24 미만 버전 (비디오 광고 공통)
+
+    - minSdkVersion 24 미만 버전에서는 gradle.properties 에 아래와 같이 적용 필요 (Gradle 플러그인 버그로 인한)
+    ```java
+        android.enableDexingArtifactTransform=false
+    ```
+3. 기존 전면 노출시 사용되는 ExelbidActivity 대신 비디오 노출을 처리하는 VideoPlayerActivity를 manifest에 등록
+
+    - AndroidManifest 설정
+    ```xml
+    <activity android:name="com.onnuridmc.exelbid.lib.vast.VideoPlayerActivity"
+              android:configChanges="keyboardHidden|orientation|screenSize">
+    </activity>
+    ```    
 
 ### 네이티브
 1.	네이티브 광고 인스턴스를 생성합니다.
@@ -554,107 +581,85 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
     show() //네이티브 광고가 올바르게 로딩 된 경우에 Binder에 등록된 정보에 광고 데이터를 바인딩 합니다.
     ```
 
-### 네이티브 Adapter
->ListView등과 같이 한 BaseAdapter를 이용한 컴포넌트 활용시에 사용할수 있는 방법입니다.
 
-1.	AdNativeAdapter 객체 생성
+### 네이티브 비디오
+1. build.gradle 에 비디오 컨포넌트 라이브러리 종속성 추가 (비디오 광고 공통)
+
+    - Exelbid에서는 비디오 플레이어를 ExoPlayer2 기반으로 동작 적용된다.
+    - 미 적용시 Exception발생 혹은 광고 노출 되지 않음
     ```java
-    AdNativeAdapter mAdapter = new AdNativeAdapter(this, {네이티브 유닛 아이디}, inAdapter);
+    def exoplayer_version = '2.13.3'
+    dependencies {
+        implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
+        implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
+    }
     ```
-	- 생성자의 세번째 인자값으로 기존에 사용하고 있는 Adapter를 등록합니다.
+2. minSdkVersion 24 미만 버전 (비디오 광고 공통)
 
-2.	네이티브 광고 설정
-	- ``setNativeViewBinder``
-		```java
-         mAdapter.setNativeViewBinder(new NativeViewBinder.Builder(R.layout.native_item_adview)
-                .mainImageId(R.id.native_main_image)
-                .callToActionButtonId(R.id.native_cta)
-                .titleTextViewId(R.id.native_title)
-                .textTextViewId(R.id.native_text)
-                .iconImageId(R.id.native_icon_image)
-                .adInfoImageId(R.id.native_privacy_information_icon_image)
-                .build());
-        ```
-        ``NativeViewBinder.Builder(int layout_id)`` : Adapter의 getView에서 생성할 layout의 ResourceId를 설정합니다.
-
-	- ``setRequiredAsset`` : 네이티브 광고 요청시 어플리케이션에서 필수로 요청할 항목들을 설정합니다.
-
-3.	광고가 노출될 영역을 설정 한다. fixed position은 정해진 포지션에 광고가 노출되고 repeatinterval은 fixed position 이후로 interval 마다 광고가 노출 된다.
+    - minSdkVersion 24 미만 버전에서는 gradle.properties 에 아래와 같이 적용 필요 (Gradle 플러그인 버그로 인한)
     ```java
-    setPositionning()
+        android.enableDexingArtifactTransform=false
     ```
-    - ``ExelBidClientPositioning`` : 클라이언트에서 설정한 fixed position과 repeat interval을 적용해 광고가 노출 된다.
-    - ``ExelBidServerPositioning`` : 유닛등록시 서버에서 설정한 fixed position과 repeat interval을 적용해 광고가 노출 된다.
+3. 메인 이미지 대신 비디오를 노출 한다.
 
-4. 리스트뷰에 어뎁터를 설정한다.
-    ```java
-    mListView.setAdapter(mAdapter)
-	```
+    - 레이아웃 구성시 com.onnuridmc.exelbid.lib.vast.NativeVideoView로 비디오뷰를 추가 적용한다.
+    - [Sample NativeVideo Layout Link](https://github.com/onnuridmc/ExelBid-Android-SDK/blob/master/exelbid-sample/res/layout/act_native.xml)
+    ```xml
+            ...
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-### 네이티브 Manager
-> 네이티브 광고를 디테일하게 조작할수 있습니다.
+                <ImageView
+                    android:id="@+id/native_icon_image".../>
 
-1.	네이티브 광고 인스턴스를 생성합니다.
-    ```java
-      ExelBidNativeManager mNativeAdMgr = new ExelBidNativeManager(this, mUnitId, new OnAdNativeManagerListener() {
+                <TextView
+                    android:id="@+id/native_title".../>
 
-            @Override
-            public void onFailed(String key, ExelBidError error) {}
+                <ImageView
+                    android:id="@+id/native_privacy_information_icon_image" .../>
+            </LinearLayout>
 
-            @Override
-            public void onShow(String key) {}
+            <TextView
+                android:id="@+id/native_text" ... />
+            <RelativeLayout
+                ...>
 
-            @Override
-            public void onClick(String key) {}
+                <ImageView
+                    android:id="@+id/native_main_image"
+                    ... />
 
-            @Override
-            public void onLoaded(String key) {}
-        });
+                <com.onnuridmc.exelbid.lib.vast.NativeVideoView
+                    android:id="@+id/native_video"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_gravity="center_horizontal"
+                    />
+
+            </RelativeLayout>
+            ...
     ```
-    -	key : 네이티브 광고 요청시 전달한 key값
+    - NativeViewBinder 객체 생성시 mediaViewId를 통해 위의 NativeVideoView의 리소스 ID를 추가한다.
+    - [SampleNativeVideo.java Link](https://github.com/onnuridmc/ExelBid-Android-SDK/blob/master/exelbid-sample/src/main/java/com/onnuridmc/sample/activity/SampleNativeVideo.java)
+      - 주의) mediaViewId로 NativeVideoView 설정시 com.google.android.exoplayer~ 라이브러리 종속성 설정이 없다면 Exception 발생
+      ```java
+              mNativeAd.setNativeViewBinder(new NativeViewBinder.Builder(mNativeRootLayout)
+                      .mainImageId(R.id.native_main_image)
+                      .mediaViewId(R.id.native_video)     // 비디오뷰를 추가한다.
+                      .callToActionButtonId(R.id.native_cta)
+                      .titleTextViewId(R.id.native_title)
+                      .textTextViewId(R.id.native_text)
+                      .iconImageId(R.id.native_icon_image)
+                      .adInfoImageId(R.id.native_privacy_information_icon_image)
+                      .build());
 
-2.	네이티브 광고 요청시 어플리케이션에서 필수로 요청할 항목들을 설정합니다.
-
-3.	광고가 노출될 영역에 대한 정보를 바인딩 합니다.(바인딩하는 방법에 따라 optional)
-
-4.	네이티브 광고 이미지를 조작합니다.
-
-5.	네이티브 광고 요청
-    ```java
-    loadAd()
-    loadAd(String key)
+      ```
+    - 필요하다면 요청시 Video Asset을 필수 지정한다.
     ```
-
-6. 네이티브 광고 데이터 가져오기
-	```java
-	getAdNativeData(String key)
-	```
-    - key : loadAd요청시 지정한 값
-
-7. 네이티브 광고 노출
-	1. 직접 노출
-        ```java
-        bindViewByAdNativeData(final AdNativeData data, NativeViewBinder viewBinder)
-        ```
-        - 네이티브 광고 데이터의 정보를 가지고 Binder의 정보에 데이터를 바인딩합니다.
-
-	2. RecyclerView를 이용
-		```java
-        onCreateViewHolder(final ViewGroup parent, final int viewType)
-        onBindViewHolder(final RecyclerView.ViewHolder holder, final int position)
-        onBindViewHolder(final RecyclerView.ViewHolder holder, AdNativeData data, final int position)
-        ```
-        - RecyclerView.Adapter에서 알맞게 메소드를 호출 합니다.
-
-	3. BaseAdapter를 이용한 ListView등일경우
-		```java
-        getView(AdNativeData data, View convertView);
-        ```
-        - covertView가 Null일경우에는 Binder에 등록한 layout id의 뷰가 생성됩니다.
-
-
-
-
+            // 네이티브 요청시 필수로 존재해야 하는 값을 셋팅한다. 
+            mNativeAd.setRequiredAsset(new NativeAsset[] {NativeAsset.VIDEO, NativeAsset.TITLE, NativeAsset.CTATEXT, NativeAsset.ICON, NativeAsset.MAINIMAGE, NativeAsset.DESC});
+    ```        
+    - Native 특성상 필수로 지정하지 않은(Optional) asset도 응답 될 수 있다. 해당 경우 레이아웃에 준비되지 않은 asset은 무시 됨
 
 ### 다이얼로그 공통 메소드
 - ``loadAd()`` : 광고를 가져옵니다.

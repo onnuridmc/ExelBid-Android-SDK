@@ -9,7 +9,7 @@
 ## ExelBid-Android-SDK 광고 기본 연동
  ExelBid-Android-SDK 연동 가이드를 통한 기본 연동 
 - [ExelBid-Android-SDK 연동 가이드 참조](https://github.com/onnuridmc/ExelBid-Android-SDK)
-- 비디오 광고 소재 지원은 <b><I>Android Exelbid SDK v1.6.4</I></b> 부터 지원
+- 비디오 광고 소재 지원은 <b><I>Android Exelbid SDK v1.7.3</I></b> 부터 지원
 
 ## build.gradle 에 비디오 컨포넌트 라이브러리 종속성 추가 (비디오 광고 공통)
 - Exelbid에서는 비디오 플레이어를 ExoPlayer2 기반으로 동작 적용된다.
