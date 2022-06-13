@@ -91,7 +91,7 @@ ExelBid.getMediationData
     ```java
            // 1. 연동된 미디에이션(광고 SDK) 목록 설정
             ArrayList<MediationType> mediationUseList =
-                    new ArrayList(Arrays.asList(MediationType.EXELBID, MediationType.ADMOB, MediationType.MOPUB, MediationType.FAN));
+                    new ArrayList(Arrays.asList(MediationType.EXELBID, MediationType.ADMOB, MediationType.FAN));
             // 2. 미디에이션 최적화 순서를 받을 리스너 설정 (new OnMediationOrderResultListener)
             // 3. 연동된 광고 SDK 목록과 리스너를 이용하여 Exelbid 광고 객체에 설정한다.
             ExelBid.getMediationData(SampleBannerMediation.this, UNIT_ID_EXELBID_BANNER, mediationUseList
@@ -137,9 +137,6 @@ ExelBid.getMediationData
                 if (currentMediationType.equals(MediationType.ADMOB)) {
                     admobView.loadAd(new AdRequest.Builder().build());
     
-                } else if (currentMediationType.equals(MediationType.MOPUB)) {
-                    moPubView.loadAd();
-    
                 } else if (currentMediationType.equals(MediationType.FAN)) {
                     fanView = new com.facebook.ads.AdView(this, UNIT_ID_FAN_BANNER, AdSize.BANNER_HEIGHT_50);
                     fanContainer.addView(fanView);
@@ -161,6 +158,5 @@ ExelBid.getMediationData
 
 ### ExelBid-Android-SDK 연동 가이드를 통한 기본 연동  - [ExelBid-Android-SDK 연동 가이드 참조](https://github.com/onnuridmc/ExelBid-Android-SDK)
 ### 외에 Exelbid 및 타사 광고 SDK 연동은 각각의 해당 가이드를 참조해 설정한다.
-* Mopub - [https://developers.mopub.com/publishers/android/integrate/](https://developers.mopub.com/publishers/android/integrate/)
 * AdMob - [https://developers.google.com/admob/android/quick-start?hl=ko](https://developers.google.com/admob/android/quick-start?hl=ko)
 * FaceBook - [https://developers.facebook.com/docs/audience-network/guides/ad-formats](https://developers.facebook.com/docs/audience-network/guides/ad-formats)

@@ -2,34 +2,40 @@
 목차
 =================
 
-* [Version History](#version-history)
-* [시작하기 전에](#시작하기-전에)
-* [시작하기](#시작하기)
-* [어플리케이션 설정](#어플리케이션-설정)
-  * [ExelBid SDK 추가하기](#exelbid-sdk-추가하기)
-  * [빌드 API 수준](#빌드-api-수준)
-  * [Google Library 추가하기](#google-library-추가하기)
-  * [프로가드 설정](#프로가드-설정)
-  * [AndroidManifest 설정](#androidmanifest-설정)
-  * [AppKey 설정](#appkey-설정)
-  * [광고 클릭시 브라우저 앱 선택 설정](#광고-클릭시-브라우저-앱-선택-설정)
-  * [Permission 설정](#permission-설정)
-  * [Android 9 Api Level 28+ 사용 설정시 적용 사항](#Android-9-Api-Level-28+-사용-설정시-적용-사항)
-* [광고 적용하기](#광고-적용하기)
-  * [인스턴스 공통 메소드](#인스턴스-공통-메소드)
-  * [배너광고](#배너광고)
-  * [전면 광고](#전면-광고)
-  * [전면 비디오 광고](#전면-비디오-광고)
-  * [네이티브](#네이티브)
-  * [네이티브 비디오](#네이티브-비디오)
-  * [다이얼로그 공통 메소드](#다이얼로그-공통-메소드)
-  * [다이얼로그 광고 (전면)](#다이얼로그-광고-전면)
-  * [다이얼로그 광고 (네이티브)](#다이얼로그-광고-네이티브)
-* [Mediation](#Mediation)
-* [Ads.txt App-ads.txt 적용하기](#ads.txt-App\-ads.txt-적용하기)
+- [목차](#목차)
+  - [Version History](#version-history)
+  - [시작하기 전에](#시작하기-전에)
+  - [시작하기](#시작하기)
+  - [어플리케이션 설정](#어플리케이션-설정)
+    - [ExelBid SDK 추가하기](#exelbid-sdk-추가하기)
+    - [Google Library 추가하기](#google-library-추가하기)
+    - [프로가드 설정](#프로가드-설정)
+    - [AndroidManifest 설정](#androidmanifest-설정)
+    - [~~AppKey 설정~~](#appkey-설정)
+    - [광고 클릭시 브라우저 앱 선택 설정](#광고-클릭시-브라우저-앱-선택-설정)
+    - [Permission 설정](#permission-설정)
+    - [Android 9 Api Level 28+ 사용 설정시 적용 사항](#android-9-api-level-28-사용-설정시-적용-사항)
+  - [광고 적용하기](#광고-적용하기)
+    - [인스턴스 공통 메소드](#인스턴스-공통-메소드)
+    - [배너광고](#배너광고)
+    - [전면 광고](#전면-광고)
+    - [전면 광고 - 비디오](#전면-광고---비디오)
+    - [네이티브](#네이티브)
+    - [전면 네이티브 광고](#전면-네이티브-광고)
+    - [전면 타이머 기능](#전면-타이머-기능)
+    - [다이얼로그 공통 메소드](#다이얼로그-공통-메소드)
+    - [다이얼로그 광고 (전면)](#다이얼로그-광고-전면)
+    - [다이얼로그 광고 (네이티브)](#다이얼로그-광고-네이티브)
+  - [Mediation](#mediation)
+  - [Ads.txt App-ads.txt 적용하기](#adstxt-app-adstxt-적용하기)
 
 
 ## Version History
+
+**Version 1.7.8**
+  * 전면 네이티브 상품 연동 추가
+  * 전면 타이머 기능 추가
+  * 공통함수 setRewarded 설정 추가
 
 **Version 1.7.4**
   * 미디에이션 기능 버그 수정
@@ -357,6 +363,7 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
 *	``setTestMode(boolean)`` : 광고의 테스트를 위해 설정하는 값입니다. 통계에 적용 되지 않으며 항상 광고가 노출되게 됩니다.
 *	``setAdUnitId(String)`` : 광고 아이디를 셋팅 합니다.
 * ``setCoppa(boolean)`` : 선택사항으로 미국 아동 온라인 사생활 보호법에 따라 13세 미만의 사용자를 설정하면 개인 정보를 제한하여 광고 입찰 처리됩니다. (IP, Device ID, Geo 정보등)
+*	``setRewarded(boolean);`` : 지면의 리워드 여부를 설정한다.
 
 ### 배너광고
 
@@ -445,7 +452,7 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
 	destroy()
 	```
 
-### 전면 비디오 광고
+### 전면 광고 - 비디오 
 1. build.gradle 에 비디오 컨포넌트 라이브러리 종속성 추가 (비디오 광고 공통)
 
     - Exelbid에서는 비디오 플레이어를 ExoPlayer2 기반으로 동작 적용된다.
@@ -499,6 +506,7 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
     ```java
     mNativeAd.setNativeViewBinder(new NativeViewBinder.Builder(mNativeRootLayout)
               .mainImageId(R.id.native_main_image)
+              .mediaViewId(R.id.native_video)
               .callToActionButtonId(R.id.native_cta)
               .titleTextViewId(R.id.native_title)
               .textTextViewId(R.id.native_text)
@@ -511,6 +519,7 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
 		광고요청시 설정되는 항목으로는 제목, 상세설명, 메인이미지, 아이콘, 별점, 액션 버튼의 텍스트가 있으며,
         어플리케이션에서 사용할 항목만 NativeViewBinder에 설정하면 됩니다.
 	- ``mainImageId(int resourceId)`` : 생성자에 설정한 View에 포함되어 있는 광고의 메인 이미지가 노출될 ImageView의 id를 설정합니다.
+	- ``mediaViewId(int resourceId)`` : 생성자에 설정한 View에 포함되어 있는 광고의 메인 동영상이 노출될 NativeVideoView의 id를 설정합니다.
 	- ``callToActionButtonId(int resourceId)`` : 생성자에 설정한 View에 포함되어 있는 광고의 ActionButton id를 설정합니다. 해당 Button에 텍스트가 설정 됩니다.
 	- ``titleTextViewId(int resourceId)`` : 생성자에 설정한 View에 포함되어 있는 광고의 제목이 설정 될 TextView의 id를 설정합니다.
 	- ``textTextViewId(int resourceId)`` : 생성자에 설정한 View에 포함되어 있는 광고의 설명이 설정 될 TextView의 id를 설정합니다.
@@ -524,6 +533,8 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
 	- ``build();`` : 설정한 항목으로 NativeViewBinder객체를 생성합니다.
 
 3.	네이티브 광고 요청시 어플리케이션에서 필수로 요청할 항목들을 설정합니다.
+
+  - 기본적으로 NativeViewBinder를 통해 설정된 asset항목들은 옵션으로 요청 되어 지며, 아래 setRequiredAsset를 통해 지정될 경우 필수로 지정된다.
     ```java
     setRequiredAsset(NativeAsset[])
     ```
@@ -534,6 +545,17 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
 	- ``MAINIMAGE`` : 이미지
 	- ``DESC`` : 상세설명
 	- ``RATING`` : 별점
+	- ``VIDEO`` : 메인 동영상
+
+    - MAINIMAGE, VIDEO가 동시에 요청될 시에 MAINIMAGE가 필수, VIDEO는 옵션으로 적용된다.
+    ```java
+    // 네이티브 요청시 필수로 존재해야 하는 값을 셋팅한다. 
+      mNativeAd.setRequiredAsset(
+        new NativeAsset[] {
+          NativeAsset.VIDEO, NativeAsset.TITLE, NativeAsset.CTATEXT, 
+          NativeAsset.ICON, NativeAsset.MAINIMAGE, NativeAsset.DESC}
+        );
+    ```        
 
 4.	네이티브 광고 이미지를 조작합니다.
 	광고 메인 이미지와 아이콘 Bitmap을 수정해야 하는 일이 있을경우에 해당 Controllor를 등록합니다.
@@ -555,7 +577,49 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
     - ``Bitmap iconImageDisplay(Bitmap bitmap, int width, int height)`` :
      	아이콘 이미지가 이미지뷰에 바인딩 되기전에 호출 됩니다. bitmap은 다운받은 IconImage이며 ImageView의 width, height 값이 넘어 옵니다.
 
-5.	네이티브 광고 요청
+1. VIDEO 적용
+   1) build.gradle 에 비디오 컨포넌트 라이브러리 종속성 추가 (비디오 광고 공통)
+
+       - Exelbid에서는 비디오 플레이어를 ExoPlayer2 기반으로 동작 적용된다.
+       - mediaViewId로 NativeVideoView 설정시 com.google.android.exoplayer~ 라이브러리 종속성 설정이 없다면 Exception 발생
+       ```java
+       def exoplayer_version = '2.13.3'
+       dependencies {
+           implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
+           implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
+       }
+       ```
+   2) minSdkVersion 24 미만 버전 (비디오 광고 공통)
+
+       - minSdkVersion 24 미만 버전에서는 gradle.properties 에 아래와 같이 적용 필요 (Gradle 플러그인 버그로 인한)
+       ```java
+           android.enableDexingArtifactTransform=false
+       ```
+   3) 레이아웃 구성시 **com.onnuridmc.exelbid.lib.vast.NativeVideoView**로 비디오뷰를 추가 적용한다.
+
+       ```xml
+      ...
+      <TextView
+          android:id="@+id/native_text" ... />
+      <RelativeLayout
+          ...>
+
+          <ImageView
+              android:id="@+id/native_main_image"
+              ... />
+
+          <com.onnuridmc.exelbid.lib.vast.NativeVideoView
+              android:id="@+id/native_video"
+              android:layout_width="match_parent"
+              android:layout_height="250dp"
+              android:layout_gravity="center_horizontal"
+              />
+
+      </RelativeLayout>
+      ...
+       ```
+
+2. 네이티브 광고 요청
     ```java
     loadAd()
     ```
@@ -565,7 +629,7 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
     mNativeAd.getNativeAdData()
     ```
 
-3.	광고 로딩 확인
+7.	광고 로딩 확인
 	```java
     //광고를 노출시킬 준비가 되어있는지 체크한다.
 	(boolean) isReady() 
@@ -576,90 +640,44 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
 	(boolean) isReady(int adCachTimeSecond) 
 	```
 
-6.	네이티브 광고 노출
+8.	네이티브 광고 노출
     ```java
     show() //네이티브 광고가 올바르게 로딩 된 경우에 Binder에 등록된 정보에 광고 데이터를 바인딩 합니다.
     ```
 
+### 전면 네이티브 광고
+1. 광고 노출 될 전면 Activity의 레이아웃 id를 이용하여 바인더를 생성한다.
 
-### 네이티브 비디오
-1. build.gradle 에 비디오 컨포넌트 라이브러리 종속성 추가 (비디오 광고 공통)
-
-    - Exelbid에서는 비디오 플레이어를 ExoPlayer2 기반으로 동작 적용된다.
-    - 미 적용시 Exception발생 혹은 광고 노출 되지 않음
+	- ``NativeViewBinder.Builder(int layoutId)`` : 전면 네이티브의 layout을 설정합니다.
+  
+  
+2. ExelBidNative 생성시 파라미터로 마지막에 전면 여부(boolean) true로 생성한다.
     ```java
-    def exoplayer_version = '2.13.3'
-    dependencies {
-        implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
-        implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
-    }
+    ExelBidNative mNativeAd = new ExelBidNative(this, mUnitId, new OnAdNativeListener() {
+          @Override
+          public void onFailed(ExelBidError error) {}
+          @Override
+          public void onShow() {}
+          @Override
+          public void onClick() {}
+          @Override
+          public void onLoaded() {}
+      }
+      , true // 전면 여부 설정
+    );
     ```
-2. minSdkVersion 24 미만 버전 (비디오 광고 공통)
+3. 전면 네이티브 광고 노출(show)시 전달 된 레이아웃으로 구성된 새로운 전면(Activity) 화면에 광고가 노출된다.
 
-    - minSdkVersion 24 미만 버전에서는 gradle.properties 에 아래와 같이 적용 필요 (Gradle 플러그인 버그로 인한)
+
+### 전면 타이머 기능
+광고의 전환 성과 향상을 위해 일정 시간 노출을 보장하는 타이머 기능을 제공한다.
+1. 전면 형식의 광고(배너, 비디오, 네이티브)의 경우에만 적용 가능하다. (ExelBidNative, ExelBidInterstitial) 
+2. 적용 
+  *	``setTimer(int sec)`` : 타이머가 동작할 시간(초)를 설정한다.
     ```java
-        android.enableDexingArtifactTransform=false
+    exelbidNative.setTimer(5);
+    exelbidInterstitial.setTimer(5);
     ```
-3. 메인 이미지 대신 비디오를 노출 한다.
-
-    - 레이아웃 구성시 com.onnuridmc.exelbid.lib.vast.NativeVideoView로 비디오뷰를 추가 적용한다.
-    - [Sample NativeVideo Layout Link](https://github.com/onnuridmc/ExelBid-Android-SDK/blob/master/exelbid-sample/res/layout/act_native.xml)
-    ```xml
-            ...
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/native_icon_image".../>
-
-                <TextView
-                    android:id="@+id/native_title".../>
-
-                <ImageView
-                    android:id="@+id/native_privacy_information_icon_image" .../>
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/native_text" ... />
-            <RelativeLayout
-                ...>
-
-                <ImageView
-                    android:id="@+id/native_main_image"
-                    ... />
-
-                <com.onnuridmc.exelbid.lib.vast.NativeVideoView
-                    android:id="@+id/native_video"
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:layout_gravity="center_horizontal"
-                    />
-
-            </RelativeLayout>
-            ...
-    ```
-    - NativeViewBinder 객체 생성시 mediaViewId를 통해 위의 NativeVideoView의 리소스 ID를 추가한다.
-    - [SampleNativeVideo.java Link](https://github.com/onnuridmc/ExelBid-Android-SDK/blob/master/exelbid-sample/src/main/java/com/onnuridmc/sample/activity/SampleNativeVideo.java)
-      - 주의) mediaViewId로 NativeVideoView 설정시 com.google.android.exoplayer~ 라이브러리 종속성 설정이 없다면 Exception 발생
-      ```java
-              mNativeAd.setNativeViewBinder(new NativeViewBinder.Builder(mNativeRootLayout)
-                      .mainImageId(R.id.native_main_image)
-                      .mediaViewId(R.id.native_video)     // 비디오뷰를 추가한다.
-                      .callToActionButtonId(R.id.native_cta)
-                      .titleTextViewId(R.id.native_title)
-                      .textTextViewId(R.id.native_text)
-                      .iconImageId(R.id.native_icon_image)
-                      .adInfoImageId(R.id.native_privacy_information_icon_image)
-                      .build());
-
-      ```
-    - 필요하다면 요청시 Video Asset을 필수 지정한다.
-    ```
-            // 네이티브 요청시 필수로 존재해야 하는 값을 셋팅한다. 
-            mNativeAd.setRequiredAsset(new NativeAsset[] {NativeAsset.VIDEO, NativeAsset.TITLE, NativeAsset.CTATEXT, NativeAsset.ICON, NativeAsset.MAINIMAGE, NativeAsset.DESC});
-    ```        
-    - Native 특성상 필수로 지정하지 않은(Optional) asset도 응답 될 수 있다. 해당 경우 레이아웃에 준비되지 않은 asset은 무시 됨
 
 ### 다이얼로그 공통 메소드
 - ``loadAd()`` : 광고를 가져옵니다.

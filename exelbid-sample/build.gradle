@@ -14,7 +14,7 @@ android {
     buildToolsVersion '29.0.3'
 
     defaultConfig {
-        minSdkVersion 19
+        minSdkVersion 24
         targetSdkVersion 29
         versionCode 1
         versionName version
@@ -56,16 +56,12 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
     implementation 'com.kakao.adfit:ads-base:3.5.2'
-    implementation 'com.onnuridmc.exelbid:exelbid:1.7.3'
+    implementation 'com.onnuridmc.exelbid:exelbid:1.7.8'
     implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
     implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
 
     // AdMob
     implementation 'com.google.android.gms:play-services-ads:19.6.0'
-    // Mopub
-    implementation('com.mopub:mopub-sdk:+@aar') {
-        transitive = true
-    }
     // Facebook
     implementation 'com.facebook.android:audience-network-sdk:6.2.0'
 }

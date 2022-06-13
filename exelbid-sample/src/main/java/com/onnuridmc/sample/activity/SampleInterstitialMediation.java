@@ -19,11 +19,6 @@ import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-import com.mopub.common.MoPub;
-import com.mopub.common.SdkConfiguration;
-import com.mopub.common.SdkInitializationListener;
-import com.mopub.mobileads.MoPubErrorCode;
-import com.mopub.mobileads.MoPubInterstitial;
 import com.onnuridmc.exelbid.ExelBid;
 import com.onnuridmc.exelbid.ExelBidInterstitial;
 import com.onnuridmc.exelbid.common.ExelBidError;
@@ -38,8 +33,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 
-import static com.mopub.common.logging.MoPubLog.LogLevel.DEBUG;
-
 public class SampleInterstitialMediation extends SampleBase implements View.OnClickListener {
 
     private Button loadBtn;
@@ -53,10 +46,6 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
 
     // AdMob
     private InterstitialAd adMobInterstitialAd;
-
-    // MoPub
-    private MoPubInterstitial moPubInterstitial;
-    private MoPubInterstitial.InterstitialAdListener moPubInterstitialAdListener;
 
     //FaceBook
     private com.facebook.ads.InterstitialAd fanInterstitialAd;
@@ -167,43 +156,6 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
 
 
         /********************************************************************************
-         * Mopub 설정
-         *******************************************************************************/
-        final SdkConfiguration.Builder configBuilder = new SdkConfiguration.Builder(UNIT_ID_MOPUB_INTERSTITTIAL);
-        configBuilder.withLogLevel(DEBUG);
-        MoPub.initializeSdk(this, configBuilder.build(), new SdkInitializationListener() {
-            @Override
-            public void onInitializationFinished() {
-                // SDK initialization complete. You may now request ads.
-            }
-        });
-        moPubInterstitialAdListener = new MoPubInterstitial.InterstitialAdListener() {
-            @Override
-            public void onInterstitialLoaded(MoPubInterstitial interstitial) {
-                printLog("MoPub","Load");
-                showBtn.setEnabled(true);
-            }
-
-            @Override
-            public void onInterstitialFailed(MoPubInterstitial interstitial, MoPubErrorCode errorCode) {
-                printLog("MoPub","onFailed " + errorCode.toString());
-                loadMediation();
-            }
-
-            @Override
-            public void onInterstitialShown(MoPubInterstitial interstitial) {
-            }
-
-            @Override
-            public void onInterstitialClicked(MoPubInterstitial interstitial) {
-            }
-
-            @Override
-            public void onInterstitialDismissed(MoPubInterstitial interstitial) {
-            }
-        };
-
-        /********************************************************************************
          * FAN 설정
          *******************************************************************************/
         fanInterstitialAd = new com.facebook.ads.InterstitialAd(this, UNIT_ID_FAN_INTERSTITTIAL);
@@ -260,7 +212,7 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
             showBtn.setEnabled(false);
             mediationOrderResult = null;
 
-            ArrayList<MediationType> mediationUseList = new ArrayList(Arrays.asList(MediationType.ADMOB, MediationType.MOPUB, MediationType.FAN));
+            ArrayList<MediationType> mediationUseList = new ArrayList(Arrays.asList(MediationType.ADMOB, MediationType.FAN));
             ExelBid.getMediationData(SampleInterstitialMediation.this, mEdtAdUnit.getText().toString(), mediationUseList,
                     new OnMediationOrderResultListener() {
                         @Override
@@ -301,13 +253,6 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
                     adMobInterstitialAd.loadAd(adRequest);
                     printLog("ADMOB","Request...");
                 }
-            } else if (currentMediationType.equals(MediationType.MOPUB)) {
-                if (moPubInterstitial == null) {
-                    moPubInterstitial = new MoPubInterstitial(this, UNIT_ID_MOPUB_INTERSTITTIAL);
-                    moPubInterstitial.setInterstitialAdListener(moPubInterstitialAdListener);
-                }
-                moPubInterstitial.load();
-                printLog("MOPUB","Request...");
 
             } else if (currentMediationType.equals(MediationType.FAN)) {
                 fanInterstitialAd.loadAd(fanLoadAdConfig);
@@ -323,9 +268,6 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
                     printLog("ADMOB","Show");
                     adMobInterstitialAd.show();
                 }
-            } else if (currentMediationType.equals(MediationType.MOPUB)) {
-                printLog("MOPUB","Show");
-                moPubInterstitial.show();
             } else if (currentMediationType.equals(MediationType.FAN)) {
                 printLog("FAN","Show");
                 if(fanInterstitialAd != null) {

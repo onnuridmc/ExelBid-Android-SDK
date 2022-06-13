@@ -64,13 +64,6 @@
             ads:adSize="BANNER"
             ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
             android:visibility="gone" />
-        <com.mopub.mobileads.MoPubView
-            android:id="@+id/mopub_view"
-            android:layout_width='320dp'
-            android:layout_height='50dp'
-            android:layout_gravity="center_horizontal"
-            app:moPubAdSize='match_view'
-            android:visibility="gone" />
         <LinearLayout
             android:id="@+id/fan_container"
             android:layout_width="match_parent"

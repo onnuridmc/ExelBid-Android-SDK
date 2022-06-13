@@ -22,9 +22,9 @@ import com.onnuridmc.sample.activity.SampleBannerView;
 import com.onnuridmc.sample.activity.SampleDialog;
 import com.onnuridmc.sample.activity.SampleInterstitialMediation;
 import com.onnuridmc.sample.activity.SampleInterstitialView;
-import com.onnuridmc.sample.activity.SampleMopubBanner;
 import com.onnuridmc.sample.activity.SampleNative;
 import com.onnuridmc.sample.activity.SampleNativeBanner;
+import com.onnuridmc.sample.activity.SampleNativeInterstitial;
 import com.onnuridmc.sample.activity.SampleNativeMediation;
 import com.onnuridmc.sample.activity.SampleNativeVideo;
 
@@ -66,11 +66,11 @@ public class MainActivity extends Activity {
         mAdapter.add(new Pair<String, Class<?>>("다이얼로그광고", SampleDialog.class));
         mAdapter.add(new Pair<String, Class<?>>("네이티브", SampleNative.class));
         mAdapter.add(new Pair<String, Class<?>>("네이티브 비디오", SampleNativeVideo.class));
+        mAdapter.add(new Pair<String, Class<?>>("전면 네이티브", SampleNativeInterstitial.class));
         mAdapter.add(new Pair<String, Class<?>>("네이티브 Banner", SampleNativeBanner.class));
         mAdapter.add(new Pair<String, Class<?>>("배너 Mediation", SampleBannerMediation.class));
         mAdapter.add(new Pair<String, Class<?>>("전면 Mediation", SampleInterstitialMediation.class));
         mAdapter.add(new Pair<String, Class<?>>("네이티브 Mediation", SampleNativeMediation.class));
-        mAdapter.add(new Pair<String, Class<?>>("모펍 Custom Banner", SampleMopubBanner.class));
 
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(new OnItemClickListener() {

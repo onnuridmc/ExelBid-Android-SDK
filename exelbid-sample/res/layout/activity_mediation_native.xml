@@ -74,13 +74,6 @@
             android:layout_height="wrap_content"
             android:visibility="gone" />
 
-        <LinearLayout
-            android:id="@+id/mopub_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone" />
-
         <include
             android:id="@+id/native_ad_container"
             layout="@layout/fan_native_item"

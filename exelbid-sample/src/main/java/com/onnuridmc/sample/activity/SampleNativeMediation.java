@@ -37,17 +37,6 @@ import com.google.android.gms.ads.formats.UnifiedNativeAd;
 import com.google.android.gms.ads.formats.UnifiedNativeAdView;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-import com.mopub.common.MoPub;
-import com.mopub.common.SdkConfiguration;
-import com.mopub.common.SdkInitializationListener;
-import com.mopub.common.logging.MoPubLog;
-import com.mopub.nativeads.AdapterHelper;
-import com.mopub.nativeads.MoPubNative;
-import com.mopub.nativeads.MoPubStaticNativeAdRenderer;
-import com.mopub.nativeads.NativeAd;
-import com.mopub.nativeads.NativeErrorCode;
-import com.mopub.nativeads.RequestParameters;
-import com.mopub.nativeads.ViewBinder;
 import com.onnuridmc.exelbid.ExelBid;
 import com.onnuridmc.exelbid.ExelBidNative;
 import com.onnuridmc.exelbid.common.ExelBidError;
@@ -62,7 +51,6 @@ import com.onnuridmc.sample.utils.PrefManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.List;
 
 public class SampleNativeMediation extends SampleBase implements View.OnClickListener {
@@ -82,11 +70,6 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
     private UnifiedNativeAd adMobNativeAd;
     FrameLayout adMobFrameLayout;
     AdLoader adMobAdLoader;
-
-    // MoPub
-    private MoPubNative moPubNative;
-    private LinearLayout moPubContainer;
-    RequestParameters moPubRequestParameters;
 
     //FaceBook
     private @Nullable
@@ -171,23 +154,6 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
         });
         setAdMob();
 
-        /********************************************************************************
-         * Mopub 설정
-         *******************************************************************************/
-        moPubContainer = findViewById(R.id.mopub_container);
-
-        SdkConfiguration sdkConfiguration = new SdkConfiguration.Builder(UNIT_ID_MOPUB_NATIVE)
-                .withLogLevel(MoPubLog.LogLevel.DEBUG)
-                .withLegitimateInterestAllowed(false)
-                .build();
-        MoPub.initializeSdk(this, sdkConfiguration, new SdkInitializationListener() {
-            @Override
-            public void onInitializationFinished() {
-                printLog("MOPUB","SDK initialized");
-                setMoPub();
-            }
-        });
-
 
         /********************************************************************************
          * Fan 설정
@@ -206,7 +172,7 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
             /**
              * MediationOrder 사용시 설정
              */
-            ArrayList<MediationType> mediationUseList = new ArrayList(Arrays.asList(MediationType.ADMOB, MediationType.MOPUB, MediationType.FAN));
+            ArrayList<MediationType> mediationUseList = new ArrayList(Arrays.asList(MediationType.ADMOB, MediationType.FAN));
             ExelBid.getMediationData(SampleNativeMediation.this, mEdtAdUnit.getText().toString(), mediationUseList,
                     new OnMediationOrderResultListener() {
                         @Override
@@ -245,14 +211,6 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
             } else if (currentMediationType.equals(MediationType.ADMOB)) {
                 adMobAdLoader.loadAd(new AdRequest.Builder().build());
                 printLog("ADMOB","Request...");
-            } else if (currentMediationType.equals(MediationType.MOPUB)) {
-                if(moPubNative != null) {
-                    if (moPubContainer != null) {
-                        moPubContainer.removeAllViews();
-                    }
-                    moPubNative.makeRequest(moPubRequestParameters);
-                    printLog("MOPUB","Request...");
-                }
             } else if (currentMediationType.equals(MediationType.FAN)) {
                 fanNativeAd = new com.facebook.ads.NativeAd(this, UNIT_ID_FAN_NATIVE);
                 fanNativeAd.loadAd(fanNativeAd.buildLoadAdConfig().withAdListener(fanNativeAdListener).build());
@@ -268,29 +226,12 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
                     adMobFrameLayout.setVisibility(View.VISIBLE);
                     printLog("ADMOB","Show");
                 }
-                if(moPubContainer != null) {
-                    moPubContainer.setVisibility(View.GONE);
-                }
-                if(fanNativeAdLayout != null) {
-                    fanNativeAdLayout.setVisibility(View.GONE);
-                }
-            } else if (currentMediationType.equals(MediationType.MOPUB)) {
-                if(adMobFrameLayout != null) {
-                    adMobFrameLayout.setVisibility(View.GONE);
-                }
-                if(moPubContainer != null) {
-                    moPubContainer.setVisibility(View.VISIBLE);
-                    printLog("MOPUB","Show");
-                }
                 if(fanNativeAdLayout != null) {
                     fanNativeAdLayout.setVisibility(View.GONE);
                 }
             } else if (currentMediationType.equals(MediationType.FAN)) {
                 if(adMobFrameLayout != null) {
                     adMobFrameLayout.setVisibility(View.GONE);
-                }
-                if(moPubContainer != null) {
-                    moPubContainer.setVisibility(View.GONE);
                 }
                 if(fanNativeAdLayout != null) {
                     fanNativeAdLayout.setVisibility(View.VISIBLE);
@@ -306,9 +247,6 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
         }
         if(adMobFrameLayout != null) {
             adMobFrameLayout.setVisibility(View.GONE);
-        }
-        if(moPubContainer != null) {
-            moPubContainer.setVisibility(View.GONE);
         }
         if(fanNativeAdLayout != null) {
             fanNativeAdLayout.setVisibility(View.GONE);
@@ -341,9 +279,6 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
         }
         if (adMobNativeAd != null) {
             adMobNativeAd.destroy();
-        }
-        if (moPubNative != null) {
-            moPubNative.destroy();
         }
         super.onDestroy();
     }
@@ -469,71 +404,6 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
         }).build();
     }
 
-    /**
-     * Mopub 설정
-     */
-    private void setMoPub() {
-        moPubNative = new MoPubNative(this, UNIT_ID_MOPUB_NATIVE, new MoPubNative.MoPubNativeNetworkListener() {
-            @Override
-            public void onNativeLoad(NativeAd nativeAd) {
-                final AdapterHelper adapterHelper = new AdapterHelper(SampleNativeMediation.this, 0, 2);
-                final View adView;
-
-                adView = adapterHelper.getAdView(null, null, nativeAd, new ViewBinder.Builder(0).build());
-                nativeAd.setMoPubNativeEventListener(new NativeAd.MoPubNativeEventListener() {
-                    @Override
-                    public void onImpression(View view) {
-
-                    }
-
-                    @Override
-                    public void onClick(View view) {
-
-                    }
-                });
-
-                if (moPubContainer != null) {
-                    moPubContainer.addView(adView);
-                    printLog("MOPUB","Load");
-                    showBtn.setEnabled(true);
-                } else {
-                    printLog("MOPUB","failed to show. Ad container is null.");
-                }
-
-            }
-
-            @Override
-            public void onNativeFail(NativeErrorCode errorCode) {
-                moPubContainer.setVisibility(View.GONE);
-                printLog("MOPUB","Fail : " + errorCode.toString());
-                loadMediation();
-            }
-        });
-
-        MoPubStaticNativeAdRenderer moPubStaticNativeAdRenderer = new MoPubStaticNativeAdRenderer(
-                new ViewBinder.Builder(R.layout.mopub_native_item)
-                        .mainImageId(R.id.native_main_image)
-                        .iconImageId(R.id.native_icon_image)
-                        .titleId(R.id.native_title)
-                        .textId(R.id.native_text)
-                        .callToActionId(R.id.native_cta)
-                        .privacyInformationIconImageId(R.id.native_privacy_information_icon_image)
-                        .build());
-        moPubNative.registerAdRenderer(moPubStaticNativeAdRenderer);
-
-        EnumSet<RequestParameters.NativeAdAsset> desiredAssets = EnumSet.of(
-                RequestParameters.NativeAdAsset.TITLE,
-                RequestParameters.NativeAdAsset.TEXT,
-                RequestParameters.NativeAdAsset.CALL_TO_ACTION_TEXT,
-                RequestParameters.NativeAdAsset.MAIN_IMAGE,
-                RequestParameters.NativeAdAsset.ICON_IMAGE
-        );
-        moPubRequestParameters = new RequestParameters.Builder()
-//                .location(exampleLocation)
-//                .keywords(exampleKeywords)
-                .desiredAssets(desiredAssets)
-                .build();
-    }
 
     /**
      * FaceBook 설정

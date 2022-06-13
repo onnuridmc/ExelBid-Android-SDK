@@ -25,13 +25,13 @@
         <activity android:name="com.onnuridmc.sample.activity.SampleInterstitialView"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
-        <activity android:name=".activity.SampleNativeMulti"
-            android:windowSoftInputMode="stateAlwaysHidden">
-        </activity>
         <activity android:name=".activity.SampleNative"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
         <activity android:name=".activity.SampleNativeVideo"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+        <activity android:name=".activity.SampleNativeInterstitial"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
         <activity android:name=".activity.SampleNativeBanner"
@@ -72,9 +72,6 @@
         <activity
             android:name="com.onnuridmc.exelbid.lib.vast.VideoPlayerActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"></activity>
-        <activity android:name=".activity.SampleMopubBanner"
-            android:windowSoftInputMode="stateAlwaysHidden">
-        </activity>
 
         <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data

@@ -8,23 +8,15 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
 import com.facebook.ads.AdSize;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-import com.mopub.common.MoPub;
-import com.mopub.common.SdkConfiguration;
-import com.mopub.common.SdkInitializationListener;
-import com.mopub.mobileads.MoPubErrorCode;
-import com.mopub.mobileads.MoPubView;
 import com.onnuridmc.exelbid.ExelBid;
 import com.onnuridmc.exelbid.ExelBidAdView;
 import com.onnuridmc.exelbid.common.ExelBidError;
@@ -38,8 +30,6 @@ import com.onnuridmc.sample.utils.PrefManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static com.mopub.common.logging.MoPubLog.LogLevel.DEBUG;
-
 public class SampleBannerMediation extends SampleBase implements View.OnClickListener {
 
     EditText mEdtAdUnit;
@@ -50,9 +40,6 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
 
     // AdMob
     private com.google.android.gms.ads.AdView admobView;
-
-    // MoPub
-    MoPubView moPubView;
 
     //FaceBook
     private com.facebook.ads.AdView fanView;
@@ -146,49 +133,6 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
 
 
         /********************************************************************************
-         * Mopub 설정
-         *******************************************************************************/
-        final SdkConfiguration.Builder configBuilder = new SdkConfiguration.Builder(UNIT_ID_MOPUB_BANNER);
-        configBuilder.withLogLevel(DEBUG);
-        MoPub.initializeSdk(this, configBuilder.build(), new SdkInitializationListener() {
-            @Override
-            public void onInitializationFinished() {
-                // SDK initialization complete. You may now request ads.
-            }
-        });
-
-        moPubView = findViewById(R.id.mopub_view);
-        moPubView.setAdUnitId(UNIT_ID_MOPUB_BANNER);
-        moPubView.setAdSize(MoPubView.MoPubAdSize.HEIGHT_50);
-        moPubView.setBannerAdListener(new MoPubView.BannerAdListener() {
-            @Override
-            public void onBannerLoaded(@NonNull MoPubView banner) {
-                printLog("MOPUB","onBannerLoaded");
-                moPubView.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onBannerFailed(MoPubView banner, MoPubErrorCode errorCode) {
-                printLog("MOPUB","onBannerFailed : " + errorCode.toString());
-                loadMediation();
-            }
-
-            @Override
-            public void onBannerClicked(MoPubView banner) {
-                printLog("MOPUB","onBannerClicked");
-            }
-
-            @Override
-            public void onBannerExpanded(MoPubView banner) {
-            }
-
-            @Override
-            public void onBannerCollapsed(MoPubView banner) {
-            }
-        });
-
-
-        /********************************************************************************
          * FaceBook 설정
          *******************************************************************************/
         fanContainer = findViewById(R.id.fan_container);
@@ -224,7 +168,7 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
             mediationOrderResult = null;
             // 1. 연동된 타사 광고 목록 설정
             ArrayList<MediationType> mediationUseList =
-                    new ArrayList(Arrays.asList(MediationType.EXELBID, MediationType.ADMOB, MediationType.MOPUB, MediationType.FAN));
+                    new ArrayList(Arrays.asList(MediationType.EXELBID, MediationType.ADMOB, MediationType.FAN));
             // 2. 타사 광고 최적화 순서를 받을 리스너 설정
             // 3. 타사 광고 목록과 리스너를 Exelbid 광고 객체에 설정한다.
             ExelBid.getMediationData(SampleBannerMediation.this, mEdtAdUnit.getText().toString(), mediationUseList
@@ -272,9 +216,6 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
 //                                .build());
                 admobView.loadAd(new AdRequest.Builder().build());
                 printLog("ADMOB","Request...");
-            } else if (currentMediationType.equals(MediationType.MOPUB)) {
-                moPubView.loadAd();
-                printLog("MOPUB","Request...");
             } else if (currentMediationType.equals(MediationType.FAN)) {
                 fanView = new com.facebook.ads.AdView(this, UNIT_ID_FAN_BANNER, AdSize.BANNER_HEIGHT_50);
                 fanContainer.addView(fanView);
@@ -290,9 +231,6 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
         }
         if(admobView != null) {
             admobView.setVisibility(View.GONE);
-        }
-        if(moPubView != null) {
-            moPubView.setVisibility(View.GONE);
         }
         if(fanContainer != null) {
             fanContainer.setVisibility(View.GONE);
@@ -331,9 +269,6 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
         }
         if (admobView != null) {
             admobView.destroy();
-        }
-        if (moPubView != null) {
-            moPubView.destroy();
         }
         super.onDestroy();
     }
