@@ -32,7 +32,7 @@
 
 ## Version History
 
-**Version 1.7.8**
+**Version 1.7.9**
   * 전면 네이티브 상품 연동 추가
   * 전면 타이머 기능 추가
   * 공통함수 setRewarded 설정 추가
@@ -166,7 +166,7 @@
 	2. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	implementation 'com.onnuridmc.exelbid:exelbid:1.7.8'
+        	implementation 'com.onnuridmc.exelbid:exelbid:1.7.9'
 	}
     ```
 ### 빌드 API 수준
