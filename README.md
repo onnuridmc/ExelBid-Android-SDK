@@ -356,6 +356,24 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
 
 ## 광고 적용하기
 
+### UID2.0 (v1.8.4 이상)
+
+>광고 타켓팅을 위해 필요한 아이디입니다.
+
+1.  사용자 로그인 후 Exelbid.setUserId(context, string, string) 
+	      
+	PII : Personally Identifiable Information (email 또는 email_hash 값 과 같은 개인 식별 정보)
+    ```java
+    Exelbid.setUserId(Context, String(PII Id), String(PII Type))
+    
+    ```
+	- ``Context`` : context
+	- ``String(PII Id)`` : 개인 식별 정보 (email 또는 email_hash) 
+	      
+	      ex)test@email.com or 73062D872926C2A556F17B36F50E328DDF9BFF9D403939BD14B6C3B7F5A33FC2
+	- ``String(PII Type)`` : Type (UID20_TYPE_EMAIL : Email, UID20_TYPE_EMAIL_HASH : Email Hash)
+
+	      
 ### 인스턴스 공통 메소드
 
 >광고의 효율을 높이기 위해 나이, 성별을 설정하는 것이 좋습니다.
@@ -368,6 +386,7 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
 * ``setCoppa(boolean)`` : 선택사항으로 미국 아동 온라인 사생활 보호법에 따라 13세 미만의 사용자를 설정하면 개인 정보를 제한하여 광고 입찰 처리됩니다. (IP, Device ID, Geo 정보등)
 *	``setRewarded(boolean);`` : 지면의 리워드 여부를 설정한다.
 
+	      
 ### 배너광고
 
 >띠 배너 형태의 광고를 사용합니다.
