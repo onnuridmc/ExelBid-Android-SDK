@@ -16,6 +16,7 @@
     - [Permission 설정](#permission-설정)
     - [Android 9 Api Level 28+ 사용 설정시 적용 사항](#android-9-api-level-28-사용-설정시-적용-사항)
   - [광고 적용하기](#광고-적용하기)
+    - [UID2.0](#uid20)
     - [인스턴스 공통 메소드](#인스턴스-공통-메소드)
     - [배너광고](#배너광고)
     - [전면 광고](#전면-광고)
@@ -356,9 +357,9 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
 
 ## 광고 적용하기
 
-### UID2.0 (v1.8.4 이상)
+### UID2.0
 
->광고 타켓팅을 위해 필요한 아이디입니다.
+>광고 타켓팅을 위해 필요한 아이디입니다. (v1.8.4 이상)
 
 1.  사용자 로그인 후 Exelbid.setUserId(context, string, string) 
 	      
