@@ -173,7 +173,7 @@
 	2. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	implementation 'com.onnuridmc.exelbid:exelbid:1.8.1'
+        	implementation 'com.onnuridmc.exelbid:exelbid:1.8.3'
 	}
     ```
 ### 빌드 API 수준
@@ -360,31 +360,6 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
 
 ## 광고 적용하기
 
-### UID2.0
-
->광고 타켓팅을 위해 필요한 아이디입니다. (v1.8.3 이상)
-
-1.  사용자 로그인 후 Exelbid.setUserId(context, string, string) 
-	      
-	PII : Personally Identifiable Information (email 또는 email_hash 값 과 같은 개인 식별 정보)
-    ```java
-    Exelbid.setUserId(Context, String id, Uid20Type type)
-    
-    ```
-	- ``Context`` : context
-	- ``String id`` : 개인 식별 정보 (email 또는 email_hash) 
-	      
-	      ex)test@email.com or 73062D872926C2A556F17B36F50E328DDF9BFF9D403939BD14B6C3B7F5A33FC2
-	- ``Uid20Type type`` : 
-      ```java
-      public enum Uid20Type {
-        EMAIL("email"),
-        EMAIL_HASH("email_hash"),
-        PHONE("phone"),
-        PHONE_HASH("phone_hash");
-      }
-      ```
-
 	      
 ### 인스턴스 공통 메소드
 
@@ -397,6 +372,33 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
 *	``setAdUnitId(String)`` : 광고 아이디를 셋팅 합니다.
 * ``setCoppa(boolean)`` : 선택사항으로 미국 아동 온라인 사생활 보호법에 따라 13세 미만의 사용자를 설정하면 개인 정보를 제한하여 광고 입찰 처리됩니다. (IP, Device ID, Geo 정보등)
 *	``setRewarded(boolean);`` : 지면의 리워드 여부를 설정한다.
+
+### UID2.0
+
+>광고 타켓팅을 위해 필요한 아이디입니다. (v1.8.3 이상)
+
+* 사용자 로그인 후 Exelbid.setUserId(context, string, string) 
+
+    ```java
+    Exelbid.setUserId(Context, String id, Uid20Type type)
+    
+    ```
+	- ``Context`` : context
+	- ``String id`` : PII (개인 식별 정보) (email 또는 email_hash)
+
+      PII : Personally Identifiable Information (email 또는 email_hash 값 과 같은 개인 식별 정보)
+
+	    ex)test@email.com or 73062D872926C2A556F17B36F50E328DDF9BFF9D403939BD14B6C3B7F5A33FC2
+
+	- ``Uid20Type type`` : 
+      ```java
+      public enum Uid20Type {
+        EMAIL("email"),
+        EMAIL_HASH("email_hash"),
+        PHONE("phone"),
+        PHONE_HASH("phone_hash");
+      }
+      ```
 
 	      
 ### 배너광고
