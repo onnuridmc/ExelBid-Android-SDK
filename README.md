@@ -33,6 +33,9 @@
 
 ## Version History
 
+**Version 1.8.3**
+  * UID2.0 설정 추가
+
 **Version 1.8.1**
   * 네트워크 모듈 안정화 작업
 
@@ -359,20 +362,28 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
 
 ### UID2.0
 
->광고 타켓팅을 위해 필요한 아이디입니다. (v1.8.4 이상)
+>광고 타켓팅을 위해 필요한 아이디입니다. (v1.8.3 이상)
 
 1.  사용자 로그인 후 Exelbid.setUserId(context, string, string) 
 	      
 	PII : Personally Identifiable Information (email 또는 email_hash 값 과 같은 개인 식별 정보)
     ```java
-    Exelbid.setUserId(Context, String(PII Id), String(PII Type))
+    Exelbid.setUserId(Context, String id, Uid20Type type)
     
     ```
 	- ``Context`` : context
-	- ``String(PII Id)`` : 개인 식별 정보 (email 또는 email_hash) 
+	- ``String id`` : 개인 식별 정보 (email 또는 email_hash) 
 	      
 	      ex)test@email.com or 73062D872926C2A556F17B36F50E328DDF9BFF9D403939BD14B6C3B7F5A33FC2
-	- ``String(PII Type)`` : Type (UID20_TYPE_EMAIL : Email, UID20_TYPE_EMAIL_HASH : Email Hash)
+	- ``Uid20Type type`` : 
+      ```java
+      public enum Uid20Type {
+        EMAIL("email"),
+        EMAIL_HASH("email_hash"),
+        PHONE("phone"),
+        PHONE_HASH("phone_hash");
+      }
+      ```
 
 	      
 ### 인스턴스 공통 메소드
