@@ -33,6 +33,10 @@
 
 ## Version History
 
+**Version 1.8.4**
+  * UID 2.0 설정 업데이트(Token Update)
+  * Bug Fix - 특정 버전(Android 5.0)에서의 오류 발생 수정
+
 **Version 1.8.3**
   * UID2.0 설정 추가
 
@@ -173,7 +177,7 @@
 	2. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	implementation 'com.onnuridmc.exelbid:exelbid:1.8.3'
+        	implementation 'com.onnuridmc.exelbid:exelbid:1.8.4'
 	}
     ```
 ### 빌드 API 수준
