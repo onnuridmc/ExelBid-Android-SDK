@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <!--rectangle with rounded corners-->
+    <item android:top="0dp" android:bottom="20dp">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+            android:shape="rectangle"
+            >
+            <solid android:color="#353535" />
+            <size
+                android:width="85dp"
+                android:height="30dp"/>
+            <corners android:radius="19dp" />
+        </shape>
+    </item>
+    <!--triangle-->
+    <item android:bottom="0dp" android:top="30dp" android:gravity="center_horizontal|bottom">
+        <rotate
+            android:fromDegrees="40"
+            android:toDegrees="45"
+            android:pivotX="400%"
+            android:pivotY="250%">
+            <shape android:shape="rectangle">
+                <solid android:color="#353535" />
+                <size
+                    android:height="15dp"
+                    android:width="10dp"/>
+                <corners android:radius="1dp"/>
+            </shape>
+        </rotate>
+    </item>
+</layer-list>

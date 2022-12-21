@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_medium_without_chatbox"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:orientation="horizontal"
+    android:background="#E8E8F3"
+    android:padding="4dp"
+    >
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_marginRight="3dp"
+        android:background="@drawable/native_template_round_rectangle"
+        android:orientation="vertical"
+        android:weightSum="3"
+        android:padding="8dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/native_icon_image"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentLeft="true"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/roundedImageView" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="3dp"
+            android:gravity="center"
+            >
+            <TextView
+                android:id="@+id/native_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_semibold"
+                android:text="TITLE"
+                android:textColor="#353535"
+                android:textSize="12sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:id="@+id/native_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_medium"
+                android:layout_centerVertical="true"
+                android:gravity="start"
+                android:text="DESCRIPTION"
+                android:textColor="#727279"
+                android:textSize="10sp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/native_privacy_information_icon_image"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:contentDescription="native_privacy_information_icon_image"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="10dp"
+        android:visibility="gone"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="92dp"
+        >
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/native_main_image"
+            android:layout_width="176dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:scaleType="fitXY"
+            app:shapeAppearanceOverlay="@style/leftRoundedImageView"
+            />
+
+        <Button
+            android:id="@+id/native_cta"
+            android:layout_width="25dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/native_template_cta_button"
+            />
+    </LinearLayout>
+</LinearLayout>
+<!-- 100dp - 8dp = 92dp
+        92dp * 2.04 = 187.68dp -->

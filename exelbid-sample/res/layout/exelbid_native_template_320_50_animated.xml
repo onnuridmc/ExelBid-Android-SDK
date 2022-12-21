@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_small_animated"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="#E8E8F3"
+    >
+
+    <LinearLayout
+        android:id="@+id/linear_container"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:background="#E8E8F3"
+        android:paddingVertical="2dp"
+        android:paddingHorizontal="4dp"
+        >
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/native_icon_image"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/roundedImageView" />
+
+        <LinearLayout
+            android:id="@+id/title_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="4dp"
+            android:background="@drawable/native_template_round_rectangle"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            >
+            <TextView
+                android:id="@+id/native_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_semibold"
+                android:text="TITLE"
+                android:layout_gravity="center_vertical"
+                android:gravity="start"
+                android:textColor="#353535"
+                android:textSize="13sp"
+                android:maxLines="2"
+                android:ellipsize="end"/>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/native_privacy_information_icon_image"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:contentDescription="native_privacy_information_icon_image"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="10dp"
+            android:visibility="gone"/>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/native_main_image"
+            android:layout_width="88dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/leftRoundedImageView"
+            />
+
+        <Button
+            android:id="@+id/native_cta"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/native_template_cta_button_separate"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/chatbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-10dp"
+        android:layout_toLeftOf="@+id/empty_view"
+        android:background="@drawable/native_template_chatbox"
+        android:fontFamily="@font/pretendard_medium"
+        android:gravity="center"
+        android:paddingTop="4dp"
+        android:paddingBottom="20dp"
+        android:text="Touch Me!"
+        android:textColor="#FFF"
+        android:textSize="12sp"></TextView>
+
+    <View
+        android:id="@+id/empty_view"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/arrow_btn"
+        android:layout_width="25dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:background="@null"
+        android:layout_marginEnd="13dp"
+        android:layout_marginBottom="5dp"
+        android:src="@drawable/native_template_cta_arrow_right_separate" />
+
+</RelativeLayout>
+    <!-- 50dp - 4dp = 46dp
+        46dp * 2.04 = 93.84dp -->
