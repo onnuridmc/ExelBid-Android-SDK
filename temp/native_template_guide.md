@@ -13,6 +13,12 @@
    
    - ``exelbid_native_template_320_50__animated.xml`` : 320*50 사이즈. '기본 형태 + 말풍선 + 애니메이션' 네이티브 템플릿 레이아웃입니다.
    
+   - ``exelbid_native_template_320_70_without_chatbox.xml`` : 320*70 사이즈. '기본 형태' 네이티브 템플릿 레이아웃입니다.
+   
+   - ``exelbid_native_template_320_70__chatbox.xml`` : 320*70 사이즈. '기본 형태 + 말풍선' 네이티브 템플릿 레이아웃입니다.
+   
+   - ``exelbid_native_template_320_70__animated.xml`` : 320*70 사이즈. '기본 형태 + 말풍선 + 애니메이션' 네이티브 템플릿 레이아웃입니다.
+
    - ``exelbid_native_template_320_100_without_chatbox.xml`` : 320*100 사이즈. '기본 형태' 네이티브 템플릿 레이아웃입니다.
    
    - ``exelbid_native_template_320_100__chatbox.xml`` : 320*100 사이즈. '기본 형태 + 말풍선' 네이티브 템플릿 레이아웃입니다.
