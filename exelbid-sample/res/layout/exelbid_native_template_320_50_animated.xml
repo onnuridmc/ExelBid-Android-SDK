@@ -3,112 +3,193 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root_small_animated"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="wrap_content"
     android:background="#E8E8F3"
     >
 
-    <LinearLayout
-        android:id="@+id/linear_container"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:background="#E8E8F3"
-        android:paddingVertical="2dp"
-        android:paddingHorizontal="4dp"
+        android:layout_height="wrap_content"
         >
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/native_icon_image"
-            android:layout_width="46dp"
-            android:layout_height="46dp"
-            android:layout_gravity="center_vertical"
-            android:gravity="center"
-            android:scaleType="centerCrop"
-            app:shapeAppearanceOverlay="@style/roundedImageView" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:background="#E8E8F3"
+            android:paddingVertical="2dp"
+            android:paddingHorizontal="4dp"
+            app:layout_constraintDimensionRatio="320:50"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/icon_container"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/native_icon_image"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    app:shapeAppearanceOverlay="@style/roundedImageView"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/title_container"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="4dp"
+                android:background="@drawable/native_template_round_rectangle"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                >
+                <TextView
+                    android:id="@+id/native_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:text="TITLE"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="start"
+                    android:textColor="#353535"
+                    android:textSize="13sp"
+                    android:maxLines="2"
+                    android:ellipsize="end"/>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/native_privacy_information_icon_image"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:contentDescription="native_privacy_information_icon_image"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="10dp"
+                android:visibility="gone"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/image_container"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/native_main_image"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:scaleType="fitXY"
+                    app:layout_constraintDimensionRatio="1200:627"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearanceOverlay="@style/leftRoundedImageView" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <RelativeLayout
+                android:layout_width="40dp"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/cta_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/native_template_cta_button_separate" />
+
+                <ImageView
+                    android:id="@+id/arrow_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginBottom="4dp"
+                    android:background="@null"
+                    android:paddingHorizontal="5dp"
+                    android:src="@drawable/native_template_cta_arrow_right_separate" />
+
+                <Button
+                    android:id="@+id/native_cta"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
 
         <LinearLayout
-            android:id="@+id/title_container"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginHorizontal="4dp"
-            android:background="@drawable/native_template_round_rectangle"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:paddingHorizontal="4dp"
+            app:layout_constraintDimensionRatio="320:50"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             >
-            <TextView
-                android:id="@+id/native_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/pretendard_semibold"
-                android:text="TITLE"
-                android:layout_gravity="center_vertical"
-                android:gravity="start"
-                android:textColor="#353535"
-                android:textSize="13sp"
-                android:maxLines="2"
-                android:ellipsize="end"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                >
+
+                <TextView
+                    android:id="@+id/chatbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="-40dp"
+                    android:layout_marginRight="-20dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="20dp"
+                    android:layout_toLeftOf="@+id/empty_view"
+                    android:background="@drawable/native_template_chatbox"
+                    android:text="Touch Me!"
+                    android:textColor="#FFF"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toTopOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/empty_view"
+                    >
+                </TextView>
+                <View
+                    android:id="@+id/empty_view"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:visibility="invisible"
+                    app:layout_constraintDimensionRatio="1200:627"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginEnd="40dp"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/native_privacy_information_icon_image"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:contentDescription="native_privacy_information_icon_image"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="10dp"
-            android:visibility="gone"/>
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/native_main_image"
-            android:layout_width="88dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:scaleType="centerCrop"
-            app:shapeAppearanceOverlay="@style/leftRoundedImageView"
-            />
-
-        <Button
-            android:id="@+id/native_cta"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/native_template_cta_button_separate"
-            />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/chatbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="-10dp"
-        android:layout_toLeftOf="@+id/empty_view"
-        android:background="@drawable/native_template_chatbox"
-        android:fontFamily="@font/pretendard_medium"
-        android:gravity="center"
-        android:paddingTop="4dp"
-        android:paddingBottom="20dp"
-        android:text="Touch Me!"
-        android:textColor="#FFF"
-        android:textSize="12sp"></TextView>
-
-    <View
-        android:id="@+id/empty_view"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_alignParentEnd="true"
-        android:visibility="invisible" />
-
-    <ImageView
-        android:id="@+id/arrow_btn"
-        android:layout_width="25dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:background="@null"
-        android:layout_marginEnd="13dp"
-        android:layout_marginBottom="5dp"
-        android:src="@drawable/native_template_cta_arrow_right_separate" />
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </RelativeLayout>
-    <!-- 50dp - 4dp = 46dp
-        46dp * 2.04 = 93.84dp -->
