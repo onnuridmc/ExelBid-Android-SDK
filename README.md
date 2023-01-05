@@ -379,30 +379,8 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
 
 ### UID2.0
 
->광고 타켓팅을 위해 필요한 아이디입니다. (v1.8.3 이상)
-
-* 사용자 로그인 후 Exelbid.setUserId(context, string, string) 
-
-    ```java
-    Exelbid.setUserId(Context, String id, Uid20Type type)
-    
-    ```
-	- ``Context`` : context
-	- ``String id`` : PII (개인 식별 정보) (email 또는 email_hash)
-
-      PII : Personally Identifiable Information (email 또는 email_hash 값 과 같은 개인 식별 정보)
-
-	    ex)test@email.com or 73062D872926C2A556F17B36F50E328DDF9BFF9D403939BD14B6C3B7F5A33FC2
-
-	- ``Uid20Type type`` : 
-      ```java
-      public enum Uid20Type {
-        EMAIL("email"),
-        EMAIL_HASH("email_hash"),
-        PHONE("phone"),
-        PHONE_HASH("phone_hash");
-      }
-      ```
+>광고 타켓팅을 위해 필요한 아이디입니다. (v1.8.4 이상)
+* 운영팀에 따로 문의 바랍니다.
 
 	      
 ### 배너광고
