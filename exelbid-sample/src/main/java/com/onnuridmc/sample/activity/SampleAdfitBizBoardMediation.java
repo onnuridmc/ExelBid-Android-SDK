@@ -247,7 +247,7 @@ public class SampleAdfitBizBoardMediation extends SampleBase implements View.OnC
      */
     private void initAdfit() {
         bizBoardAdTemplateLayout = findViewById(R.id.biz_board_ad_template_layout);
-        adFitNativeAdLoader = AdFitNativeAdLoader.create(this, "");
+        adFitNativeAdLoader = AdFitNativeAdLoader.create(this, "test-id");
         adfitRequest = new AdFitNativeAdRequest.Builder()
                 .setAdInfoIconPosition(AdFitAdInfoIconPosition.RIGHT_TOP) // 광고 정보 아이콘 위치 설정 (container view 내에서의 광고 아이콘 위치)
                 .setVideoAutoPlayPolicy(AdFitVideoAutoPlayPolicy.WIFI_ONLY) // 비디오 광고 자동 재생 정책 설정
