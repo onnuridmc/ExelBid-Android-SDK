@@ -54,7 +54,7 @@ public class SampleNativeBanner extends Activity  implements View.OnClickListene
         mNativeAd = new ExelBidNative(this, mUnitId, new OnAdNativeListener() {
 
             @Override
-            public void onFailed(ExelBidError error) {
+            public void onFailed(ExelBidError error, int statusCode) {
                 Log.d(TAG, "onFailed" + error.toString());
             }
 

@@ -17,6 +17,7 @@ import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.kakao.adfit.ads.ba.BannerAdView;
 import com.onnuridmc.exelbid.ExelBid;
 import com.onnuridmc.exelbid.ExelBidAdView;
 import com.onnuridmc.exelbid.common.ExelBidError;
@@ -32,19 +33,22 @@ import java.util.Arrays;
 
 public class SampleBannerMediation extends SampleBase implements View.OnClickListener {
 
+    private MediationOrderResult mediationOrderResult;
+    private MediationType currentMediationType;
     EditText mEdtAdUnit;
     // Exelbid
     private ExelBidAdView exelbidAdView;
-    private MediationOrderResult mediationOrderResult;
-    private MediationType currentMediationType;
 
     // AdMob
     private com.google.android.gms.ads.AdView admobView;
 
     //FaceBook
     private com.facebook.ads.AdView fanView;
-    LinearLayout fanContainer;
+    LinearLayout fanAdView;
     com.facebook.ads.AdListener fanAdListener;
+
+    // Kakao adfit
+    private BannerAdView adfitAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +79,7 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
             }
 
             @Override
-            public void onAdFailed(ExelBidError errorCode) {
+            public void onAdFailed(ExelBidError errorCode, int statusCode) {
                 printLog("Exelbid","Fail : " + errorCode.getErrorMessage());
                 exelbidAdView.setVisibility(View.GONE);
                 loadMediation();
@@ -132,10 +136,11 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
         });
 
 
+
         /********************************************************************************
          * FaceBook 설정
          *******************************************************************************/
-        fanContainer = findViewById(R.id.fan_container);
+        fanAdView = findViewById(R.id.fan_view);
         fanAdListener = new com.facebook.ads.AdListener() {
             @Override
             public void onError(Ad ad, AdError adError) {
@@ -147,7 +152,7 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
             @Override
             public void onAdLoaded(Ad ad) {
                 printLog("FAN",": Loaded " + ad.toString());
-                fanContainer.setVisibility(View.VISIBLE);
+                fanAdView.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -158,6 +163,29 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
             public void onLoggingImpression(Ad ad) {
             }
         };
+
+        /********************************************************************************
+         * kakao adfit 설정
+         *******************************************************************************/
+        adfitAdView = findViewById(R.id.adfit_view);
+        adfitAdView.setClientId("test-id");
+        adfitAdView.setAdListener(new com.kakao.adfit.ads.AdListener() {
+            @Override
+            public void onAdLoaded() {
+                printLog("Adfit",": onAdLoaded ");
+                adfitAdView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAdFailed(int i) {
+
+            }
+
+            @Override
+            public void onAdClicked() {
+
+            }
+        });
     }
 
     @Override
@@ -218,7 +246,7 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
                 printLog("ADMOB","Request...");
             } else if (currentMediationType.equals(MediationType.FAN)) {
                 fanView = new com.facebook.ads.AdView(this, UNIT_ID_FAN_BANNER, AdSize.BANNER_HEIGHT_50);
-                fanContainer.addView(fanView);
+                fanAdView.addView(fanView);
                 fanView.loadAd(fanView.buildLoadAdConfig().withAdListener(fanAdListener).build());
                 printLog("FAN","Request...");
             }
@@ -232,8 +260,11 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
         if(admobView != null) {
             admobView.setVisibility(View.GONE);
         }
-        if(fanContainer != null) {
-            fanContainer.setVisibility(View.GONE);
+        if(fanAdView != null) {
+            fanAdView.setVisibility(View.GONE);
+        }
+        if(adfitAdView != null) {
+            adfitAdView.setVisibility(View.GONE);
         }
     }
 
@@ -245,6 +276,9 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
         }
         if (admobView != null) {
             admobView.pause();
+        }
+        if (adfitAdView != null) {
+            adfitAdView.pause();
         }
         super.onPause();
     }
@@ -259,6 +293,9 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
         if (admobView != null) {
             admobView.resume();
         }
+        if (adfitAdView != null) {
+            adfitAdView.resume();
+        }
     }
 
     /** Called before the activity is destroyed */
@@ -269,6 +306,10 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
         }
         if (admobView != null) {
             admobView.destroy();
+        }
+        if (adfitAdView != null) {
+            adfitAdView.destroy();
+            adfitAdView = null;
         }
         super.onDestroy();
     }

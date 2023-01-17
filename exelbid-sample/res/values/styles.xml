@@ -4,5 +4,20 @@
     <style name="AppTheme" parent="@android:style/Theme.Light.NoTitleBar">
         <!-- Customize your theme here. -->
     </style>
+    <!--  ImageView Style  -->
+    <style name="roundedImageView" parent="">
+        <item name="cornerFamilyTopRight">rounded</item>
+        <item name="cornerSize">6dp</item>
+    </style>
+    <style name="leftRoundedImageView" parent="">
+        <item name="cornerFamilyTopRight">rounded</item>
+        <item name="cornerSizeTopLeft">6dp</item>
+        <item name="cornerSizeBottomLeft">6dp</item>
+    </style>
+    <style name="rightRoundedImageView" parent="">
+        <item name="cornerFamilyTopRight">rounded</item>
+        <item name="cornerSizeTopRight">6dp</item>
+        <item name="cornerSizeBottomRight">6dp</item>
+    </style>
 
 </resources>

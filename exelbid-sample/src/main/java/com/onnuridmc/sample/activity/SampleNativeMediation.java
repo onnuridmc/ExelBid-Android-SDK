@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.facebook.ads.Ad;
@@ -37,6 +38,14 @@ import com.google.android.gms.ads.formats.UnifiedNativeAd;
 import com.google.android.gms.ads.formats.UnifiedNativeAdView;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.kakao.adfit.ads.na.AdFitAdInfoIconPosition;
+import com.kakao.adfit.ads.na.AdFitMediaView;
+import com.kakao.adfit.ads.na.AdFitNativeAdBinder;
+import com.kakao.adfit.ads.na.AdFitNativeAdLayout;
+import com.kakao.adfit.ads.na.AdFitNativeAdLoader;
+import com.kakao.adfit.ads.na.AdFitNativeAdRequest;
+import com.kakao.adfit.ads.na.AdFitNativeAdView;
+import com.kakao.adfit.ads.na.AdFitVideoAutoPlayPolicy;
 import com.onnuridmc.exelbid.ExelBid;
 import com.onnuridmc.exelbid.ExelBidNative;
 import com.onnuridmc.exelbid.common.ExelBidError;
@@ -68,15 +77,22 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
 
     // AdMob
     private UnifiedNativeAd adMobNativeAd;
-    FrameLayout adMobFrameLayout;
+    FrameLayout adMobNativeLayout;
     AdLoader adMobAdLoader;
 
     //FaceBook
     private @Nullable
-    NativeAdLayout fanNativeAdLayout;
+    NativeAdLayout fanNativeLayout;
     private @Nullable
     com.facebook.ads.NativeAd fanNativeAd;
     NativeAdListener fanNativeAdListener;
+
+    // Kakao Adfit
+    private FrameLayout adfitNativeLayout;
+    AdFitNativeAdLoader.AdLoadListener adFitAdLoadListener;
+    AdFitNativeAdRequest adfitRequest;
+    AdFitNativeAdLoader adFitNativeAdLoader;
+    private AdFitNativeAdBinder adfitNativeAdBinder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,65 +117,22 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
         /********************************************************************************
          * Exelbid 설정
          *******************************************************************************/
-        // 네이티브 요청 객체를 생성한다.
-        exelBidNative = new ExelBidNative(this, mEdtAdUnit.getText().toString(), new OnAdNativeListener() {
-            @Override
-            public void onFailed(ExelBidError error) {
-                printLog("Exelbid","onFailed " + error.toString());
-                exelbidNativeLayout.setVisibility(View.GONE);
-                loadMediation();
-            }
-
-            @Override
-            public void onShow() {
-                printLog("Exelbid","onShow");
-            }
-
-            @Override
-            public void onClick() {
-                printLog("Exelbid","onClick");
-            }
-
-            @Override
-            public void onLoaded() {
-                printLog("Exelbid","onLoaded");
-                // Exelbid는 자동 노출 처리한다.
-                exelbidNativeLayout.setVisibility(View.VISIBLE);
-                exelBidNative.show();
-            }
-        });
-
-        exelbidNativeLayout = findViewById(R.id.native_layout);
-        exelBidNative.setNativeViewBinder(new NativeViewBinder.Builder(exelbidNativeLayout)
-                .mainImageId(R.id.native_main_image)
-                .callToActionButtonId(R.id.native_cta)
-                .titleTextViewId(R.id.native_title)
-                .textTextViewId(R.id.native_text)
-                .iconImageId(R.id.native_icon_image)
-                .adInfoImageId(R.id.native_privacy_information_icon_image)
-                .build());
-
-        // 네이티브 요청시 필수로 존재해야 하는 값을 셋팅한다. 해당 조건 셋팅으로 인해서 광고가 존재하지 않을 확률이 높아집니다.
-        exelBidNative.setRequiredAsset(new NativeAsset[] {NativeAsset.TITLE, NativeAsset.CTATEXT, NativeAsset.ICON, NativeAsset.MAINIMAGE, NativeAsset.DESC});
-
+        initExelbid();
 
         /********************************************************************************
          * AdMob 설정
          *******************************************************************************/
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-                printLog("ADMOB", "onInitializationComplete initializationStatus : " + initializationStatus.toString());
-            }
-        });
-        setAdMob();
-
+        initAdMob();
 
         /********************************************************************************
          * Fan 설정
          *******************************************************************************/
-        fanNativeAdLayout = findViewById(R.id.native_ad_container);
-        setFan();
+        initFan();
+
+        /********************************************************************************
+         * Exelbid 설정
+         *******************************************************************************/
+        initAdfit();
     }
 
 
@@ -175,20 +148,20 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
             ArrayList<MediationType> mediationUseList = new ArrayList(Arrays.asList(MediationType.ADMOB, MediationType.FAN));
             ExelBid.getMediationData(SampleNativeMediation.this, mEdtAdUnit.getText().toString(), mediationUseList,
                     new OnMediationOrderResultListener() {
-                        @Override
-                        public void onMediationOrderResult(MediationOrderResult mediationOrderResult) {
-                            printLog("Mediation","onMediationOrderResult");
-                            if(mediationOrderResult != null && mediationOrderResult.getSize() > 0) {
-                                SampleNativeMediation.this.mediationOrderResult = mediationOrderResult;
-                                loadMediation();
-                            }
-                        }
+                @Override
+                public void onMediationOrderResult(MediationOrderResult mediationOrderResult) {
+                    printLog("Mediation","onMediationOrderResult");
+                    if(mediationOrderResult != null && mediationOrderResult.getSize() > 0) {
+                        SampleNativeMediation.this.mediationOrderResult = mediationOrderResult;
+                        loadMediation();
+                    }
+                }
 
-                        @Override
-                        public void onMediationFail(int errorCode, String errorMsg) {
-                            printLog("Mediation","onMediationFail :: " + errorMsg + "(" + errorCode + ")");
-                        }
-                    });
+                @Override
+                public void onMediationFail(int errorCode, String errorMsg) {
+                    printLog("Mediation","onMediationFail :: " + errorMsg + "(" + errorCode + ")");
+                }
+            });
             printLog("Mediation","Request...");
         } else if(v.getId() == R.id.show_btn) {
             showMediation();
@@ -202,40 +175,47 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
             return;
         }
 
+        printLog("Mediation List size", "" + mediationOrderResult.getSize());
         currentMediationType = mediationOrderResult.poll();
-        if(currentMediationType != null) {
-
+        if (currentMediationType != null) {
             if (currentMediationType.equals(MediationType.EXELBID)) {
                 mediationOrderResult = null;
                 exelBidNative.loadAd();
             } else if (currentMediationType.equals(MediationType.ADMOB)) {
                 adMobAdLoader.loadAd(new AdRequest.Builder().build());
-                printLog("ADMOB","Request...");
             } else if (currentMediationType.equals(MediationType.FAN)) {
                 fanNativeAd = new com.facebook.ads.NativeAd(this, UNIT_ID_FAN_NATIVE);
                 fanNativeAd.loadAd(fanNativeAd.buildLoadAdConfig().withAdListener(fanNativeAdListener).build());
-                printLog("FAN","Request...");
+            } else if (currentMediationType.equals(MediationType.ADFIT)) {
+                adFitNativeAdLoader.loadAd(adfitRequest, adFitAdLoadListener);
+            } else {
+                printLog(currentMediationType.toString(), "Not Setting...");
+                loadMediation();
+                return;
             }
+            printLog(currentMediationType.toString(), "Request...");
         }
     }
 
     private void showMediation() {
         if(currentMediationType != null) {
-            if (currentMediationType.equals(MediationType.ADMOB)) {
-                if(adMobFrameLayout != null) {
-                    adMobFrameLayout.setVisibility(View.VISIBLE);
-                    printLog("ADMOB","Show");
+            hideAllView();
+            printLog(currentMediationType.toString(),"Show");
+            if (currentMediationType.equals(MediationType.EXELBID)) {
+                if (exelbidNativeLayout != null) {
+                    exelbidNativeLayout.setVisibility(View.VISIBLE);
                 }
-                if(fanNativeAdLayout != null) {
-                    fanNativeAdLayout.setVisibility(View.GONE);
+            }else if (currentMediationType.equals(MediationType.ADMOB)) {
+                if(adMobNativeLayout != null) {
+                    adMobNativeLayout.setVisibility(View.VISIBLE);
                 }
             } else if (currentMediationType.equals(MediationType.FAN)) {
-                if(adMobFrameLayout != null) {
-                    adMobFrameLayout.setVisibility(View.GONE);
+                if(fanNativeLayout != null) {
+                    fanNativeLayout.setVisibility(View.VISIBLE);
                 }
-                if(fanNativeAdLayout != null) {
-                    fanNativeAdLayout.setVisibility(View.VISIBLE);
-                    printLog("FAN","Show");
+            } else if (currentMediationType.equals(MediationType.ADFIT)) {
+                if(adfitNativeLayout != null) {
+                    adfitNativeLayout.setVisibility(View.VISIBLE);
                 }
             }
         }
@@ -245,11 +225,14 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
         if(exelbidNativeLayout != null) {
             exelbidNativeLayout.setVisibility(View.GONE);
         }
-        if(adMobFrameLayout != null) {
-            adMobFrameLayout.setVisibility(View.GONE);
+        if(adMobNativeLayout != null) {
+            adMobNativeLayout.setVisibility(View.GONE);
         }
-        if(fanNativeAdLayout != null) {
-            fanNativeAdLayout.setVisibility(View.GONE);
+        if(fanNativeLayout != null) {
+            fanNativeLayout.setVisibility(View.GONE);
+        }
+        if(adfitNativeLayout != null) {
+            adfitNativeLayout.setVisibility(View.GONE);
         }
     }
 
@@ -280,15 +263,75 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
         if (adMobNativeAd != null) {
             adMobNativeAd.destroy();
         }
+
+        if(adfitNativeAdBinder != null) {
+            adfitNativeAdBinder.unbind();
+            adfitNativeAdBinder = null;
+        }
+        adFitNativeAdLoader = null;
+
         super.onDestroy();
+    }
+
+    /**
+     * Exelbid 설정
+     */
+    private void initExelbid() {
+        // 네이티브 요청 객체를 생성한다.
+        exelBidNative = new ExelBidNative(this, mEdtAdUnit.getText().toString(), new OnAdNativeListener() {
+            @Override
+            public void onFailed(ExelBidError error, int statusCode) {
+                printLog("Exelbid","onFailed " + error.toString());
+                exelbidNativeLayout.setVisibility(View.GONE);
+                loadMediation();
+            }
+
+            @Override
+            public void onShow() {
+                printLog("Exelbid","onShow");
+            }
+
+            @Override
+            public void onClick() {
+                printLog("Exelbid","onClick");
+            }
+
+            @Override
+            public void onLoaded() {
+                printLog("Exelbid","onLoaded");
+                // Exelbid는 자동 노출 처리한다.
+                exelbidNativeLayout.setVisibility(View.VISIBLE);
+                exelBidNative.show();
+            }
+        });
+
+        exelbidNativeLayout = findViewById(R.id.exelbid_native_container);
+        exelBidNative.setNativeViewBinder(new NativeViewBinder.Builder(exelbidNativeLayout)
+                .mainImageId(R.id.native_main_image)
+                .callToActionButtonId(R.id.native_cta)
+                .titleTextViewId(R.id.native_title)
+                .textTextViewId(R.id.native_text)
+                .iconImageId(R.id.native_icon_image)
+                .adInfoImageId(R.id.native_privacy_information_icon_image)
+                .build());
+
+        // 네이티브 요청시 필수로 존재해야 하는 값을 셋팅한다. 해당 조건 셋팅으로 인해서 광고가 존재하지 않을 확률이 높아집니다.
+        exelBidNative.setRequiredAsset(new NativeAsset[] {NativeAsset.TITLE, NativeAsset.CTATEXT, NativeAsset.ICON, NativeAsset.MAINIMAGE, NativeAsset.DESC});
+
     }
 
     /**
      * Admob 설정
      */
-    private void setAdMob() {
+    private void initAdMob() {
 
-        adMobFrameLayout = findViewById(R.id.admob_container);
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+                printLog("ADMOB", "onInitializationComplete initializationStatus : " + initializationStatus.toString());
+            }
+        });
+        adMobNativeLayout = findViewById(R.id.admob_native_container);
         AdLoader.Builder builder = new AdLoader.Builder(this, UNIT_ID_ADMOB_NATIVE);
         builder.forUnifiedNativeAd(
                 new UnifiedNativeAd.OnUnifiedNativeAdLoadedListener() {
@@ -380,8 +423,8 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
                             });
                         } else {
                         }
-                        adMobFrameLayout.removeAllViews();
-                        adMobFrameLayout.addView(adView);
+                        adMobNativeLayout.removeAllViews();
+                        adMobNativeLayout.addView(adView);
                         printLog("ADMOB","Load");
                         showBtn.setEnabled(true);
                     }
@@ -398,18 +441,19 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
                 String error = String.format("ADMOB Fail : domain: %s, code: %d, message: %s",
                         loadAdError.getDomain(), loadAdError.getCode(), loadAdError.getMessage());
                 Log.e(TAG, error);
-                adMobFrameLayout.setVisibility(View.GONE);
+                printLog("ADMOB","Fail : " + error);
+                adMobNativeLayout.setVisibility(View.GONE);
                 loadMediation();
             }
         }).build();
     }
 
-
     /**
      * FaceBook 설정
      */
-    private void setFan() {
+    private void initFan() {
 
+        fanNativeLayout = findViewById(R.id.fan_native_container);
         fanNativeAd = new com.facebook.ads.NativeAd(this, UNIT_ID_FAN_NATIVE);
         fanNativeAdListener = new NativeAdListener() {
             @Override
@@ -419,7 +463,7 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
             @Override
             public void onError(Ad ad, AdError adError) {
                 printLog("FAN","Fail : " + adError.getErrorMessage());
-                fanNativeAdLayout.setVisibility(View.GONE);
+                fanNativeLayout.setVisibility(View.GONE);
                 loadMediation();
             }
 
@@ -433,7 +477,7 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
                     return;
                 }
 
-                if (fanNativeAdLayout == null) {
+                if (fanNativeLayout == null) {
                     printLog("FAN","onAdLoaded Error");
                     loadMediation();
                     return;
@@ -448,9 +492,9 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
                     return;
                 }
 
-                LinearLayout adChoicesContainer = fanNativeAdLayout.findViewById(R.id.ad_choices_container);
+                LinearLayout adChoicesContainer = fanNativeLayout.findViewById(R.id.ad_choices_container);
                 if (adChoicesContainer != null) {
-                    AdOptionsView adOptionsView = new AdOptionsView(SampleNativeMediation.this, fanNativeAd, fanNativeAdLayout);
+                    AdOptionsView adOptionsView = new AdOptionsView(SampleNativeMediation.this, fanNativeAd, fanNativeLayout);
                     adChoicesContainer.removeAllViews();
                     adChoicesContainer.addView(adOptionsView, 0);
                 }
@@ -458,14 +502,14 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
                 Log.d(TAG, "Aspect ratio of ad: " + fanNativeAd.getAspectRatio());
 
                 // Create native UI using the ad metadata.
-                com.facebook.ads.MediaView nativeAdIcon = fanNativeAdLayout.findViewById(R.id.native_ad_icon);
-                TextView nativeAdTitle = fanNativeAdLayout.findViewById(R.id.native_ad_title);
-                TextView nativeAdBody = fanNativeAdLayout.findViewById(R.id.native_ad_body);
-                TextView sponsoredLabel = fanNativeAdLayout.findViewById(R.id.native_ad_sponsored_label);
-                TextView nativeAdSocialContext = fanNativeAdLayout.findViewById(R.id.native_ad_social_context);
-                Button nativeAdCallToAction = fanNativeAdLayout.findViewById(R.id.native_ad_call_to_action);
+                com.facebook.ads.MediaView nativeAdIcon = fanNativeLayout.findViewById(R.id.native_ad_icon);
+                TextView nativeAdTitle = fanNativeLayout.findViewById(R.id.native_ad_title);
+                TextView nativeAdBody = fanNativeLayout.findViewById(R.id.native_ad_body);
+                TextView sponsoredLabel = fanNativeLayout.findViewById(R.id.native_ad_sponsored_label);
+                TextView nativeAdSocialContext = fanNativeLayout.findViewById(R.id.native_ad_social_context);
+                Button nativeAdCallToAction = fanNativeLayout.findViewById(R.id.native_ad_call_to_action);
 
-                com.facebook.ads.MediaView nativeAdMedia = fanNativeAdLayout.findViewById(R.id.native_ad_media);
+                com.facebook.ads.MediaView nativeAdMedia = fanNativeLayout.findViewById(R.id.native_ad_media);
                 nativeAdMedia.setListener(new MediaViewListener() {
                     @Override
                     public void onVolumeChange(com.facebook.ads.MediaView mediaView, float volume) {
@@ -521,7 +565,7 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
                 clickableViews.add(nativeAdIcon);
                 clickableViews.add(nativeAdMedia);
                 clickableViews.add(nativeAdCallToAction);
-                fanNativeAd.registerViewForInteraction(fanNativeAdLayout, nativeAdMedia, nativeAdIcon, clickableViews);
+                fanNativeAd.registerViewForInteraction(fanNativeLayout, nativeAdMedia, nativeAdIcon, clickableViews);
 
                 // Optional: tag views
                 NativeAdBase.NativeComponentTag.tagView(nativeAdIcon, NativeAdBase.NativeComponentTag.AD_ICON);
@@ -559,5 +603,59 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
             public void onLoggingImpression(Ad ad) {
             }
         };
+    }
+
+    /**
+     * Kakao Adfit 설정
+     */
+    private void initAdfit() {
+        adfitNativeLayout = findViewById(R.id.adfit_native_container);
+        adFitNativeAdLoader = AdFitNativeAdLoader.create(this, "test-id");
+        adfitRequest = new AdFitNativeAdRequest.Builder()
+                .setAdInfoIconPosition(AdFitAdInfoIconPosition.RIGHT_TOP) // 광고 정보 아이콘 위치 설정 (container view 내에서의 광고 아이콘 위치)
+                .setVideoAutoPlayPolicy(AdFitVideoAutoPlayPolicy.WIFI_ONLY) // 비디오 광고 자동 재생 정책 설정
+                .build();
+        adFitAdLoadListener = new AdFitNativeAdLoader.AdLoadListener() {
+            @Override
+            public void onAdLoaded(@NonNull AdFitNativeAdBinder binder) {
+                printLog("ADFIT","Load");
+                if (adFitNativeAdLoader == null) {
+                    // [Activity]가 먼저 종료된 경우, 메모리 누수(Memory Leak) 및 오류를 방지를 위해 응답을 무시
+                    return;
+                }
+
+                if(adfitNativeAdBinder != null) {
+                    adfitNativeAdBinder.unbind();
+                }
+
+                adfitNativeLayout.removeAllViews();
+
+                View adfitNativeAdView = getLayoutInflater().inflate(R.layout.adfit_native_item, adfitNativeLayout, false);
+                adfitNativeLayout.addView(adfitNativeAdView);
+                // 광고 SDK에 넘겨줄 [AdFitNativeAdLayout] 정보 구성
+                AdFitNativeAdLayout nativeAdLayout =
+                        new AdFitNativeAdLayout.Builder((AdFitNativeAdView) adfitNativeAdView.findViewById(R.id.containerView)) // 네이티브 광고 영역 (광고 아이콘이 배치 됩니다)
+                                .setTitleView((TextView) adfitNativeAdView.findViewById(R.id.titleTextView)) // 광고 제목 (필수)
+                                .setBodyView((TextView) adfitNativeAdView.findViewById(R.id.bodyTextView)) // 광고 홍보문구
+                                .setProfileIconView((ImageView) adfitNativeAdView.findViewById(R.id.profileIconView)) // 광고주 아이콘 (브랜드 로고)
+                                .setProfileNameView((TextView) adfitNativeAdView.findViewById(R.id.profileNameTextView)) // 광고주 이름 (브랜드명)
+                                .setMediaView((AdFitMediaView) adfitNativeAdView.findViewById(R.id.mediaView)) // 광고 미디어 소재 (이미지, 비디오) (필수)
+                                .setCallToActionButton((Button) adfitNativeAdView.findViewById(R.id.callToActionButton)) // 행동유도버튼 (알아보기, 바로가기 등)
+                                .build();
+
+                // 광고 노출
+                adfitNativeAdBinder = binder;
+                binder.bind(nativeAdLayout);
+
+            }
+
+            @Override
+            public void onAdLoadError(int errorCode) {
+                printLog("ADFIT","Fail errorCode : " + errorCode);
+                adfitNativeLayout.setVisibility(View.GONE);
+                loadMediation();
+            }
+        };
+
     }
 }

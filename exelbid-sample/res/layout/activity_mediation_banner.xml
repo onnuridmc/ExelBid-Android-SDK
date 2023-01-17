@@ -65,12 +65,17 @@
             ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
             android:visibility="gone" />
         <LinearLayout
-            android:id="@+id/fan_container"
+            android:id="@+id/fan_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:visibility="gone"
             />
+        <com.kakao.adfit.ads.ba.BannerAdView
+            android:id="@+id/adfit_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
     </LinearLayout>
 
 </RelativeLayout>

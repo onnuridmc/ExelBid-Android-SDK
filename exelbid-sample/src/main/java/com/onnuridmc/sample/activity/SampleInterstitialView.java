@@ -75,7 +75,7 @@ public class SampleInterstitialView extends Activity {
             }
 
             @Override
-            public void onInterstitialFailed(ExelBidError errorCode) {
+            public void onInterstitialFailed(ExelBidError errorCode, int statusCode) {
                 findViewById(R.id.interstitial_show).setEnabled(false);
             }
         });

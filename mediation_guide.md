@@ -22,9 +22,10 @@ Exelbid Android SDK를 이용한 광고 연동시 Mediation 연동의 경우, �
             }
             ```
         2. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
+            * SDK 버전은 [기본 가이드](https://github.com/onnuridmc/ExelBid-Android-SDK#exelbid-sdk-%EC%B6%94%EA%B0%80%ED%95%98%EA%B8%B0)에서 최신 버전 확인 적용합니다.
             ```java
             dependencies {
-                    implementation 'com.onnuridmc.exelbid:exelbid:1.7.3'
+                    implementation 'com.onnuridmc.exelbid:exelbid:1.8.4'
             }
 6. ExelBid.getMediationData 을 호출하여 최적화 순서 호출
 ExelBid.getMediationData
@@ -160,3 +161,4 @@ ExelBid.getMediationData
 ### 외에 Exelbid 및 타사 광고 SDK 연동은 각각의 해당 가이드를 참조해 설정한다.
 * AdMob - [https://developers.google.com/admob/android/quick-start?hl=ko](https://developers.google.com/admob/android/quick-start?hl=ko)
 * FaceBook - [https://developers.facebook.com/docs/audience-network/guides/ad-formats](https://developers.facebook.com/docs/audience-network/guides/ad-formats)
+* Kakao-Adfit - [https://github.com/adfit/adfit-android-sdk/blob/master/docs/GUIDE.md](https://github.com/adfit/adfit-android-sdk/blob/master/docs/GUIDE.md)

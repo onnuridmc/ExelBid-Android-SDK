@@ -77,7 +77,7 @@ public class SampleBannerView extends Activity {
             }
 
             @Override
-            public void onAdFailed(ExelBidError errorCode) {
+            public void onAdFailed(ExelBidError errorCode, int statusCode) {
                 Toast.makeText(SampleBannerView.this, errorCode.getErrorMessage(), Toast.LENGTH_SHORT).show();
             }
         });

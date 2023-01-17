@@ -154,9 +154,10 @@ public class SampleDialog extends Activity {
             }
 
             @Override
-            public void onInterstitialFailed(ExelBidError errorCode) {
+            public void onInterstitialFailed(ExelBidError exelBidError, int i) {
                 btnInterstitialShow.setEnabled(false);
             }
+
         });
         mInterstitialDialog.setOnButton1ClickListener(new View.OnClickListener() {
             @Override
@@ -220,7 +221,7 @@ public class SampleDialog extends Activity {
         nativeDialog.setAdNativeListener(new OnAdNativeListener() {
 
             @Override
-            public void onFailed(ExelBidError error) {
+            public void onFailed(ExelBidError error, int statusCode) {
                 btnNativeShow.setEnabled(false);
             }
 
@@ -301,7 +302,7 @@ public class SampleDialog extends Activity {
 
         mNativeRoundDialog.setAdNativeListener(new OnAdNativeListener() {
             @Override
-            public void onFailed(ExelBidError error) {
+            public void onFailed(ExelBidError error, int statusCode) {
                 btnRoundNativeShow.setEnabled(false);
             }
 
@@ -371,7 +372,7 @@ public class SampleDialog extends Activity {
 
         nativeRoundDialog.setAdNativeListener(new OnAdNativeListener() {
             @Override
-            public void onFailed(ExelBidError error) {
+            public void onFailed(ExelBidError error, int statusCode) {
                 btnRoundNativeShow.setEnabled(false);
             }
 

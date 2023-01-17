@@ -257,7 +257,7 @@ ExelBid.addTargetBrowser("com.sec.android.app.sbrowser"); // 삼성 브라우저
     ```java
     ExelBidNative mNativeAd = new ExelBidNative(this, mUnitId, new OnAdNativeListener() {
         @Override
-        public void onFailed(ExelBidError error) {
+        public void onFailed(ExelBidError error, int statusCode) {
         }
         @Override
         public void onShow() {

@@ -96,7 +96,7 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
             }
 
             @Override
-            public void onInterstitialFailed(ExelBidError errorCode) {
+            public void onInterstitialFailed(ExelBidError errorCode, int statusCode) {
                 printLog("Exelbid","Fail : " + errorCode.getErrorMessage());
                 loadMediation();
             }

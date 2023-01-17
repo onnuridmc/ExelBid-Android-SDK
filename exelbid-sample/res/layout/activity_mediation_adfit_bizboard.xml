@@ -68,25 +68,11 @@
             android:visibility="gone"
             />
 
-        <FrameLayout
-            android:id="@+id/admob_native_container"
+        <com.kakao.adfit.ads.na.AdFitBizBoardAdTemplateLayout
+            android:id="@+id/biz_board_ad_template_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone" />
-
-        <include
-            android:id="@+id/fan_native_container"
-            layout="@layout/fan_native_item"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:visibility="gone"/>
-
-        <FrameLayout
-            android:id="@+id/adfit_native_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/white"
+            android:layout_marginHorizontal="16dp"
             android:visibility="gone" />
 
     </LinearLayout>
