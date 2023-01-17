@@ -145,7 +145,7 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
             /**
              * MediationOrder 사용시 설정
              */
-            ArrayList<MediationType> mediationUseList = new ArrayList(Arrays.asList(MediationType.ADMOB, MediationType.FAN));
+            ArrayList<MediationType> mediationUseList = new ArrayList(Arrays.asList(MediationType.ADMOB, MediationType.FAN, MediationType.ADFIT));
             ExelBid.getMediationData(SampleNativeMediation.this, mEdtAdUnit.getText().toString(), mediationUseList,
                     new OnMediationOrderResultListener() {
                 @Override

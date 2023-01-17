@@ -196,7 +196,7 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
             mediationOrderResult = null;
             // 1. 연동된 타사 광고 목록 설정
             ArrayList<MediationType> mediationUseList =
-                    new ArrayList(Arrays.asList(MediationType.EXELBID, MediationType.ADMOB, MediationType.FAN));
+                    new ArrayList(Arrays.asList(MediationType.EXELBID, MediationType.ADMOB, MediationType.FAN, MediationType.ADFIT));
             // 2. 타사 광고 최적화 순서를 받을 리스너 설정
             // 3. 타사 광고 목록과 리스너를 Exelbid 광고 객체에 설정한다.
             ExelBid.getMediationData(SampleBannerMediation.this, mEdtAdUnit.getText().toString(), mediationUseList
@@ -249,6 +249,9 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
                 fanAdView.addView(fanView);
                 fanView.loadAd(fanView.buildLoadAdConfig().withAdListener(fanAdListener).build());
                 printLog("FAN","Request...");
+            } else if (currentMediationType.equals(MediationType.ADFIT)) {
+                adfitAdView.loadAd();
+                printLog("Adfit","Request...");
             }
         }
     }
