@@ -7,37 +7,37 @@
    
    layout 파일 위치:  [exelbid-sample/res/layout](https://github.com/onnuridmc/ExelBid-Android-SDK/tree/master/exelbid-sample/res/layout)
     
-   - ``exelbid_native_template_320_50_without_chatbox.xml`` : 320*50 사이즈. '기본 형태' 네이티브 템플릿 레이아웃입니다.
+   - [exelbid_native_template_320_50_without_chatbox.xml](https://github.com/onnuridmc/ExelBid-Android-SDK/tree/master/exelbid-sample/res/layout/exelbid_native_template_320_50_without_chatbox.xml) : 320*50 사이즈. '기본 형태' 네이티브 템플릿 레이아웃입니다.
    
-   - ``exelbid_native_template_320_50__chatbox.xml`` : 320*50 사이즈. '기본 형태 + 말풍선' 네이티브 템플릿 레이아웃입니다.
+   - [exelbid_native_template_320_50_chatbox.xml](https://github.com/onnuridmc/ExelBid-Android-SDK/tree/master/exelbid-sample/res/layout/exelbid_native_template_320_50_chatbox.xml) : 320*50 사이즈. '기본 형태 + 말풍선' 네이티브 템플릿 레이아웃입니다.
    
-   - ``exelbid_native_template_320_50__animated.xml`` : 320*50 사이즈. '기본 형태 + 말풍선 + 애니메이션' 네이티브 템플릿 레이아웃입니다.
+   - [exelbid_native_template_320_50_animated.xml](https://github.com/onnuridmc/ExelBid-Android-SDK/tree/master/exelbid-sample/res/layout/exelbid_native_template_320_50_animated.xml) : 320*50 사이즈. '기본 형태 + 말풍선 + 애니메이션' 네이티브 템플릿 레이아웃입니다.
    
-   - ``exelbid_native_template_320_70_without_chatbox.xml`` : 320*70 사이즈. '기본 형태' 네이티브 템플릿 레이아웃입니다.
+   - [exelbid_native_template_320_70_without_chatbox.xml](https://github.com/onnuridmc/ExelBid-Android-SDK/tree/master/exelbid-sample/res/layout/exelbid_native_template_320_70_without_chatbox.xml) : 320*70 사이즈. '기본 형태' 네이티브 템플릿 레이아웃입니다.
    
-   - ``exelbid_native_template_320_70__chatbox.xml`` : 320*70 사이즈. '기본 형태 + 말풍선' 네이티브 템플릿 레이아웃입니다.
+   - [exelbid_native_template_320_70_chatbox.xml](https://github.com/onnuridmc/ExelBid-Android-SDK/tree/master/exelbid-sample/res/layout/exelbid_native_template_320_70_chatbox.xml) : 320*70 사이즈. '기본 형태 + 말풍선' 네이티브 템플릿 레이아웃입니다.
    
-   - ``exelbid_native_template_320_70__animated.xml`` : 320*70 사이즈. '기본 형태 + 말풍선 + 애니메이션' 네이티브 템플릿 레이아웃입니다.
+   - [exelbid_native_template_320_70_animated.xml](https://github.com/onnuridmc/ExelBid-Android-SDK/tree/master/exelbid-sample/res/layout/exelbid_native_template_320_70_animated.xml) : 320*70 사이즈. '기본 형태 + 말풍선 + 애니메이션' 네이티브 템플릿 레이아웃입니다.
 
-   - ``exelbid_native_template_320_100_without_chatbox.xml`` : 320*100 사이즈. '기본 형태' 네이티브 템플릿 레이아웃입니다.
+   - [exelbid_native_template_320_100_without_chatbox.xml](https://github.com/onnuridmc/ExelBid-Android-SDK/tree/master/exelbid-sample/res/layout/exelbid_native_template_320_100_without_chatbox.xml) : 320*100 사이즈. '기본 형태' 네이티브 템플릿 레이아웃입니다.
    
-   - ``exelbid_native_template_320_100__chatbox.xml`` : 320*100 사이즈. '기본 형태 + 말풍선' 네이티브 템플릿 레이아웃입니다.
+   - [exelbid_native_template_320_100_chatbox.xml](https://github.com/onnuridmc/ExelBid-Android-SDK/tree/master/exelbid-sample/res/layout/exelbid_native_template_320_100_chatbox.xml) : 320*100 사이즈. '기본 형태 + 말풍선' 네이티브 템플릿 레이아웃입니다.
    
-   - ``exelbid_native_template_320_100__animated.xml`` : 320*100 사이즈. '기본 형태 + 말풍선 + 애니메이션' 네이티브 템플릿 레이아웃입니다.
+   - [exelbid_native_template_320_100_animated.xml](https://github.com/onnuridmc/ExelBid-Android-SDK/tree/master/exelbid-sample/res/layout/exelbid_native_template_320_100_animated.xml) : 320*100 사이즈. '기본 형태 + 말풍선 + 애니메이션' 네이티브 템플릿 레이아웃입니다.
    
-   - ``exelbid_native_template_320_480_without_chatbox.xml`` : 320*480 사이즈. '기본 형태' 네이티브 템플릿 레이아웃입니다.
+   - [exelbid_native_template_320_480_without_chatbox.xml](https://github.com/onnuridmc/ExelBid-Android-SDK/tree/master/exelbid-sample/res/layout/exelbid_native_template_320_480_without_chatbox.xml) : 320*480 사이즈. '기본 형태' 네이티브 템플릿 레이아웃입니다.
    
-   - ``exelbid_native_template_320_480__chatbox.xml`` : 320*480 사이즈. '기본 형태 + 말풍선' 네이티브 템플릿 레이아웃입니다.
+   - [exelbid_native_template_320_480_chatbox.xml](https://github.com/onnuridmc/ExelBid-Android-SDK/tree/master/exelbid-sample/res/layout/exelbid_native_template_320_480_chatbox.xml) : 320*480 사이즈. '기본 형태 + 말풍선' 네이티브 템플릿 레이아웃입니다.
    
-   - ``exelbid_native_template_320_480__animated.xml`` : 320*480 사이즈. '기본 형태 + 말풍선 + 애니메이션' 네이티브 템플릿 레이아웃입니다.
+   - [exelbid_native_template_320_480_animated.xml](https://github.com/onnuridmc/ExelBid-Android-SDK/tree/master/exelbid-sample/res/layout/exelbid_native_template_320_480_animated.xml) : 320*480 사이즈. '기본 형태 + 말풍선 + 애니메이션' 네이티브 템플릿 레이아웃입니다.
    
 
-### 2. 해당 layout 에 필요한 요소들을 세팅합니다. (drawable, font, style)
+### 2. 해당 layout 에 필요한 요소들을 세팅합니다. (drawable, font )
    - #### drawable 세팅
 
       res/drawable 디렉토리에 템플릿 사용에 필요한 drawable 파일을 추가합니다. 제공하는 drawable 파일은 다음 위치에서 다운 받을 수 있습니다.
       
-      drawable 파일 위치 : [exelbid-sample/res/drawable-nativeTemplate](https://github.com/onnuridmc/ExelBid-Android-SDK/tree/master/exelbid-sample/res/drawable-nativeTemplate)
+      drawable 파일 위치 : [exelbid-sample/res/drawable](https://github.com/onnuridmc/ExelBid-Android-SDK/tree/master/exelbid-sample/res/drawable)
       
    - #### font 세팅
 
@@ -45,27 +45,15 @@
       
       font 파일 위치 : [exelbid-sample/res/font](https://github.com/onnuridmc/ExelBid-Android-SDK/tree/master/exelbid-sample/res/font)
       
-   - #### style 세팅
+   - #### dependencies 추가
+    
+      build.gradle 에 템플릿 사용에 필요한 dependencies 를 추가합니다.
       
-      res/values/styles.xml 에 다음 샘플 코드를 추가합니다.
-      
-      ```XML
-        <!--  Native Template ImageView Style  -->
-        <style name="roundedImageView" parent="">
-            <item name="cornerFamilyTopRight">rounded</item>
-            <item name="cornerSize">6dp</item>
-        </style>
-        <style name="leftRoundedImageView" parent="">
-            <item name="cornerFamilyTopRight">rounded</item>
-            <item name="cornerSizeTopLeft">6dp</item>
-            <item name="cornerSizeBottomLeft">6dp</item>
-        </style>
-        <style name="rightRoundedImageView" parent="">
-            <item name="cornerFamilyTopRight">rounded</item>
-            <item name="cornerSizeTopRight">6dp</item>
-            <item name="cornerSizeBottomRight">6dp</item>
-        </style>
       ```
+          implementation 'com.google.android.material:material:1.2.1'
+          implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+      ```
+      
 ### 3. 사용할 네이티브 템플릿의 최상단 레이아웃 id 를 통해 뷰 객체를 가져옵니다.
 ```java
 // 예시1) 320_50_without_chatbox.xml
