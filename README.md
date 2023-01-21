@@ -294,26 +294,40 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
     - ``ArrayList<String> getTargetBrowserList(Context context)`` : 저장된 브라우저 패키지명 리스트를 가져온다.
     - ``String getTargetBrowser(Context context, int index)`` : 해당 index에 저장된 브라우저 패키지명을 가져온다.
     - ``boolean removeTargetBrowser(Context context, String packagename)`` : 전달된 packagename 브라우저를 삭제한다. 삭제 시 true 반환
-    - ``boolean removeTargetBrowser(Context context, int index)`` : 전달된 index에 저장된 브라우저를 삭제한다. 삭제 시 true 반환
-
+    - ``boolean removeTargetBrowser(Context context, int index)`` : 전달된 index에 저장된 브라우저를 삭제한다. 삭제 시 true 반환<br><br>
+    
+* 패키지 공개 설정
+    - Android 11 이상을 타겟팅시 아래와 같이 Manifest에 적용된 앱 패키지를 공개 처리한다. 
+    - 해당 설정은 구글 개발자 가이드 ([Android 11의 패키지 공개 상태 관리](https://developer.android.com/about/versions/11/privacy/package-visibility)) 에 따릅니다.
+    
+      ```xml
+      <manifest package="com.example.game">
+          <queries>
+              <package android:name="com.android.chrome" />
+              <package android:name="com.sec.android.app.sbrowse" />
+              ...
+          </queries>
+          ...
+      </manifest>
+      ```
 ### Permission 설정
 
 * 필수권한
-```xml
-<uses-permission android:name="android.permission.INTERNET" />
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  ```xml
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-// 구글 정책(2022.03.15 발표)에 따라 대상 API 수준을 32(Android 13)로 업데이트하는 앱은 다음과 같이 매니페스트 파일에서 Google Play 서비스 일반 권한을 선언해야 합니다.(정책 적용 2022년 말 예정)
-<uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
-```
+  // 구글 정책(2022.03.15 발표)에 따라 대상 API 수준을 32(Android 13)로 업데이트하는 앱은 다음과 같이 매니페스트 파일에서 Google Play 서비스 일반 권한을 선언해야 합니다.(정책 적용 2022년 말 예정)
+  <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
+  ```
 
 * 권장권한
-```xml
-<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-<uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-```
+  ```xml
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+  <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+  ```
 
 ### Android 9 Api Level 28+ 사용 설정시 적용 사항
 * Api Level 28+ 부터 적용된 보안 정책 
@@ -321,45 +335,45 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
 <br>http:// -> https:// 전환을 필요로 한니다.
 <br>Exelbid에서는 광고 요청등의 Api에 https를 사용하지만 Exelbid에 연결된 많은 광고주 플랫폼사들의 광고 소재 리소스(image, js등)의 원할한 활용을 위해 http사용 허가 설정이 필요합니다.
 
-```xml
-// 1번 혹은 2번 형태로 적용 가능
+  ```xml
+  // 1번 혹은 2번 형태로 적용 가능
 
-1. res/xml 에 networkSecurityConfig 파일 구성후 AndroidManifest.xml에 application 속성에 
-   android:networkSecurityConfig="@xml/network_security_config" 설정
-    
-    //res/network_security_config.xml (networkSecurityConfig 파일)
-    <?xml version="1.0" encoding="utf-8"?>
-    <network-security-config>
-        <base-config cleartextTrafficPermitted="true" />
-    </network-security-config>
+  1. res/xml 에 networkSecurityConfig 파일 구성후 AndroidManifest.xml에 application 속성에 
+    android:networkSecurityConfig="@xml/network_security_config" 설정
+      
+      //res/network_security_config.xml (networkSecurityConfig 파일)
+      <?xml version="1.0" encoding="utf-8"?>
+      <network-security-config>
+          <base-config cleartextTrafficPermitted="true" />
+      </network-security-config>
 
 
-    // AndroidManifest.xml
-    <application
-        .
-        .
-        android:networkSecurityConfig="@xml/network_security_config">
-
-2.  AndroidManifest.xml에 application 속성에 
-    android:usesCleartextTraffic="true" 직접 설정 
+      // AndroidManifest.xml
       <application
-        .
-        .
-        android:usesCleartextTraffic="true">      
-```
+          .
+          .
+          android:networkSecurityConfig="@xml/network_security_config">
+
+  2.  AndroidManifest.xml에 application 속성에 
+      android:usesCleartextTraffic="true" 직접 설정 
+        <application
+          .
+          .
+          android:usesCleartextTraffic="true">      
+  ```
 
 * Apache HTTP 클라이언트 지원 중단에 대한 설정 필요 (Ver 1.7.0 이상에서는 설정 필요 없음)
 <br>Exelbid SDK에서 사용하는 Network 모듈은 Apache HTTP를 사용하고 있습니다. 
 <br>따라서 Android 9 이상을 대상으로 하는 앱이 Apache HTTP 클라이언트를 계속 사용하려면 다음을 AndroidManifest.xml에 추가해야 합니다.
-```xml
-      <application
-        .
-        .
-      >
-        <uses-library
-            android:name="org.apache.http.legacy"
-            android:required="false"/>
-```
+    ```xml
+    <application
+      .
+      .
+    >
+      <uses-library
+          android:name="org.apache.http.legacy"
+          android:required="false"/>
+    ```
 
 
 ## 광고 적용하기
@@ -388,31 +402,31 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
 >띠 배너 형태의 광고를 사용합니다.
 
 1.  배너 광고 인스턴스를 원하는 layout위치에다가 생성합니다.
-  ```xml
-  <com.onnuridmc.exelbid.ExelBidAdView
-       android:id="@+id/adview"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content">
-  </com.onnuridmc.exelbid.ExelBidAdView>
-  ```
+    ```xml
+    <com.onnuridmc.exelbid.ExelBidAdView
+        android:id="@+id/adview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.onnuridmc.exelbid.ExelBidAdView>
+    ```
 
 2. Activity에서 해당 인스턴스를 바인딩 합니다.
-  ```java
-  ExelBidAdView mAdView = (ExelBidAdView) findViewById(R.id.adview);
-  ```
+    ```java
+    ExelBidAdView mAdView = (ExelBidAdView) findViewById(R.id.adview);
+    ```
 
 3. 사이트로부터 발급받은 유닛 아이디를 확인합니다
   ![unit id](./img/sdk-4.png)
 
 4. 유닛아이디를 배너 인스턴스에 셋팅합니다.
-  ```java
-  setAdUnitId(String)
-  ```
+    ```java
+    setAdUnitId(String)
+    ```
 
 5. 광고를 요청합니다.
-  ```java
-  loadAd()
-  ```
+    ```java
+    loadAd()
+    ```
 
 6. 광고 이벤트 등록
   * ``setAdListener(OnBannerAdListener)``
@@ -421,18 +435,18 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
     - ``onAdClicked()`` : 광고 클릭시 호출 됩니다.
 
 7. 기본적으로 띠배너의 광고의 경우 유닛에 설정한 리플래쉬 시간에 따라 자동으로 갱신 됩니다. 해당 기능을 사용하지 않게 하기 위해서는 리플래쉬 기능을 해제해 주어야 합니다.
-  ```java
-  setAutoreflashDisable()
-  ```
+    ```java
+    setAutoreflashDisable()
+    ```
 
 8. Activity 종료시 destroy를 호출해야 합니다.
-  ```java
-  destroy()
-  ```
+    ```java
+    destroy()
+    ```
 
 ### 전면 광고
 1.	전면 광고 인스턴스를 생성합니다.
-	```java
+    ```java
     ExelBidInterstitial mInterstitialAd = new ExelBidInterstitial(this, "홈페이지에서 발급받은 전면광고 유닛 아이디");
     ```
 
@@ -475,27 +489,27 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
 
     - Exelbid에서는 비디오 플레이어를 ExoPlayer2 기반으로 동작 적용된다.
     - 미 적용시 Exception발생 혹은 광고 노출 되지 않음
-    ```java
-    def exoplayer_version = '2.13.3'
-    dependencies {
-        implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
-        implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
-    }
-    ```
+      ```java
+      def exoplayer_version = '2.13.3'
+      dependencies {
+          implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
+          implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
+      }
+      ```
 2. minSdkVersion 24 미만 버전 (비디오 광고 공통)
 
     - minSdkVersion 24 미만 버전에서는 gradle.properties 에 아래와 같이 적용 필요 (Gradle 플러그인 버그로 인한)
-    ```java
-        android.enableDexingArtifactTransform=false
-    ```
+      ```java
+      android.enableDexingArtifactTransform=false
+      ```
 3. 기존 전면 노출시 사용되는 ExelbidActivity 대신 비디오 노출을 처리하는 VideoPlayerActivity를 manifest에 등록
 
     - AndroidManifest 설정
-    ```xml
-    <activity android:name="com.onnuridmc.exelbid.lib.vast.VideoPlayerActivity"
-              android:configChanges="keyboardHidden|orientation|screenSize">
-    </activity>
-    ```    
+      ```xml
+      <activity android:name="com.onnuridmc.exelbid.lib.vast.VideoPlayerActivity"
+                android:configChanges="keyboardHidden|orientation|screenSize">
+      </activity>
+      ```    
 
 ### 네이티브
 1.	네이티브 광고 인스턴스를 생성합니다.
@@ -566,14 +580,14 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
 	- ``VIDEO`` : 메인 동영상
 
     - MAINIMAGE, VIDEO가 동시에 요청될 시에 MAINIMAGE가 필수, VIDEO는 옵션으로 적용된다.
-    ```java
-    // 네이티브 요청시 필수로 존재해야 하는 값을 셋팅한다. 
-      mNativeAd.setRequiredAsset(
-        new NativeAsset[] {
-          NativeAsset.VIDEO, NativeAsset.TITLE, NativeAsset.CTATEXT, 
-          NativeAsset.ICON, NativeAsset.MAINIMAGE, NativeAsset.DESC}
-        );
-    ```        
+      ```java
+      // 네이티브 요청시 필수로 존재해야 하는 값을 셋팅한다. 
+        mNativeAd.setRequiredAsset(
+          new NativeAsset[] {
+            NativeAsset.VIDEO, NativeAsset.TITLE, NativeAsset.CTATEXT, 
+            NativeAsset.ICON, NativeAsset.MAINIMAGE, NativeAsset.DESC}
+          );
+      ```        
 
 4.	네이티브 광고 이미지를 조작합니다.
 	광고 메인 이미지와 아이콘 Bitmap을 수정해야 하는 일이 있을경우에 해당 Controllor를 등록합니다.
@@ -590,32 +604,32 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
         }
     });)
     ```
-	- ``Bitmap mainImageDisplay(Bitmap bitmap, int width, int height)`` :
-     	메인 이미지가 이미지뷰에 바인딩 되기전에 호출 됩니다. bitmap은 다운받은 메인이미지이며 이미지뷰의 width, height값이 넘어 옵니다.
+    - ``Bitmap mainImageDisplay(Bitmap bitmap, int width, int height)`` :
+        메인 이미지가 이미지뷰에 바인딩 되기전에 호출 됩니다. bitmap은 다운받은 메인이미지이며 이미지뷰의 width, height값이 넘어 옵니다.
     - ``Bitmap iconImageDisplay(Bitmap bitmap, int width, int height)`` :
-     	아이콘 이미지가 이미지뷰에 바인딩 되기전에 호출 됩니다. bitmap은 다운받은 IconImage이며 ImageView의 width, height 값이 넘어 옵니다.
+      아이콘 이미지가 이미지뷰에 바인딩 되기전에 호출 됩니다. bitmap은 다운받은 IconImage이며 ImageView의 width, height 값이 넘어 옵니다.
 
-1. VIDEO 적용
+5. VIDEO 적용
    1) build.gradle 에 비디오 컨포넌트 라이브러리 종속성 추가 (비디오 광고 공통)
 
        - Exelbid에서는 비디오 플레이어를 ExoPlayer2 기반으로 동작 적용된다.
        - mediaViewId로 NativeVideoView 설정시 com.google.android.exoplayer~ 라이브러리 종속성 설정이 없다면 Exception 발생
-       ```java
-       def exoplayer_version = '2.13.3'
-       dependencies {
-           implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
-           implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
-       }
-       ```
+          ```java
+          def exoplayer_version = '2.13.3'
+          dependencies {
+              implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
+              implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
+          }
+          ```
    2) minSdkVersion 24 미만 버전 (비디오 광고 공통)
 
        - minSdkVersion 24 미만 버전에서는 gradle.properties 에 아래와 같이 적용 필요 (Gradle 플러그인 버그로 인한)
-       ```java
-           android.enableDexingArtifactTransform=false
-       ```
+          ```java
+          android.enableDexingArtifactTransform=false
+          ```
    3) 레이아웃 구성시 **com.onnuridmc.exelbid.lib.vast.NativeVideoView**로 비디오뷰를 추가 적용한다.
 
-       ```xml
+      ```xml
       ...
       <TextView
           android:id="@+id/native_text" ... />
@@ -637,17 +651,17 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
       ...
        ```
 
-2. 네이티브 광고 요청
+6. 네이티브 광고 요청
     ```java
     loadAd()
     ```
 
-6.	네이티브 광고 데이터 가져오기
-	```java
+7.	네이티브 광고 데이터 가져오기
+    ```java
     mNativeAd.getNativeAdData()
     ```
 
-7.	광고 로딩 확인
+8.	광고 로딩 확인
 	```java
     //광고를 노출시킬 준비가 되어있는지 체크한다.
 	(boolean) isReady() 
@@ -658,7 +672,7 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
 	(boolean) isReady(int adCachTimeSecond) 
 	```
 
-8.	네이티브 광고 노출
+9.	네이티브 광고 노출
     ```java
     show() //네이티브 광고가 올바르게 로딩 된 경우에 Binder에 등록된 정보에 광고 데이터를 바인딩 합니다.
     ```
