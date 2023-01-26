@@ -33,7 +33,10 @@
 
 ## Version History
 
-**Version 1.8.5**
+**Version 1.8.6**
+  * v1.8.5에서 광고 이미지 로딩 안되는 문제 수정
+
+**~~Version 1.8.5~~**
   * 네트워크 보안 정책 강화(https 미사용 부분 확인 사용 처리)
   * UID 2.0 설정 추가 업데이트
 
@@ -181,7 +184,7 @@
 	2. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	implementation 'com.onnuridmc.exelbid:exelbid:1.8.5'
+        	implementation 'com.onnuridmc.exelbid:exelbid:1.8.6'
 	}
     ```
 ### 빌드 API 수준
