@@ -247,6 +247,7 @@ public class SampleAdfitBizBoardMediation extends SampleBase implements View.OnC
      */
     private void initAdfit() {
         bizBoardAdTemplateLayout = findViewById(R.id.biz_board_ad_template_layout);
+        // 발급받은 유효한 Adfit Unit ID를 입력해야합니다.
         adFitNativeAdLoader = AdFitNativeAdLoader.create(this, "test-id");
         adfitRequest = new AdFitNativeAdRequest.Builder()
                 .setAdInfoIconPosition(AdFitAdInfoIconPosition.RIGHT_TOP) // 광고 정보 아이콘 위치 설정 (container view 내에서의 광고 아이콘 위치)
@@ -263,6 +264,7 @@ public class SampleAdfitBizBoardMediation extends SampleBase implements View.OnC
                 // 광고 노출
                 adfitNativeAdBinder = binder;
                 binder.bind(bizBoardAdTemplateLayout);
+                bizBoardAdTemplateLayout.setVisibility(View.VISIBLE);
 
             }
 
