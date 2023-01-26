@@ -795,9 +795,9 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
     }
     ```
 ## Mediation
-Exelbid에서 '광고 없음'이 응답되는 경우, 간단한 설정 만으로 타사 SDK에 자동 광고 요청하여 Fill Rate를 증가시킬 수 있습니다.
+Exelbid Android SDK를 이용한 광고 연동시 Mediation 연동의 경우, 각 앱에서 연동하고 있는 광고 SDK들의 최적화 된 호출 순서를 응답한다.(Exelbid 포함)
 
-가이드 별도 참조 - [``mediation 가이드``](MEDIATION.md#Kakao-Adfit-추가하기)
+가이드 별도 참조 - [``mediation 가이드``](https://github.com/onnuridmc/ExelBid-Android-SDK/blob/master/mediation_guide.md)
 
 ## Ads.txt App-ads.txt 적용하기
 Exelbid에서도 웹지면에서의 App.txt 그리고 앱지면을 위한 App-ads.txt를 적극 권장하며 지원하고 있습니다.<br/>

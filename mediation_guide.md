@@ -1,6 +1,6 @@
 # Mediation Guide
 
-Exelbid Android SDK를 이용한 광고 연동시 Mediation 연동의 경우, 앱에서 연동하고 있는 타사 광고의 최적화 된 호출 순서를 응답한다.(Exelbid 포함)
+Exelbid Android SDK를 이용한 광고 연동시 Mediation 연동의 경우, 각 앱에서 연동하고 있는 광고 SDK들의 최적화 된 호출 순서를 응답한다.(Exelbid 포함)
 
 ## 시작하기
 
