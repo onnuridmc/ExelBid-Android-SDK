@@ -20,15 +20,15 @@ Admob UI [https://admob.google.com/home/](https://admob.google.com/home/)
 1. 미디에이션 그룹 생성 혹은 기존 미디에이션 그룹 수정
 2. 광고 소스 > 폭포식 > 맞춤 이벤트 추가
 
-    ![import](./img/admob_mediation_setting_1.png)
+    ![admob_mediation_setting_1](../img/admob_mediation_setting_1.png)
     
 3. 맞춤 이벤트 추가
     
-    ![import](./img/admob_mediation_setting_2.png)
+    ![admob_mediation_setting_2](../img/admob_mediation_setting_2.png)
     
 4. 광고 단위 매핑
     
-    ![import](./img/admob_mediation_setting_3.png)
+    ![admob_mediation_setting_3](../img/admob_mediation_setting_3.png)
     
     - Class Name: 앱 내에 구현한 커스텀 어댑터의 클래스 이름 겸 경로
     
