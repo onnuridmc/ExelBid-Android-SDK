@@ -33,6 +33,9 @@
 
 ## Version History
 
+**Version 1.8.8**
+  * 배너 자동 갱신 기능 수정 업데이트
+
 **Version 1.8.6**
   * v1.8.5에서 광고 이미지 로딩 안되는 경우 문제 수정
 
@@ -184,7 +187,7 @@
 	2. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	implementation 'com.onnuridmc.exelbid:exelbid:1.8.6'
+        	implementation 'com.onnuridmc.exelbid:exelbid:1.8.8'
 	}
     ```
 ### 빌드 API 수준
