@@ -201,13 +201,6 @@ initialize 메서드를 통해 엑셀비드 SDK 를 초기화하고, 초기화 �
         /** 애드몹 UI 에 파라미터로 설정한 엑셀비드 Unit ID */
         String unitId = adConfiguration.getServerParameters().getString(MediationConfiguration.CUSTOM_EVENT_SERVER_PARAMETER_FIELD);
         /** Exelbid 네이티브 광고 세팅 */
-        exelbidNativeAd.loadAd();
-        /** 네이티브 요청시 필수로 존재해야 하는 값을 세팅한다. 애드몹 필수 에셋은 TITLE */
-        exelbidNativeAd.setRequiredAsset(
-                new NativeAsset[] {
-                        NativeAsset.TITLE
-                }
-        );
         exelbidNativeAd = new ExelBidNative(context, unitId, new OnAdNativeListener() {
             @Override
             public void onLoaded() {
@@ -236,12 +229,48 @@ initialize 메서드를 통해 엑셀비드 SDK 를 초기화하고, 초기화 �
                 Log.d("EXELBID", "onClick");
             }
         });
+        exelbidNativeAd.loadAd();
+        /** 네이티브 요청시 필수로 존재해야 하는 값을 세팅한다. 애드몹 필수 에셋은 TITLE */
+        exelbidNativeAd.setRequiredAsset(
+                new NativeAsset[] {
+                        NativeAsset.TITLE
+                }
+        );
     }
 ```
 
 - 커스텀 매퍼 클래스 구현 샘플 코드
 
 ```java
+package com.motiv.motivnewsclipping.MediationAdapter;
+
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
+import android.net.Uri;
+import android.view.View;
+import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import com.google.android.gms.ads.formats.NativeAd;
+import com.google.android.gms.ads.mediation.UnifiedNativeAdMapper;
+import com.onnuridmc.exelbid.ExelBidNative;
+import com.onnuridmc.exelbid.common.AdNativeData;
+
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class ExelbidNativeMediationMapper extends UnifiedNativeAdMapper {
 
     private ExelBidNative exelbidNativeAd;
@@ -266,7 +295,19 @@ public class ExelbidNativeMediationMapper extends UnifiedNativeAdMapper {
         setIcon(new ExelbidImage(adNativeData.getIcon()));
         /** 광고정보표시 아이콘 */
         ImageView adChoice = new ImageView(context);
-        ImageLoader.getInstance().displayImage(adNativeData.getAdInfoImgUrl(), adChoice);
+        String adInfoImgUrl = adNativeData.getAdInfoImgUrl();
+        ExecutorService executorService = Executors.newSingleThreadExecutor();         /** url 이미지는 네트워크 통신을 통해 이미지를 다운로드 해야 하기 때문에 비동기 처리 필요 */
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Bitmap image = BitmapFactory.decodeStream(new URL(adInfoImgUrl).openStream());      /** url로 Bitmap을 생성하고, 생성된 Bitmap을 ImageView에 적용한다 */
+                    adChoice.setImageBitmap(image);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         setAdChoicesContent(adChoice);
     }
 
@@ -292,7 +333,7 @@ public class ExelbidNativeMediationMapper extends UnifiedNativeAdMapper {
         exelbidNativeAd.click(view);
     }
 
-    /** view 가 랜더링 되기 이전에, 노출 또는 클릭 트래킹 관련 작업이 필요한 경우, 세팅해준다  */
+    /** view 가 랜더링 되기 이전에, 노출 또는 클릭 트래킹 관련 작업이 필요한 경우, 세팅해준다 */
     @Override
     public void trackViews(@NonNull View ContainerView, @NonNull Map<String, View> clickableAssetViews, @NonNull Map<String, View> nonclickableAssetViews) {
         super.trackViews(ContainerView, clickableAssetViews, nonclickableAssetViews);
@@ -345,6 +386,7 @@ public class ExelbidNativeMediationMapper extends UnifiedNativeAdMapper {
         }
     }
 }
+
 ```
 ## ETC
 
