@@ -33,6 +33,9 @@
 
 ## Version History
 
+**Version 1.9.0**
+  * Exelbid InApp Browser 에서 Deeplink 처리 오류 케이스 수정(targetSDK 버전에 의한 문제)
+
 **Version 1.8.8**
   * 배너 자동 갱신 기능 수정 업데이트
 
@@ -187,7 +190,7 @@
 	2. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	implementation 'com.onnuridmc.exelbid:exelbid:1.8.8'
+        	implementation 'com.onnuridmc.exelbid:exelbid:1.9.0'
 	}
     ```
 ### 빌드 API 수준
