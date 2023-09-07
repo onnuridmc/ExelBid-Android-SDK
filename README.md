@@ -33,6 +33,9 @@
 
 ## Version History
 
+**Version 1.9.2**
+  * 배너 클릭 처리시 랜딩 URL 캐싱 오류 확인 수정
+
 **Version 1.9.1**
   * 전면 비디오 사용시 콜백 전달 안되는 오류 수정
 
@@ -193,7 +196,7 @@
 	2. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	implementation 'com.onnuridmc.exelbid:exelbid:1.9.1'
+        	implementation 'com.onnuridmc.exelbid:exelbid:1.9.2'
 	}
     ```
 ### 빌드 API 수준
