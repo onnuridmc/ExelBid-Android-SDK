@@ -700,7 +700,7 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
   
 1. ExelBidNative 생성시 전면 리스너(OnInterstitialAdListener)를 바인딩한다.
     ```java
-    ExelBidNative mNativeAd = new ExelBidNative(this, mUnitId, new          OnInterstitialAdListener() {
+    ExelBidNative mNativeAd = new ExelBidNative(this, mUnitId, new OnInterstitialAdListener() {
 
           @Override
           public void onInterstitialLoaded() {}
