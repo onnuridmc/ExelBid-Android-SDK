@@ -531,7 +531,7 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
       ```    
 
 ### 네이티브
-1.	네이티브 광고 인스턴스를 생성합니다.
+1. 네이티브 광고 인스턴스를 생성합니다.
     ```java
     ExelBidNative mNativeAd = new ExelBidNative(this, mUnitId, new OnAdNativeListener() {
         @Override
@@ -553,7 +553,7 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
     -	``onClick`` : 사용자가 광고를 클릭할 경우에 호출됩니다.
     -	``onLoaded`` :  서버로부터 광고를 가져 왔을 경우에 호출 됩니다.
 
-2.	광고가 노출될 영역에 대한 정보를 바인딩 합니다.
+2. 광고가 노출될 영역에 대한 정보를 바인딩 합니다.
     ```java
     mNativeAd.setNativeViewBinder(new NativeViewBinder.Builder(mNativeRootLayout)
               .mainImageId(R.id.native_main_image)
@@ -583,7 +583,7 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
   ※ 광고 정보 표시 아이콘이 노출될 ImageView의 사이즈는 NxN(권장 20x20)으로 설정 되어야 합니다.**_
 	- ``build();`` : 설정한 항목으로 NativeViewBinder객체를 생성합니다.
 
-3.	네이티브 광고 요청시 어플리케이션에서 필수로 요청할 항목들을 설정합니다.
+3. 네이티브 광고 요청시 어플리케이션에서 필수로 요청할 항목들을 설정합니다.
 
   - 기본적으로 NativeViewBinder를 통해 설정된 asset항목들은 옵션으로 요청 되어 지며, 아래 setRequiredAsset를 통해 지정될 경우 필수로 지정된다.
     ```java
@@ -608,7 +608,7 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
           );
       ```        
 
-4.	네이티브 광고 이미지를 조작합니다.
+4. 네이티브 광고 이미지를 조작합니다.
 	광고 메인 이미지와 아이콘 Bitmap을 수정해야 하는 일이 있을경우에 해당 Controllor를 등록합니다.
     ```java
     setNativeImageController(new NativeImageControllor() {
@@ -675,12 +675,12 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
     loadAd()
     ```
 
-7.	네이티브 광고 데이터 가져오기
+7. 네이티브 광고 데이터 가져오기
     ```java
     mNativeAd.getNativeAdData()
     ```
 
-8.	광고 로딩 확인
+8. 광고 로딩 확인
 	```java
     //광고를 노출시킬 준비가 되어있는지 체크한다.
 	(boolean) isReady() 
@@ -691,33 +691,58 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
 	(boolean) isReady(int adCachTimeSecond) 
 	```
 
-9.	네이티브 광고 노출
+9. 네이티브 광고 노출
     ```java
     show() //네이티브 광고가 올바르게 로딩 된 경우에 Binder에 등록된 정보에 광고 데이터를 바인딩 합니다.
     ```
 
-### 전면 네이티브 광고
-1. 광고 노출 될 전면 Activity의 레이아웃 id를 이용하여 바인더를 생성한다.
-
-	- ``NativeViewBinder.Builder(int layoutId)`` : 전면 네이티브의 layout을 설정합니다.
+### 전면 네이티브 광고 
   
-  
-2. ExelBidNative 생성시 파라미터로 마지막에 전면 여부(boolean) true로 생성한다.
+1. ExelBidNative 생성시 전면 리스너(OnInterstitialAdListener)를 바인딩한다.
     ```java
-    ExelBidNative mNativeAd = new ExelBidNative(this, mUnitId, new OnAdNativeListener() {
+    ExelBidNative mNativeAd = new ExelBidNative(this, mUnitId, new          OnInterstitialAdListener() {
+
           @Override
-          public void onFailed(ExelBidError error, int statusCode) {}
+          public void onInterstitialLoaded() {}
+
           @Override
-          public void onShow() {}
+          public void onInterstitialShow() {}
+
           @Override
-          public void onClick() {}
+          public void onInterstitialDismiss() {}
+
           @Override
-          public void onLoaded() {}
+          public void onInterstitialClicked() {}
+
+          @Override
+          public void onInterstitialFailed(ExelBidError error, int statusCode) {}
       }
-      , true // 전면 여부 설정
     );
     ```
-3. 전면 네이티브 광고 노출(show)시 전달 된 레이아웃으로 구성된 새로운 전면(Activity) 화면에 광고가 노출된다.
+    
+2. 사용자 정의 광고 레이아웃 id를 설정한다. 해당 사용자 정의 레이아웃 파일은 광고 응답 후, show() 호출시 새로운 Activity에서 사용되어진다.
+
+    ```java
+    int layoutid = R.layout.sample_native_instl_layout;
+    ```
+3.	2의 layoutid와 함께 광고가 노출될 영역에 대한 정보를 바인딩 합니다.<br/>
+  *- 각 asset 설정은 기본 네이티브 연동과 동일, 네이티브 - 2 참조*
+    ```java
+    mNativeAd.setNativeViewBinder(layoutid)
+              .mainImageId(R.id.native_main_image)
+              .mediaViewId(R.id.native_video)
+              .callToActionButtonId(R.id.native_cta)
+              .titleTextViewId(R.id.native_title)
+              .textTextViewId(R.id.native_text)
+              .iconImageId(R.id.native_icon_image)
+              .adInfoImageId(R.id.native_privacy_information_icon_image)
+              .build());
+    ```
+ 
+4. 네이티브 광고 요청시 어플리케이션에서 필수로 요청할 항목들을 설정합니다. <br/>
+    *- 네이티브 - 3 참조*
+
+5. 전면 네이티브 광고 노출(show)시 전달 된 레이아웃으로 구성된 새로운 전면(Activity) 화면에 광고가 노출된다.
 
 
 ### 전면 타이머 기능
