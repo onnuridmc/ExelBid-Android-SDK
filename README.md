@@ -34,7 +34,7 @@
 ## Version History
 
 **Version 1.9.3**
-  * CDMA country iso 코드 못 가져오는 경우, StringindexOutOfBoundsException 발생 오류 수정
+  * Country 코드 조회 실패 시 오류 수정
 
 **~~Version 1.9.2~~**
   * 배너 클릭 처리시 랜딩 URL 캐싱 오류 확인 수정
