@@ -34,7 +34,7 @@
 ## Version History
 
 **Version 1.9.4**
-  * isDirect 헤더 정보 없을 시 오류 수정
+  * 미디에이션 레거시 업데이트
     
 **Version 1.9.3**
   * Country 코드 조회 실패 시 오류 수정
