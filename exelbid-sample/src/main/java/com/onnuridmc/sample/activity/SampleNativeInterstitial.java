@@ -15,7 +15,7 @@ import com.onnuridmc.exelbid.ExelBidNative;
 import com.onnuridmc.exelbid.common.ExelBidError;
 import com.onnuridmc.exelbid.common.NativeAsset;
 import com.onnuridmc.exelbid.common.NativeViewBinder;
-import com.onnuridmc.exelbid.common.OnAdNativeListener;
+import com.onnuridmc.exelbid.common.OnInterstitialAdListener;
 import com.onnuridmc.sample.AppConstants;
 import com.onnuridmc.sample.R;
 import com.onnuridmc.sample.utils.PrefManager;
@@ -34,7 +34,6 @@ public class SampleNativeInterstitial extends Activity implements View.OnClickLi
     private EditText mEdtAdUnit;
     private CheckBox mIsTestCheckBox;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,29 +50,34 @@ public class SampleNativeInterstitial extends Activity implements View.OnClickLi
         mEdtAdUnit.setText(mUnitId);
 
         // 네이티브 요청 객체를 생성한다.
-        mNativeAd = new ExelBidNative(this, mUnitId, new OnAdNativeListener() {
+        mNativeAd = new ExelBidNative(this, mUnitId, new OnInterstitialAdListener() {
 
             @Override
-            public void onFailed(ExelBidError error, int statusCode) {
-                Log.d(TAG, "onFailed" + error.toString());
+            public void onInterstitialLoaded() {
+                Log.d(TAG, "onLoaded");
+                mNativeAd.show();
             }
 
             @Override
-            public void onShow() {
-                Log.d(TAG, "onShow");
+            public void onInterstitialShow() {
+
             }
 
             @Override
-            public void onClick() {
+            public void onInterstitialDismiss() {
+
+            }
+
+            @Override
+            public void onInterstitialClicked() {
                 Log.d(TAG, "onClick");
             }
 
             @Override
-            public void onLoaded() {
-                Log.d(TAG, "onLoaded");
-                mNativeAd.show();
+            public void onInterstitialFailed(ExelBidError errorCode, int statusCode) {
+                Log.d(TAG, "onFailed" + errorCode.toString());
             }
-        }, true); // 전면 설정 파라메터
+        });
         mNativeAd.setTimer(10);
 
         // 전면 네이티브 구성시 레이아웃의 ID를 넘긴다
