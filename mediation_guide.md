@@ -11,9 +11,7 @@ Exelbid Android SDK를 이용한 광고 연동시 Mediation 연동의 경우, �
 3. 앱정보를 등록한 후, unit을 생성 합니다. (unit id 발급)
 4. 해당 App->unit을 기준으로 미디에이션 설정
     - mediation->설정하기<br/><br/>
-
-
-5. 어플리케이션 설정### ExelBid SDK 추가하기
+5. 어플리케이션 설정 (ExelBid SDK 추가하기)
     * Android Studio
         1. repositories 적용
             ```java
@@ -92,7 +90,7 @@ ExelBid.getMediationData
     ```java
            // 1. 연동된 미디에이션(광고 SDK) 목록 설정
             ArrayList<MediationType> mediationUseList =
-                    new ArrayList(Arrays.asList(MediationType.EXELBID, MediationType.ADMOB, MediationType.FAN));
+                    new ArrayList(Arrays.asList(MediationType.EXELBID, MediationType.ADMOB, MediationType.FAN, MediationType.ADFIT, MediationType.DT));
             // 2. 미디에이션 최적화 순서를 받을 리스너 설정 (new OnMediationOrderResultListener)
             // 3. 연동된 광고 SDK 목록과 리스너를 이용하여 Exelbid 광고 객체에 설정한다.
             ExelBid.getMediationData(SampleBannerMediation.this, UNIT_ID_EXELBID_BANNER, mediationUseList
@@ -131,20 +129,25 @@ ExelBid.getMediationData
             currentMediationType = mediationType;
     
             // 광고 SDK의 종류와 형식(배너, 전면, 네이티브) 에 따라서 광고 요청 로직을 적용한다
-            if (currentMediationType.equals(MediationType.EXELBID)) {
-                exelbidAdView.loadAd();
-
-            } else if(currentMediationType != null) {
-                if (currentMediationType.equals(MediationType.ADMOB)) {
-                    admobView.loadAd(new AdRequest.Builder().build());
-    
-                } else if (currentMediationType.equals(MediationType.FAN)) {
-                    fanView = new com.facebook.ads.AdView(this, UNIT_ID_FAN_BANNER, AdSize.BANNER_HEIGHT_50);
-                    fanContainer.addView(fanView);
-                    fanView.loadAd(fanView.buildLoadAdConfig().withAdListener(fanAdListener).build());
+            if(currentMediationType != null) {
+                if(currentMediationType.equals(MediationType.EXELBID)) {
+                    exelbidAdView.loadAd();
                 }
+            } else if(currentMediationType.equals(MediationType.ADMOB)) {
+                admobView.loadAd(new AdRequest.Builder().build());  
+            } else if(currentMediationType.equals(MediationType.FAN)) {
+                fanView = new com.facebook.ads.AdView(this, UNIT_ID_FAN_BANNER, AdSize.BANNER_HEIGHT_50);
+                fanAdView.addView(fanView);
+                fanView.loadAd(fanView.buildLoadAdConfig().withAdListener(fanAdListener).build());
+            } else if(currentMediationType.equals(MediationType.ADFIT)) {
+                adfitAdView.loadAd();
+            } else if (currentMediationType.equals(MediationType.DT)) {
+                if (dtAdSpot.isReady()) {
+                    dtAdController.unbindView(dtView);
+                }
+                dtAdSpot.requestAd(dtAdRequest);
             }
-        } 
+        }
         ```
 6. MediationOrderResult
     * ***int getSize()*** - 응답된 미디에이션 광록 목록의 개수를 반환
@@ -162,3 +165,4 @@ ExelBid.getMediationData
 * AdMob - [https://developers.google.com/admob/android/quick-start?hl=ko](https://developers.google.com/admob/android/quick-start?hl=ko)
 * FaceBook - [https://developers.facebook.com/docs/audience-network/guides/ad-formats](https://developers.facebook.com/docs/audience-network/guides/ad-formats)
 * Kakao-Adfit - [https://github.com/adfit/adfit-android-sdk/blob/master/docs/GUIDE.md](https://github.com/adfit/adfit-android-sdk/blob/master/docs/GUIDE.md)
+* DigitalTurbine - [https://developer.digitalturbine.com/hc/en-us/articles/360010822437-Integrating-the-Android-SDK](https://developer.digitalturbine.com/hc/en-us/articles/360010822437-Integrating-the-Android-SDK)
