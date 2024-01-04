@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -11,6 +12,14 @@ import android.widget.TextView;
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
 import com.facebook.ads.AdSize;
+import com.fyber.inneractive.sdk.external.InneractiveAdManager;
+import com.fyber.inneractive.sdk.external.InneractiveAdRequest;
+import com.fyber.inneractive.sdk.external.InneractiveAdSpot;
+import com.fyber.inneractive.sdk.external.InneractiveAdSpotManager;
+import com.fyber.inneractive.sdk.external.InneractiveAdViewEventsListener;
+import com.fyber.inneractive.sdk.external.InneractiveAdViewUnitController;
+import com.fyber.inneractive.sdk.external.InneractiveErrorCode;
+import com.fyber.inneractive.sdk.external.InneractiveUnitController;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.LoadAdError;
@@ -50,6 +59,12 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
     // Kakao adfit
     private BannerAdView adfitAdView;
 
+    // DigitalTurbine
+    ViewGroup dtView;
+    InneractiveAdSpot dtAdSpot;
+    InneractiveAdRequest dtAdRequest;
+    InneractiveAdViewUnitController dtAdController;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +75,7 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
         findViewById(R.id.load_btn).setOnClickListener(this);
 
         mEdtAdUnit = findViewById(R.id.unit_id);
-        mEdtAdUnit.setText(PrefManager.getPref(this, PrefManager.KEY_BANNER_AD, UNIT_ID_EXELBID_BANNER));
+        mEdtAdUnit.setText(PrefManager.getPref(this, PrefManager.KEY_BANNER_AD, "2680f2fc8eee4dbb397589d1b12bc80979ec0ea9"));
 
         logText = findViewById(R.id.log_txt);
         logText.setMovementMethod(new ScrollingMovementMethod());
@@ -178,11 +193,81 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
 
             @Override
             public void onAdFailed(int i) {
-
+                printLog("Adfit",": onAdFailed");
+                loadMediation();
             }
 
             @Override
             public void onAdClicked() {
+
+            }
+        });
+
+        /********************************************************************************
+         * DigitalTurbine 설정
+         *******************************************************************************/
+        InneractiveAdManager.initialize(getApplicationContext(), APP_ID_DT);
+        InneractiveAdManager.setUserId("userId");
+
+        dtView = findViewById(R.id.dt_view);
+        dtAdRequest = new InneractiveAdRequest(UNIT_ID_DT_BANNER);
+        dtAdSpot = InneractiveAdSpotManager.get().createSpot();
+        dtAdController = new InneractiveAdViewUnitController();
+        dtAdSpot.addUnitController(dtAdController);
+        dtAdSpot.setRequestListener(new InneractiveAdSpot.RequestListener() {
+            @Override
+            public void onInneractiveSuccessfulAdRequest(InneractiveAdSpot inneractiveAdSpot) {
+                printLog("DT",": onSuccessfulAdRequest ");
+                if (dtAdSpot.isReady()) {
+                    dtAdController.bindView(dtView);
+                    dtView.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onInneractiveFailedAdRequest(InneractiveAdSpot inneractiveAdSpot, InneractiveErrorCode inneractiveErrorCode) {
+                printLog("DT","onFailedAdRequest : " + inneractiveErrorCode.toString());
+                loadMediation();
+            }
+        });
+        dtAdController.setEventsListener(new InneractiveAdViewEventsListener() {
+            @Override
+            public void onAdImpression(InneractiveAdSpot inneractiveAdSpot) {
+                printLog("DT","onAdImpression");
+            }
+
+            @Override
+            public void onAdClicked(InneractiveAdSpot inneractiveAdSpot) {
+                printLog("DT","onAdClicked");
+            }
+
+            @Override
+            public void onAdWillCloseInternalBrowser(InneractiveAdSpot inneractiveAdSpot) {
+
+            }
+
+            @Override
+            public void onAdWillOpenExternalApp(InneractiveAdSpot inneractiveAdSpot) {
+
+            }
+
+            @Override
+            public void onAdEnteredErrorState(InneractiveAdSpot inneractiveAdSpot, InneractiveUnitController.AdDisplayError adDisplayError) {
+
+            }
+
+            @Override
+            public void onAdExpanded(InneractiveAdSpot inneractiveAdSpot) {
+
+            }
+
+            @Override
+            public void onAdResized(InneractiveAdSpot inneractiveAdSpot) {
+
+            }
+
+            @Override
+            public void onAdCollapsed(InneractiveAdSpot inneractiveAdSpot) {
 
             }
         });
@@ -196,7 +281,7 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
             mediationOrderResult = null;
             // 1. 연동된 타사 광고 목록 설정
             ArrayList<MediationType> mediationUseList =
-                    new ArrayList(Arrays.asList(MediationType.EXELBID, MediationType.ADMOB, MediationType.FAN, MediationType.ADFIT));
+                    new ArrayList(Arrays.asList(MediationType.EXELBID, MediationType.ADMOB, MediationType.FAN, MediationType.ADFIT, MediationType.DT));
             // 2. 타사 광고 최적화 순서를 받을 리스너 설정
             // 3. 타사 광고 목록과 리스너를 Exelbid 광고 객체에 설정한다.
             ExelBid.getMediationData(SampleBannerMediation.this, mEdtAdUnit.getText().toString(), mediationUseList
@@ -252,6 +337,12 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
             } else if (currentMediationType.equals(MediationType.ADFIT)) {
                 adfitAdView.loadAd();
                 printLog("Adfit","Request...");
+            } else if (currentMediationType.equals(MediationType.DT)) {
+                if (dtAdSpot.isReady()) {
+                    dtAdController.unbindView(dtView);
+                }
+                dtAdSpot.requestAd(dtAdRequest);
+                printLog("DT","Request...");
             }
         }
     }
@@ -268,6 +359,9 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
         }
         if(adfitAdView != null) {
             adfitAdView.setVisibility(View.GONE);
+        }
+        if(dtView != null) {
+            dtView.setVisibility(View.GONE);
         }
     }
 
@@ -313,6 +407,10 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
         if (adfitAdView != null) {
             adfitAdView.destroy();
             adfitAdView = null;
+        }
+        if(dtAdSpot != null) {
+            dtAdSpot.destroy();
+            dtAdSpot = null;
         }
         super.onDestroy();
     }

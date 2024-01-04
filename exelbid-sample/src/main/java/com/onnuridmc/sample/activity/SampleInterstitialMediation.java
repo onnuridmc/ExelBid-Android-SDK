@@ -12,6 +12,16 @@ import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
 import com.facebook.ads.CacheFlag;
 import com.facebook.ads.InterstitialAdListener;
+import com.fyber.inneractive.sdk.external.InneractiveAdManager;
+import com.fyber.inneractive.sdk.external.InneractiveAdRequest;
+import com.fyber.inneractive.sdk.external.InneractiveAdSpot;
+import com.fyber.inneractive.sdk.external.InneractiveAdSpotManager;
+import com.fyber.inneractive.sdk.external.InneractiveErrorCode;
+import com.fyber.inneractive.sdk.external.InneractiveFullscreenAdEventsListener;
+import com.fyber.inneractive.sdk.external.InneractiveFullscreenUnitController;
+import com.fyber.inneractive.sdk.external.InneractiveFullscreenVideoContentController;
+import com.fyber.inneractive.sdk.external.InneractiveUnitController;
+import com.fyber.inneractive.sdk.external.VideoContentListener;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
@@ -50,6 +60,11 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
     //FaceBook
     private com.facebook.ads.InterstitialAd fanInterstitialAd;
     private com.facebook.ads.InterstitialAd.InterstitialLoadAdConfig fanLoadAdConfig;
+
+    // DigitalTurbine
+    InneractiveAdSpot dtAdSpot;
+    InneractiveAdRequest dtAdRequest;
+    InneractiveFullscreenUnitController dtAdController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,6 +219,82 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
                 })
                 .withCacheFlags(EnumSet.of(CacheFlag.VIDEO))
                 .build();
+
+        /********************************************************************************
+         * DigitalTurbine 설정
+         *******************************************************************************/
+        InneractiveAdManager.initialize(getApplicationContext(), APP_ID_DT);
+        InneractiveAdManager.setUserId("userId");
+        InneractiveAdManager.setMuteVideo(true);
+
+        dtAdRequest = new InneractiveAdRequest(UNIT_ID_DT_INTERSTITTIAL);
+        dtAdSpot = InneractiveAdSpotManager.get().createSpot();
+        dtAdSpot.setRequestListener(new InneractiveAdSpot.RequestListener() {
+            @Override
+            public void onInneractiveSuccessfulAdRequest(InneractiveAdSpot inneractiveAdSpot) {
+                printLog("DT",": onSuccessfulAdRequest ");
+                showBtn.setEnabled(true);
+            }
+            @Override
+            public void onInneractiveFailedAdRequest(InneractiveAdSpot inneractiveAdSpot, InneractiveErrorCode inneractiveErrorCode) {
+                printLog("DT","onFailedAdRequest : " + inneractiveErrorCode.toString());
+                showBtn.setEnabled(false);
+                loadMediation();
+            }
+        });
+
+        // 컨트롤러 설정
+        dtAdController = new InneractiveFullscreenUnitController();
+        dtAdSpot.addUnitController(dtAdController);
+        InneractiveFullscreenVideoContentController videoController = new InneractiveFullscreenVideoContentController();
+        dtAdController.addContentController(videoController);
+        dtAdController.setEventsListener(new InneractiveFullscreenAdEventsListener() {
+            @Override
+            public void onAdImpression(InneractiveAdSpot inneractiveAdSpot) {
+                printLog("DT","onAdImpression");
+            }
+
+            @Override
+            public void onAdClicked(InneractiveAdSpot inneractiveAdSpot) {
+                printLog("DT","onAdClicked");
+            }
+
+            @Override
+            public void onAdWillOpenExternalApp(InneractiveAdSpot inneractiveAdSpot) {
+
+            }
+
+            @Override
+            public void onAdEnteredErrorState(InneractiveAdSpot inneractiveAdSpot, InneractiveUnitController.AdDisplayError adDisplayError) {
+
+            }
+
+            @Override
+            public void onAdWillCloseInternalBrowser(InneractiveAdSpot inneractiveAdSpot) {
+
+            }
+
+            @Override
+            public void onAdDismissed(InneractiveAdSpot inneractiveAdSpot) {
+                printLog("DT","onAdDismissed");
+            }
+        });
+        videoController.setEventsListener(new VideoContentListener() {
+            @Override
+            public void onProgress(int i, int i1) {
+
+            }
+
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onPlayerError() {
+
+            }
+        });
     }
 
     @Override
@@ -212,7 +303,7 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
             showBtn.setEnabled(false);
             mediationOrderResult = null;
 
-            ArrayList<MediationType> mediationUseList = new ArrayList(Arrays.asList(MediationType.ADMOB, MediationType.FAN));
+            ArrayList<MediationType> mediationUseList = new ArrayList(Arrays.asList(MediationType.EXELBID, MediationType.ADMOB, MediationType.FAN, MediationType.DT));
             ExelBid.getMediationData(SampleInterstitialMediation.this, mEdtAdUnit.getText().toString(), mediationUseList,
                     new OnMediationOrderResultListener() {
                         @Override
@@ -253,10 +344,12 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
                     adMobInterstitialAd.loadAd(adRequest);
                     printLog("ADMOB","Request...");
                 }
-
             } else if (currentMediationType.equals(MediationType.FAN)) {
                 fanInterstitialAd.loadAd(fanLoadAdConfig);
                 printLog("FAN","Request...");
+            } else if (currentMediationType.equals(MediationType.DT)) {
+                dtAdSpot.requestAd(dtAdRequest);
+                printLog("DT","Request...");
             }
         }
     }
@@ -272,6 +365,11 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
                 printLog("FAN","Show");
                 if(fanInterstitialAd != null) {
                     fanInterstitialAd.show();
+                }
+            } else if (currentMediationType.equals(MediationType.DT)) {
+                printLog("DT","Show");
+                if (dtAdSpot != null && dtAdSpot.isReady()) {
+                    dtAdController.show(this);
                 }
             }
         }
@@ -294,6 +392,10 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
     public void onDestroy() {
         if(exelbidInterstitial != null) {
             exelbidInterstitial.destroy();
+        }
+        if(dtAdSpot != null) {
+            dtAdSpot.destroy();
+            dtAdSpot = null;
         }
         super.onDestroy();
     }

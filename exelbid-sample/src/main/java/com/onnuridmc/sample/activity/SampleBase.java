@@ -11,9 +11,12 @@ public class SampleBase extends Activity {
     protected static final String UNIT_ID_EXELBID_BANNER = "4e0675ecdde6e9a9eac083b681c5068b0648895b";
     protected static final String UNIT_ID_ADMOB_BANNER = "ca-app-pub-9668530497062401/8249133291";
     protected static final String UNIT_ID_FAN_BANNER = "931253551037936_931255047704453";
+    protected static final String APP_ID_DT = "167844";
+    protected static final String UNIT_ID_DT_BANNER = "1756531";
     protected static final String UNIT_ID_EXELBID_INTERSTITTIAL = "e98ab99b125943bbba54ebf9b0e866ec";
     protected static final String UNIT_ID_ADMOB_INTERSTITTIAL = "ca-app-pub-9668530497062401/1054867070";
     protected static final String UNIT_ID_FAN_INTERSTITTIAL = "931253551037936_931260687703889";
+    protected static final String UNIT_ID_DT_INTERSTITTIAL = "1756532";
     protected static final String UNIT_ID_EXELBID_NATIVE = "5ae66a9bc47b48319fb02a1e07f070a6";
     protected static final String UNIT_ID_ADMOB_NATIVE = "ca-app-pub-9668530497062401/8785648902";
     protected static final String UNIT_ID_FAN_NATIVE = "931253551037936_931260397703918";
