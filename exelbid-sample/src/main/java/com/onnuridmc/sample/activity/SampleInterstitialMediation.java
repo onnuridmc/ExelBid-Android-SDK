@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
 import com.facebook.ads.CacheFlag;
@@ -22,13 +24,14 @@ import com.fyber.inneractive.sdk.external.InneractiveFullscreenUnitController;
 import com.fyber.inneractive.sdk.external.InneractiveFullscreenVideoContentController;
 import com.fyber.inneractive.sdk.external.InneractiveUnitController;
 import com.fyber.inneractive.sdk.external.VideoContentListener;
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.onnuridmc.exelbid.ExelBid;
 import com.onnuridmc.exelbid.ExelBidInterstitial;
 import com.onnuridmc.exelbid.common.ExelBidError;
@@ -56,6 +59,8 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
 
     // AdMob
     private InterstitialAd adMobInterstitialAd;
+    private InterstitialAdLoadCallback adMobAdListener;
+    private FullScreenContentCallback admobFullScreenCallback;
 
     //FaceBook
     private com.facebook.ads.InterstitialAd fanInterstitialAd;
@@ -120,32 +125,30 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
         /********************************************************************************
          * AdMob 설정
          *******************************************************************************/
+        /********************************************************************************
+         * AdMob 설정
+         *******************************************************************************/
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
                 printLog("ADMOB","onInitializationComplete initializationStatus : " + initializationStatus.toString());
             }
         });
-        AdListener adListener = new AdListener() {
-            @Override
-            public void onAdClosed() {
-                printLog("ADMOB","onAdClosed");
-            }
 
+        adMobAdListener = new InterstitialAdLoadCallback() {
             @Override
-            public void onAdFailedToLoad(LoadAdError loadAdError) {
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                super.onAdFailedToLoad(loadAdError);
                 printLog("ADMOB","onAdFailedToLoad : " + loadAdError.toString());
+                adMobInterstitialAd = null;
                 loadMediation();
             }
 
             @Override
-            public void onAdOpened() {
-                printLog("ADMOB","onAdOpened");
-            }
-
-            @Override
-            public void onAdLoaded() {
-                if (adMobInterstitialAd == null || !adMobInterstitialAd.isLoaded()) {
+            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                super.onAdLoaded(interstitialAd);
+                adMobInterstitialAd = interstitialAd;
+                if (adMobInterstitialAd == null) {
                     printLog("ADMOB","onAdLoaded - Ad did not load");
                     loadMediation();
                 } else {
@@ -153,22 +156,41 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
                     showBtn.setEnabled(true);
                 }
             }
+        };
 
+        admobFullScreenCallback = new FullScreenContentCallback() {
             @Override
             public void onAdClicked() {
-                printLog("ADMOB","onAdClicked");
+                super.onAdClicked();
+                printLog("ADMOB", "onAdClicked");
+            }
+
+            @Override
+            public void onAdDismissedFullScreenContent() {
+                super.onAdDismissedFullScreenContent();
+                printLog("ADMOB", "onAdDismissedFullScreenContent");
+                adMobInterstitialAd = null;
+            }
+
+            @Override
+            public void onAdFailedToShowFullScreenContent(@NonNull com.google.android.gms.ads.AdError adError) {
+                super.onAdFailedToShowFullScreenContent(adError);
+                printLog("ADMOB", "onAdFailedToShowFullScreenContent");
+                adMobInterstitialAd = null;
             }
 
             @Override
             public void onAdImpression() {
-                printLog("ADMOB","onAdImpression");
+                super.onAdImpression();
+                printLog("ADMOB", "onAdImpression");
+            }
+
+            @Override
+            public void onAdShowedFullScreenContent() {
+                super.onAdShowedFullScreenContent();
+                printLog("ADMOB", "onAdShowedFullScreenContent");
             }
         };
-
-        adMobInterstitialAd = new InterstitialAd(this);
-        adMobInterstitialAd.setAdUnitId(UNIT_ID_ADMOB_INTERSTITTIAL);
-        adMobInterstitialAd.setAdListener(adListener);
-
 
         /********************************************************************************
          * FAN 설정
@@ -339,11 +361,9 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
                 exelbidInterstitial.load();
                 printLog("Exelbid","Request...");
             } else if (currentMediationType.equals(MediationType.ADMOB)) {
-                if (!adMobInterstitialAd.isLoading() && !adMobInterstitialAd.isLoaded()) {
-                    AdRequest adRequest = new AdRequest.Builder().build();
-                    adMobInterstitialAd.loadAd(adRequest);
-                    printLog("ADMOB","Request...");
-                }
+                AdRequest adRequest = new AdRequest.Builder().build();
+                adMobInterstitialAd.load(SampleInterstitialMediation.this, UNIT_ID_ADMOB_INTERSTITTIAL, adRequest, adMobAdListener);
+                printLog("ADMOB","Request...");
             } else if (currentMediationType.equals(MediationType.FAN)) {
                 fanInterstitialAd.loadAd(fanLoadAdConfig);
                 printLog("FAN","Request...");
@@ -357,9 +377,10 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
     private void showMediation() {
         if(currentMediationType != null) {
             if (currentMediationType.equals(MediationType.ADMOB)) {
-                if (adMobInterstitialAd != null && adMobInterstitialAd.isLoaded()) {
+                if (adMobInterstitialAd != null) {
+                    adMobInterstitialAd.setFullScreenContentCallback(admobFullScreenCallback);
                     printLog("ADMOB","Show");
-                    adMobInterstitialAd.show();
+                    adMobInterstitialAd.show(SampleInterstitialMediation.this);
                 }
             } else if (currentMediationType.equals(MediationType.FAN)) {
                 printLog("FAN","Show");
@@ -392,6 +413,9 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
     public void onDestroy() {
         if(exelbidInterstitial != null) {
             exelbidInterstitial.destroy();
+        }
+        if(adMobInterstitialAd != null) {
+            adMobInterstitialAd = null;
         }
         if(dtAdSpot != null) {
             dtAdSpot.destroy();

@@ -54,7 +54,6 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
     implementation 'com.kakao.adfit:ads-base:3.5.2'
     implementation 'com.onnuridmc.exelbid:exelbid:1.9.6'
     implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
@@ -63,7 +62,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.1'
 
     // AdMob
-    implementation 'com.google.android.gms:play-services-ads:19.6.0'
+    implementation 'com.google.android.gms:play-services-ads:20.6.0'
     // Facebook
     implementation 'com.facebook.android:audience-network-sdk:6.2.0'
     // Kakao Adfit
