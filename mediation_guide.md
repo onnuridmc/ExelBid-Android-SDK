@@ -32,6 +32,7 @@ ExelBid.getMediationData
     연동 되어진 미디에이션(sdk 연동)리스트를 전달한다.
     - Exelbid에서는 SDK에서 미디에이션 최적화를 위해서 연동 가능한 광고 SDK들을 ***Enum***(***MediationType***)으로 제공한다
     - ***ArrayList*** 형태로 설정한다.
+    - 해당 값을 설정하지 않는 경우, 대시보드에 설정된 미디에이션 타입이 디폴트로 적용됩니다.
 
 2. 미디에이션 최적화 순서를 받을 리스너 설정 
     * ***ExelBid.getMediationData*** 에 등록한 ***OnMediationOrderResultListener***의  ***onMediationOrderResult*** 통해서 광고 SDK들의 최적화 호출 순서 정보 객체(***MediationOrderResult***)를 응답 받는다.
