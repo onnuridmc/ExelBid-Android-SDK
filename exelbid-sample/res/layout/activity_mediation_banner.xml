@@ -82,6 +82,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:visibility="gone" />
+        <LinearLayout
+            android:id="@+id/pangle_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"
+            android:gravity="center_horizontal"/>
     </LinearLayout>
 
 </RelativeLayout>

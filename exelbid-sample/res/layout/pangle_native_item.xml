@@ -1,0 +1,73 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="#FFFFFF"
+        android:orientation="vertical"
+        android:padding="10dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/ad_icon"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                />
+
+            <TextView
+                android:id="@+id/ad_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="1"
+                android:textColor="@android:color/darker_gray"
+                android:textStyle="bold"/>
+
+            <RelativeLayout
+                android:id="@+id/ad_logo"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="native_privacy_information_icon_image" />
+        </LinearLayout>
+
+    <TextView
+        android:id="@+id/ad_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@android:color/darker_gray"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:id="@+id/ad_image"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="native_main_image" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/creative_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_gravity="right"
+        android:layout_marginTop="10dp"
+        android:clickable="true"
+        android:paddingBottom="10dp"
+        android:text="learn_more"
+        android:textColor="@android:color/black"
+        android:textSize="12sp"
+        android:textStyle="bold"/>
+    </LinearLayout>
+</RelativeLayout>

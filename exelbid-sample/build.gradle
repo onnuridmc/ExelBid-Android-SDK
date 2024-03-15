@@ -60,6 +60,7 @@ dependencies {
     implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
 
     implementation 'com.google.android.material:material:1.2.1'
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
 
     // AdMob
     implementation 'com.google.android.gms:play-services-ads:20.6.0'
@@ -70,4 +71,6 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     // Digital Turbine
     implementation "com.fyber:marketplace-sdk:8.2.4"
+    // Pangle
+    implementation 'com.pangle.global:ads-sdk:5.8.0.5'
 }

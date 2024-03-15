@@ -3,21 +3,36 @@ package com.onnuridmc.sample.activity;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.bumptech.glide.Glide;
+import com.bytedance.sdk.openadsdk.api.init.PAGConfig;
+import com.bytedance.sdk.openadsdk.api.init.PAGSdk;
+import com.bytedance.sdk.openadsdk.api.nativeAd.PAGImageItem;
+import com.bytedance.sdk.openadsdk.api.nativeAd.PAGMediaView;
+import com.bytedance.sdk.openadsdk.api.nativeAd.PAGNativeAd;
+import com.bytedance.sdk.openadsdk.api.nativeAd.PAGNativeAdData;
+import com.bytedance.sdk.openadsdk.api.nativeAd.PAGNativeAdInteractionCallback;
+import com.bytedance.sdk.openadsdk.api.nativeAd.PAGNativeAdInteractionListener;
+import com.bytedance.sdk.openadsdk.api.nativeAd.PAGNativeAdLoadListener;
+import com.bytedance.sdk.openadsdk.api.nativeAd.PAGNativeRequest;
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
 import com.facebook.ads.AdOptionsView;
@@ -61,6 +76,7 @@ import com.onnuridmc.sample.utils.PrefManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class SampleNativeMediation extends SampleBase implements View.OnClickListener {
 
@@ -93,6 +109,13 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
     AdFitNativeAdRequest adfitRequest;
     AdFitNativeAdLoader adFitNativeAdLoader;
     private AdFitNativeAdBinder adfitNativeAdBinder;
+
+    // pangle
+    private FrameLayout pangleNativeLayout;
+    private PAGNativeAd pagAd;
+    private PAGNativeRequest pagRequest;
+    private PAGNativeAdLoadListener pagAdListener;
+    private PAGNativeAdInteractionListener pagInteractListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +156,11 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
          * Exelbid 설정
          *******************************************************************************/
         initAdfit();
+
+        /********************************************************************************
+         * Pangle 설정
+         *******************************************************************************/
+        initPangle();
     }
 
 
@@ -145,7 +173,7 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
             /**
              * MediationOrder 사용시 설정
              */
-            ArrayList<MediationType> mediationUseList = new ArrayList(Arrays.asList(MediationType.ADMOB, MediationType.FAN, MediationType.ADFIT));
+            ArrayList<MediationType> mediationUseList = new ArrayList(Arrays.asList(MediationType.EXELBID, MediationType.ADMOB, MediationType.FAN, MediationType.ADFIT, MediationType.PANGLE));
             ExelBid.getMediationData(SampleNativeMediation.this, mEdtAdUnit.getText().toString(), mediationUseList,
                     new OnMediationOrderResultListener() {
                 @Override
@@ -188,6 +216,8 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
                 fanNativeAd.loadAd(fanNativeAd.buildLoadAdConfig().withAdListener(fanNativeAdListener).build());
             } else if (currentMediationType.equals(MediationType.ADFIT)) {
                 adFitNativeAdLoader.loadAd(adfitRequest, adFitAdLoadListener);
+            } else if (currentMediationType.equals(MediationType.PANGLE)) {
+                pagAd.loadAd(UNIT_ID_PANGLE_NATIVE, pagRequest, pagAdListener);
             } else {
                 printLog(currentMediationType.toString(), "Not Setting...");
                 loadMediation();
@@ -217,6 +247,10 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
                 if(adfitNativeLayout != null) {
                     adfitNativeLayout.setVisibility(View.VISIBLE);
                 }
+            } else if (currentMediationType.equals(MediationType.PANGLE)) {
+                if(pangleNativeLayout != null) {
+                    pangleNativeLayout.setVisibility(View.VISIBLE);
+                }
             }
         }
     }
@@ -233,6 +267,9 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
         }
         if(adfitNativeLayout != null) {
             adfitNativeLayout.setVisibility(View.GONE);
+        }
+        if(pangleNativeLayout != null) {
+            pangleNativeLayout.setVisibility(View.GONE);
         }
     }
 
@@ -269,6 +306,10 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
             adfitNativeAdBinder = null;
         }
         adFitNativeAdLoader = null;
+
+        if(pagAd != null) {
+            pagAd = null;
+        }
 
         super.onDestroy();
     }
@@ -656,6 +697,146 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
                 loadMediation();
             }
         };
+    }
 
+    /** Pangle 설정 */
+    private void initPangle() {
+        PAGConfig pagInitConfig = new PAGConfig.Builder()
+                .appId(APP_ID_PANGLE)
+                .debugLog(true)
+                .build();
+
+        PAGSdk.init(this, pagInitConfig, new PAGSdk.PAGInitCallback() {
+            @Override
+            public void success() {
+                Log.i(TAG, "pangle init success: ");
+            }
+
+            @Override
+            public void fail(int code, String msg) {
+                Log.i(TAG, "pangle init fail: " + code);
+            }
+        });
+
+        pangleNativeLayout = findViewById(R.id.pangle_native_container);
+
+        pagRequest = new PAGNativeRequest();
+        pagAd = new PAGNativeAd() {
+            @Override
+            public void registerViewForInteraction(@NonNull ViewGroup viewGroup, @NonNull List<View> list, @Nullable List<View> list1, @Nullable View view, PAGNativeAdInteractionListener pagNativeAdInteractionListener) {
+
+            }
+
+            @Override
+            public void registerViewForInteraction(@NonNull ViewGroup viewGroup, @NonNull List<View> list, @Nullable List<View> list1, @Nullable View view, PAGNativeAdInteractionCallback pagNativeAdInteractionCallback) {
+
+            }
+
+            @Override
+            public PAGNativeAdData getNativeAdData() {
+                return null;
+            }
+
+            @Override
+            public void showPrivacyActivity() {
+
+            }
+
+            @Override
+            public void win(Double aDouble) {
+
+            }
+
+            @Override
+            public void loss(Double aDouble, String s, String s1) {
+
+            }
+
+            @Override
+            public Map<String, Object> getMediaExtraInfo() {
+                return null;
+            }
+        };
+
+        pagAdListener = new PAGNativeAdLoadListener() {
+            @Override
+            public void onError(int i, String s) {
+                Log.d("PANGLE","onError");
+                showBtn.setEnabled(false);
+                pangleNativeLayout.setVisibility(View.GONE);
+                loadMediation();
+            }
+
+            @Override
+            public void onAdLoaded(PAGNativeAd pagNativeAd) {
+                Log.d("PANGLE","onAdLoaded");
+                if (pagNativeAd != null) {
+                    pagAd = pagNativeAd;
+                    showBtn.setEnabled(true);
+                    PAGNativeAdData adData = pagAd.getNativeAdData();
+                    if (adData == null){
+                        return;
+                    }
+
+                    /** layout inflate */
+                    View nativeAdView = LayoutInflater.from(SampleNativeMediation.this).inflate(R.layout.pangle_native_item, null);
+
+                    TextView mTitle = (TextView) nativeAdView.findViewById(R.id.ad_title);
+
+                    TextView mDescription = (TextView) nativeAdView.findViewById(R.id.ad_desc);
+
+                    ImageView mIcon = (ImageView) nativeAdView.findViewById(R.id.ad_icon);
+
+                    Button mCreativeButton = (Button) nativeAdView.findViewById(R.id.creative_btn);
+
+                    FrameLayout mImageView = nativeAdView.findViewById(R.id.ad_image);
+
+                    RelativeLayout mAdLogoView = (RelativeLayout) nativeAdView.findViewById(R.id.ad_logo);
+
+                    /** populate asset view */
+                    mTitle.setText(adData.getTitle());
+                    mDescription.setText(adData.getDescription());
+                    PAGImageItem icon = adData.getIcon();
+                    if (icon != null && icon.getImageUrl() != null) {
+                        Glide.with(SampleNativeMediation.this).load(icon.getImageUrl()).into(mIcon);
+                    }
+                    mCreativeButton.setText(TextUtils.isEmpty(adData.getButtonText()) ? "" : adData.getButtonText());
+
+                    PAGMediaView mediaView = adData.getMediaView();
+                    mImageView.addView(mediaView, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+
+                    ImageView imageView = (ImageView) adData.getAdLogoView();
+                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    mAdLogoView.addView(imageView, lp);
+
+                    /** Register Ad Event Callback */
+                    List<View> clickViewList = new ArrayList<>();
+                    clickViewList.add(mCreativeButton);
+                    clickViewList.add(mIcon);
+                    clickViewList.add(mTitle);
+
+                    pagAd.registerViewForInteraction((ViewGroup) nativeAdView, clickViewList, null, null, pagInteractListener);
+
+                    pangleNativeLayout.removeAllViews();
+                    pangleNativeLayout.addView(nativeAdView);
+                }
+            }
+        };
+
+        pagInteractListener = new PAGNativeAdInteractionListener() {
+            @Override
+            public void onAdShowed() {
+                Log.d("PANGLE","onAdShowed");
+            }
+
+            @Override
+            public void onAdClicked() {
+                Log.d("PANGLE","onAdClicked");
+            }
+            @Override
+            public void onAdDismissed() {
+                Log.d("PANGLE","onAdDismissed");
+            }
+        };
     }
 }

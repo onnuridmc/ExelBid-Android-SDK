@@ -3,12 +3,21 @@ package com.onnuridmc.sample.activity;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bytedance.sdk.openadsdk.api.banner.PAGBannerAd;
+import com.bytedance.sdk.openadsdk.api.banner.PAGBannerAdInteractionCallback;
+import com.bytedance.sdk.openadsdk.api.banner.PAGBannerAdInteractionListener;
+import com.bytedance.sdk.openadsdk.api.banner.PAGBannerAdLoadListener;
+import com.bytedance.sdk.openadsdk.api.banner.PAGBannerRequest;
+import com.bytedance.sdk.openadsdk.api.banner.PAGBannerSize;
+import com.bytedance.sdk.openadsdk.api.init.PAGConfig;
+import com.bytedance.sdk.openadsdk.api.init.PAGSdk;
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
 import com.facebook.ads.AdSize;
@@ -39,6 +48,7 @@ import com.onnuridmc.sample.utils.PrefManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 
 public class SampleBannerMediation extends SampleBase implements View.OnClickListener {
 
@@ -60,10 +70,17 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
     private BannerAdView adfitAdView;
 
     // DigitalTurbine
-    ViewGroup dtView;
-    InneractiveAdSpot dtAdSpot;
-    InneractiveAdRequest dtAdRequest;
-    InneractiveAdViewUnitController dtAdController;
+    private ViewGroup dtView;
+    private InneractiveAdSpot dtAdSpot;
+    private InneractiveAdRequest dtAdRequest;
+    private InneractiveAdViewUnitController dtAdController;
+
+    // pangle
+    private ViewGroup pangleView;
+    private PAGBannerAd pagAd;
+    private PAGBannerRequest pagRequest;
+    private PAGBannerAdLoadListener pagAdListener;
+    private PAGBannerAdInteractionListener pagInteractListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -271,6 +288,101 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
 
             }
         });
+
+        /********************************************************************************
+         * PANGLE 설정
+         *******************************************************************************/
+        pangleView = findViewById(R.id.pangle_view);
+        PAGConfig pagInitConfig =  new PAGConfig.Builder()
+                .appId(APP_ID_PANGLE)
+                .debugLog(true)
+                .build();
+        PAGSdk.init(this, pagInitConfig, new PAGSdk.PAGInitCallback() {
+            @Override
+            public void success() {
+                printLog("pangle", "pangle init success: ");
+            }
+
+            @Override
+            public void fail(int code, String msg) {
+                printLog("pangle", "pangle init fail: " + code);
+            }
+        });
+
+        PAGBannerSize bannerSize = PAGBannerSize.BANNER_W_320_H_50;
+        pagRequest = new PAGBannerRequest(bannerSize);
+        pagAd = new PAGBannerAd() {
+            @Override
+            public void setAdInteractionListener(PAGBannerAdInteractionListener pagBannerAdInteractionListener) {
+
+            }
+
+            @Override
+            public void setAdInteractionCallback(PAGBannerAdInteractionCallback pagBannerAdInteractionCallback) {
+
+            }
+
+            @Override
+            public View getBannerView() {
+                return null;
+            }
+
+            @Override
+            public void destroy() {
+
+            }
+
+            @Override
+            public void win(Double aDouble) {
+
+            }
+
+            @Override
+            public void loss(Double aDouble, String s, String s1) {
+
+            }
+
+            @Override
+            public Map<String, Object> getMediaExtraInfo() {
+                return null;
+            }
+        };
+
+        pagAdListener = new PAGBannerAdLoadListener() {
+            @Override
+            public void onError(int i, String s) {
+                Log.d("PANGLE","onError");
+                loadMediation();
+            }
+
+            @Override
+            public void onAdLoaded(PAGBannerAd pagBannerAd) {
+                Log.d("PANGLE","onAdLoaded");
+                if (pagBannerAd != null) {
+                    pagAd = pagBannerAd;
+                    pagAd.setAdInteractionListener(pagInteractListener);
+                    pangleView.addView(pagAd.getBannerView());
+                    pangleView.setVisibility(View.VISIBLE);
+                }
+            }
+        };
+
+        pagInteractListener = new PAGBannerAdInteractionListener() {
+            @Override
+            public void onAdShowed() {
+                Log.d("PANGLE","onAdShowed");
+            }
+
+            @Override
+            public void onAdClicked() {
+                Log.d("PANGLE","onAdClicked");
+            }
+
+            @Override
+            public void onAdDismissed() {
+                Log.d("PANGLE","onAdDismissed");
+            }
+        };
     }
 
     @Override
@@ -281,7 +393,7 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
             mediationOrderResult = null;
             // 1. 연동된 타사 광고 목록 설정
             ArrayList<MediationType> mediationUseList =
-                    new ArrayList(Arrays.asList(MediationType.EXELBID, MediationType.ADMOB, MediationType.FAN, MediationType.ADFIT, MediationType.DT));
+                    new ArrayList(Arrays.asList(MediationType.EXELBID, MediationType.ADMOB, MediationType.FAN, MediationType.ADFIT, MediationType.DT, MediationType.PANGLE));
             // 2. 타사 광고 최적화 순서를 받을 리스너 설정
             // 3. 타사 광고 목록과 리스너를 Exelbid 광고 객체에 설정한다.
             ExelBid.getMediationData(SampleBannerMediation.this, mEdtAdUnit.getText().toString(), mediationUseList
@@ -343,6 +455,12 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
                 }
                 dtAdSpot.requestAd(dtAdRequest);
                 printLog("DT","Request...");
+            } else if (currentMediationType.equals(MediationType.PANGLE)) {
+                if(pagAd != null) {
+                    pangleView.removeView(pagAd.getBannerView());
+                }
+                pagAd.loadAd(UNIT_ID_PANGLE_BANNER, pagRequest, pagAdListener);
+                printLog("PANGLE","Request...");
             }
         }
     }
@@ -362,6 +480,9 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
         }
         if(dtView != null) {
             dtView.setVisibility(View.GONE);
+        }
+        if(pangleView != null) {
+            pangleView.setVisibility(View.GONE);
         }
     }
 
@@ -411,6 +532,9 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
         if(dtAdSpot != null) {
             dtAdSpot.destroy();
             dtAdSpot = null;
+        }
+        if(pagAd != null){
+            pagAd.destroy();
         }
         super.onDestroy();
     }
