@@ -91,7 +91,7 @@ ExelBid.getMediationData
     ```java
            // 1. 연동된 미디에이션(광고 SDK) 목록 설정
             ArrayList<MediationType> mediationUseList =
-                    new ArrayList(Arrays.asList(MediationType.EXELBID, MediationType.ADMOB, MediationType.FAN, MediationType.ADFIT, MediationType.DT));
+                    new ArrayList(Arrays.asList(MediationType.EXELBID, MediationType.ADMOB, MediationType.FAN, MediationType.ADFIT, MediationType.DT, MediationType.PANGLE));
             // 2. 미디에이션 최적화 순서를 받을 리스너 설정 (new OnMediationOrderResultListener)
             // 3. 연동된 광고 SDK 목록과 리스너를 이용하여 Exelbid 광고 객체에 설정한다.
             ExelBid.getMediationData(SampleBannerMediation.this, UNIT_ID_EXELBID_BANNER, mediationUseList
@@ -147,6 +147,8 @@ ExelBid.getMediationData
                     dtAdController.unbindView(dtView);
                 }
                 dtAdSpot.requestAd(dtAdRequest);
+            } else if (currentMediationType.equals(MediationType.PANGLE)) {
+                pagAd.loadAd(UNIT_ID_PANGLE_BANNER, pagRequest, pagAdListener);
             }
         }
         ```
@@ -167,3 +169,4 @@ ExelBid.getMediationData
 * FaceBook - [https://developers.facebook.com/docs/audience-network/guides/ad-formats](https://developers.facebook.com/docs/audience-network/guides/ad-formats)
 * Kakao-Adfit - [https://github.com/adfit/adfit-android-sdk/blob/master/docs/GUIDE.md](https://github.com/adfit/adfit-android-sdk/blob/master/docs/GUIDE.md)
 * DigitalTurbine - [https://developer.digitalturbine.com/hc/en-us/articles/360010822437-Integrating-the-Android-SDK](https://developer.digitalturbine.com/hc/en-us/articles/360010822437-Integrating-the-Android-SDK)
+* Pangle - [https://www.pangleglobal.com/kr/integration/integrate-pangle-sdk-for-android](https://www.pangleglobal.com/kr/integration/integrate-pangle-sdk-for-android)
