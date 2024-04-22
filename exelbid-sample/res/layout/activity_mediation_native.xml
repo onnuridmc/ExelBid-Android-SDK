@@ -96,5 +96,16 @@
             android:background="@android:color/white"
             android:visibility="gone" />
 
+        <FrameLayout
+            android:id="@+id/max_native_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <FrameLayout
+            android:id="@+id/tnk_native_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
     </LinearLayout>
 </LinearLayout>

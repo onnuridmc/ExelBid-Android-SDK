@@ -19,5 +19,8 @@ allprojects {
         maven {
             url 'https://artifact.bytedance.com/repository/pangle'
         }
+        maven {
+            url 'https://repository.tnkad.net:8443/repository/public/'
+        }
     }
 }

@@ -12,6 +12,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.applovin.mediation.MaxAd;
+import com.applovin.mediation.MaxAdListener;
+import com.applovin.mediation.MaxError;
+import com.applovin.mediation.ads.MaxInterstitialAd;
+import com.applovin.sdk.AppLovinSdk;
+import com.applovin.sdk.AppLovinSdkConfiguration;
 import com.bytedance.sdk.openadsdk.api.init.PAGConfig;
 import com.bytedance.sdk.openadsdk.api.init.PAGSdk;
 import com.bytedance.sdk.openadsdk.api.interstitial.PAGInterstitialAd;
@@ -50,6 +56,9 @@ import com.onnuridmc.exelbid.lib.ads.mediation.MediationOrderResult;
 import com.onnuridmc.exelbid.lib.ads.mediation.MediationType;
 import com.onnuridmc.sample.R;
 import com.onnuridmc.sample.utils.PrefManager;
+import com.tnkfactory.ad.AdItem;
+import com.tnkfactory.ad.AdListener;
+import com.tnkfactory.ad.InterstitialAdItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,7 +72,7 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
     EditText mEdtAdUnit;
 
     // Exelbid
-    private ExelBidInterstitial exelbidInterstitial;
+    private ExelBidInterstitial exelbidInterstitialAd;
     private MediationOrderResult mediationOrderResult;
     private MediationType currentMediationType;
 
@@ -82,10 +91,16 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
     private InneractiveFullscreenUnitController dtAdController;
 
     // Pangle
-    private PAGInterstitialAd pagAd;
+    private PAGInterstitialAd pagInterstitialAd;
     private PAGInterstitialRequest pagRequest;
     private PAGInterstitialAdLoadListener pagAdListener;
     private PAGInterstitialAdInteractionListener pagInteractListener;
+
+    // Applovin
+    private MaxInterstitialAd maxInterstitialAd;
+
+    // TNK
+    private InterstitialAdItem tnkInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,13 +125,13 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
         /********************************************************************************
          * Exelbid 설정
          *******************************************************************************/
-        exelbidInterstitial = new ExelBidInterstitial(this, mEdtAdUnit.getText().toString());
-        exelbidInterstitial.setInterstitialAdListener(new OnInterstitialAdListener() {
+        exelbidInterstitialAd = new ExelBidInterstitial(this, mEdtAdUnit.getText().toString());
+        exelbidInterstitialAd.setInterstitialAdListener(new OnInterstitialAdListener() {
             @Override
             public void onInterstitialLoaded() {
                 printLog("Exelbid","Loaded");
                 // Exelbid는 여기서 노출
-                exelbidInterstitial.show();
+                exelbidInterstitialAd.show();
             }
 
             @Override
@@ -356,7 +371,7 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
         });
 
         pagRequest = new PAGInterstitialRequest();
-        pagAd = new PAGInterstitialAd() {
+        pagInterstitialAd = new PAGInterstitialAd() {
             @Override
             public void setAdInteractionListener(PAGInterstitialAdInteractionListener pagInterstitialAdInteractionListener) {
 
@@ -400,8 +415,8 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
             public void onAdLoaded(PAGInterstitialAd pagInterstitialAd) {
                 printLog("PANGLE","onAdLoaded");
                 if (pagInterstitialAd != null) {
-                    pagAd = pagInterstitialAd;
-                    pagAd.setAdInteractionListener(pagInteractListener);
+                    SampleInterstitialMediation.this.pagInterstitialAd = pagInterstitialAd;
+                    SampleInterstitialMediation.this.pagInterstitialAd.setAdInteractionListener(pagInteractListener);
                     showBtn.setEnabled(true);
                 }
             }
@@ -423,6 +438,98 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
                 printLog("PANGLE","onAdDismissed");
             }
         };
+
+        /********************************************************************************
+         * Applovin 설정
+         *******************************************************************************/
+        AppLovinSdk.initializeSdk( this, new AppLovinSdk.SdkInitializationListener() {
+            @Override
+            public void onSdkInitialized(final AppLovinSdkConfiguration configuration)
+            {
+                printLog("APPLOVIN","onSdkInitialized");
+            }
+        });
+
+        maxInterstitialAd = new MaxInterstitialAd(UNIT_ID_MAX_INTERSTITIAL, this);
+        maxInterstitialAd.setListener(new MaxAdListener() {
+            @Override
+            public void onAdLoaded(MaxAd ad) {
+                printLog("APPLOVIN","onAdLoaded");
+                showBtn.setEnabled(true);
+            }
+
+            @Override
+            public void onAdDisplayed(MaxAd ad) {
+                printLog("APPLOVIN","onAdDisplayed");
+            }
+
+            @Override
+            public void onAdHidden(MaxAd ad) {
+                printLog("APPLOVIN","onAdHidden");
+            }
+
+            @Override
+            public void onAdClicked(MaxAd ad) {
+                printLog("APPLOVIN","onAdClicked");
+            }
+
+            @Override
+            public void onAdLoadFailed(String adUnitId, MaxError error) {
+                printLog("APPLOVIN", "onAdLoadFailed : " + error.toString());
+                loadMediation();
+            }
+
+            @Override
+            public void onAdDisplayFailed(MaxAd ad, MaxError error) {
+                printLog("APPLOVIN", "onAdDisplayFailed :"+ error.toString());
+            }
+        });
+
+        /********************************************************************************
+         * TNK 설정
+         *******************************************************************************/
+        tnkInterstitialAd = new InterstitialAdItem(this, UNIT_ID_TNK_INTERSTITIAL);
+        tnkInterstitialAd.setListener(new AdListener() {
+            @Override
+            public void onClose(AdItem adItem, int i) {
+                super.onClose(adItem, i);
+                printLog("TNK","onClose");
+            }
+
+            @Override
+            public void onClick(AdItem adItem) {
+                super.onClick(adItem);
+                printLog("TNK","onClick");
+
+            }
+
+            @Override
+            public void onShow(AdItem adItem) {
+                super.onShow(adItem);
+                printLog("TNK","onShow");
+            }
+
+            @Override
+            public void onError(AdItem adItem, com.tnkfactory.ad.AdError adError) {
+                super.onError(adItem, adError);
+                printLog("TNK","onError");
+                loadMediation();
+            }
+
+            @Override
+            public void onLoad(AdItem adItem) {
+                super.onLoad(adItem);
+                printLog("TNK","onLoad");
+                showBtn.setEnabled(true);
+            }
+
+            @Override
+            public void onVideoCompletion(AdItem adItem, int i) {
+                super.onVideoCompletion(adItem, i);
+                printLog("TNK","onVideoCompletion");
+
+            }
+        });
     }
 
     @Override
@@ -431,7 +538,17 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
             showBtn.setEnabled(false);
             mediationOrderResult = null;
 
-            ArrayList<MediationType> mediationUseList = new ArrayList(Arrays.asList(MediationType.EXELBID, MediationType.ADMOB, MediationType.FAN, MediationType.DT, MediationType.PANGLE));
+            ArrayList<MediationType> mediationUseList =
+                    new ArrayList(Arrays.asList(
+                            MediationType.EXELBID,
+                            MediationType.ADMOB,
+                            MediationType.FAN,
+                            MediationType.DT,
+                            MediationType.PANGLE,
+                            MediationType.APPLOVIN,
+                            MediationType.TNK
+                    ));
+
             ExelBid.getMediationData(SampleInterstitialMediation.this, mEdtAdUnit.getText().toString(), mediationUseList,
                     new OnMediationOrderResultListener() {
                         @Override
@@ -464,7 +581,7 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
         currentMediationType = mediationOrderResult.poll();
         if(currentMediationType != null) {
             if (currentMediationType.equals(MediationType.EXELBID)) {
-                exelbidInterstitial.load();
+                exelbidInterstitialAd.load();
                 printLog("Exelbid","Request...");
             } else if (currentMediationType.equals(MediationType.ADMOB)) {
                 AdRequest adRequest = new AdRequest.Builder().build();
@@ -477,8 +594,14 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
                 dtAdSpot.requestAd(dtAdRequest);
                 printLog("DT","Request...");
             }  else if (currentMediationType.equals(MediationType.PANGLE)) {
-                pagAd.loadAd(UNIT_ID_PANGLE_INTERSTITTIAL, pagRequest, pagAdListener);
+                pagInterstitialAd.loadAd(UNIT_ID_PANGLE_INTERSTITTIAL, pagRequest, pagAdListener);
                 printLog("PANGLE","Request...");
+            } else if (currentMediationType.equals(MediationType.APPLOVIN)) {
+                maxInterstitialAd.loadAd();
+                printLog("APPLOVIN","Request...");
+            } else if (currentMediationType.equals(MediationType.TNK)) {
+                tnkInterstitialAd.load();
+                printLog("TNK","Request...");
             }
         }
     }
@@ -503,8 +626,18 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
                 }
             }  else if (currentMediationType.equals(MediationType.PANGLE)) {
                 printLog("pangle","Show");
-                if(pagAd != null) {
-                    pagAd.show(this);
+                if(pagInterstitialAd != null) {
+                    pagInterstitialAd.show(this);
+                }
+            } else if (currentMediationType.equals(MediationType.APPLOVIN)) {
+                printLog("APPLOVIN","Show");
+                if (maxInterstitialAd.isReady()){
+                    maxInterstitialAd.showAd();
+                }
+            } else if (currentMediationType.equals(MediationType.TNK)) {
+                printLog("TNK","Show");
+                if (tnkInterstitialAd.isLoaded()){
+                    tnkInterstitialAd.show();
                 }
             }
         }
@@ -525,8 +658,8 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
     /** Called before the activity is destroyed */
     @Override
     public void onDestroy() {
-        if(exelbidInterstitial != null) {
-            exelbidInterstitial.destroy();
+        if(exelbidInterstitialAd != null) {
+            exelbidInterstitialAd.destroy();
         }
         if(adMobInterstitialAd != null) {
             adMobInterstitialAd = null;
@@ -535,8 +668,11 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
             dtAdSpot.destroy();
             dtAdSpot = null;
         }
-        if(pagAd != null) {
-            pagAd = null;
+        if(pagInterstitialAd != null) {
+            pagInterstitialAd = null;
+        }
+        if(maxInterstitialAd != null){
+            maxInterstitialAd.destroy();
         }
         super.onDestroy();
     }

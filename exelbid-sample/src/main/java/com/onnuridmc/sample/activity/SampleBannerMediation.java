@@ -10,6 +10,14 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
+import com.applovin.mediation.MaxAd;
+import com.applovin.mediation.MaxAdViewAdListener;
+import com.applovin.mediation.MaxError;
+import com.applovin.mediation.ads.MaxAdView;
+import com.applovin.sdk.AppLovinSdk;
+import com.applovin.sdk.AppLovinSdkConfiguration;
 import com.bytedance.sdk.openadsdk.api.banner.PAGBannerAd;
 import com.bytedance.sdk.openadsdk.api.banner.PAGBannerAdInteractionCallback;
 import com.bytedance.sdk.openadsdk.api.banner.PAGBannerAdInteractionListener;
@@ -45,6 +53,7 @@ import com.onnuridmc.exelbid.lib.ads.mediation.MediationOrderResult;
 import com.onnuridmc.exelbid.lib.ads.mediation.MediationType;
 import com.onnuridmc.sample.R;
 import com.onnuridmc.sample.utils.PrefManager;
+import com.tnkfactory.ad.AdItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -81,6 +90,12 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
     private PAGBannerRequest pagRequest;
     private PAGBannerAdLoadListener pagAdListener;
     private PAGBannerAdInteractionListener pagInteractListener;
+
+    // Applovin
+    private MaxAdView maxAdView;
+
+    // Tnk
+    private com.tnkfactory.ad.BannerAdView tnkAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -351,13 +366,13 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
         pagAdListener = new PAGBannerAdLoadListener() {
             @Override
             public void onError(int i, String s) {
-                Log.d("PANGLE","onError");
+                printLog("PANGLE","onError");
                 loadMediation();
             }
 
             @Override
             public void onAdLoaded(PAGBannerAd pagBannerAd) {
-                Log.d("PANGLE","onAdLoaded");
+                printLog("PANGLE","onAdLoaded");
                 if (pagBannerAd != null) {
                     pagAd = pagBannerAd;
                     pagAd.setAdInteractionListener(pagInteractListener);
@@ -370,30 +385,127 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
         pagInteractListener = new PAGBannerAdInteractionListener() {
             @Override
             public void onAdShowed() {
-                Log.d("PANGLE","onAdShowed");
+                printLog("PANGLE","onAdShowed");
             }
 
             @Override
             public void onAdClicked() {
-                Log.d("PANGLE","onAdClicked");
+                printLog("PANGLE","onAdClicked");
             }
 
             @Override
             public void onAdDismissed() {
-                Log.d("PANGLE","onAdDismissed");
+                printLog("PANGLE","onAdDismissed");
             }
         };
+
+        /********************************************************************************
+         *  APPLOVIN 설정
+         *******************************************************************************/
+        // AppLovin SDK Initialization
+        AppLovinSdk.initializeSdk(this, new AppLovinSdk.SdkInitializationListener() {
+            @Override
+            public void onSdkInitialized(final AppLovinSdkConfiguration configuration) {
+                printLog("APPLOVIN", "SDK Initialized");
+            }
+        });
+
+        // Initialize MaxAdView and set the listener
+        maxAdView = findViewById(R.id.max_view); // Ensure you have a MaxAdView in your layout
+        maxAdView.setListener(new MaxAdViewAdListener() {
+            @Override
+            public void onAdLoaded(@NonNull MaxAd maxAd) {
+                printLog("APPLOVIN","onAdLoaded");
+                maxAdView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAdDisplayed(@NonNull MaxAd maxAd) {
+                printLog("APPLOVIN","onAdDisplayed");
+            }
+
+            @Override
+            public void onAdHidden(@NonNull MaxAd maxAd) {
+                printLog("APPLOVIN","onAdDisplayed");
+            }
+
+            @Override
+            public void onAdClicked(@NonNull MaxAd maxAd) {
+                printLog("APPLOVIN","onAdClicked");
+            }
+
+            @Override
+            public void onAdLoadFailed(@NonNull String s, @NonNull MaxError maxError) {
+                printLog("APPLOVIN","onAdLoadFailed");
+                loadMediation();
+            }
+
+            @Override
+            public void onAdDisplayFailed(@NonNull MaxAd maxAd, @NonNull MaxError maxError) {
+                printLog("APPLOVIN","onAdDisplayFailed");
+            }
+
+            @Override
+            public void onAdExpanded(@NonNull MaxAd maxAd) {
+                printLog("APPLOVIN","onAdExpanded");
+            }
+
+            @Override
+            public void onAdCollapsed(@NonNull MaxAd maxAd) {
+                printLog("APPLOVIN","onAdCollapsed");
+            }
+        });
+
+        /********************************************************************************
+         * Tnk 설정
+         *******************************************************************************/
+        tnkAdView = findViewById(R.id.tnk_view);
+        tnkAdView.setListener(new com.tnkfactory.ad.AdListener() {
+            @Override
+            public void onClick(AdItem adItem) {
+                super.onClick(adItem);
+                printLog("TNK","onClick");
+            }
+
+            @Override
+            public void onShow(AdItem adItem) {
+                super.onShow(adItem);
+                printLog("TNK","onShow");
+            }
+
+            @Override
+            public void onError(AdItem adItem, com.tnkfactory.ad.AdError adError) {
+                super.onError(adItem, adError);
+                printLog("TNK","onError");
+                loadMediation();
+            }
+
+            @Override
+            public void onLoad(AdItem adItem) {
+                super.onLoad(adItem);
+                printLog("TNK","onLoad");
+                tnkAdView.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.load_btn) {
             hideAllView();
-
             mediationOrderResult = null;
             // 1. 연동된 타사 광고 목록 설정
             ArrayList<MediationType> mediationUseList =
-                    new ArrayList(Arrays.asList(MediationType.EXELBID, MediationType.ADMOB, MediationType.FAN, MediationType.ADFIT, MediationType.DT, MediationType.PANGLE));
+                    new ArrayList(Arrays.asList(
+                            MediationType.EXELBID,
+                            MediationType.ADMOB,
+                            MediationType.FAN,
+                            MediationType.ADFIT,
+                            MediationType.DT,
+                            MediationType.PANGLE,
+                            MediationType.APPLOVIN,
+                            MediationType.TNK
+                    ));
             // 2. 타사 광고 최적화 순서를 받을 리스너 설정
             // 3. 타사 광고 목록과 리스너를 Exelbid 광고 객체에 설정한다.
             ExelBid.getMediationData(SampleBannerMediation.this, mEdtAdUnit.getText().toString(), mediationUseList
@@ -461,6 +573,12 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
                 }
                 pagAd.loadAd(UNIT_ID_PANGLE_BANNER, pagRequest, pagAdListener);
                 printLog("PANGLE","Request...");
+            } else if (currentMediationType.equals(MediationType.APPLOVIN)) {
+                maxAdView.loadAd();
+                printLog("APPLOVIN","Request...");
+            } else if (currentMediationType.equals(MediationType.TNK)) {
+                tnkAdView.load();
+                printLog("TNK","Request...");
             }
         }
     }
@@ -483,6 +601,12 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
         }
         if(pangleView != null) {
             pangleView.setVisibility(View.GONE);
+        }
+        if(maxAdView != null) {
+            maxAdView.setVisibility(View.GONE);
+        }
+        if(tnkAdView != null) {
+            tnkAdView.setVisibility(View.GONE);
         }
     }
 
@@ -535,6 +659,12 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
         }
         if(pagAd != null){
             pagAd.destroy();
+        }
+        if(maxAdView != null){
+            maxAdView.destroy();
+        }
+        if(tnkAdView != null){
+            tnkAdView = null;
         }
         super.onDestroy();
     }

@@ -73,4 +73,8 @@ dependencies {
     implementation "com.fyber:marketplace-sdk:8.2.4"
     // Pangle
     implementation 'com.pangle.global:ads-sdk:5.8.0.5'
+    // AppLovin
+    implementation 'com.applovin:applovin-sdk:12.3.1'
+    // Tnk
+    implementation 'com.tnkfactory:pub:7.21.9'
 }

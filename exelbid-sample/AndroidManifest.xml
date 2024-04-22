@@ -78,5 +78,12 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713"/>
+        <!--   앱러빈    -->
+        <meta-data
+            android:name="applovin.sdk.key"
+            android:value="fFdurAkhsk02FX8-aKkXQrz1zreVfbSxPSqs-nyDskF6Fc_dkEGDp4b_6UyT-S7o8hLnAnL_E9fstPGC5I2tOH" />
+        <meta-data
+            android:name="AppLovin.sdk.verbose_logging"
+            android:value="true" />
     </application>
 </manifest>

@@ -90,6 +90,25 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:visibility="gone"
             android:gravity="center_horizontal"/>
+        <com.applovin.mediation.ads.MaxAdView
+            android:id="@+id/max_view"
+            xmlns:maxads="http://schemas.applovin.com/android/1.0"
+            maxads:adUnitId="922f5cfc74ac19d4"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"
+            />
+        <com.tnkfactory.ad.BannerAdView
+            android:id="@+id/tnk_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffffff"
+            app:placement_id="TEST_BANNER_100"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"
+            />
     </LinearLayout>
 
 </RelativeLayout>
