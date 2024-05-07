@@ -3,7 +3,6 @@ package com.onnuridmc.sample.activity;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -11,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.util.Pair;
 
 import com.applovin.mediation.MaxAd;
 import com.applovin.mediation.MaxAdViewAdListener;
@@ -39,6 +39,7 @@ import com.fyber.inneractive.sdk.external.InneractiveErrorCode;
 import com.fyber.inneractive.sdk.external.InneractiveUnitController;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
@@ -61,9 +62,13 @@ import java.util.Map;
 
 public class SampleBannerMediation extends SampleBase implements View.OnClickListener {
 
+    private LinearLayout adContainer;
+    private EditText mEdtAdUnit;
+
     private MediationOrderResult mediationOrderResult;
     private MediationType currentMediationType;
-    EditText mEdtAdUnit;
+    private String currentMediationUnitId;
+
     // Exelbid
     private ExelBidAdView exelbidAdView;
 
@@ -72,8 +77,8 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
 
     //FaceBook
     private com.facebook.ads.AdView fanView;
-    LinearLayout fanAdView;
-    com.facebook.ads.AdListener fanAdListener;
+    private LinearLayout fanAdView;
+    private com.facebook.ads.AdListener fanAdListener;
 
     // Kakao adfit
     private BannerAdView adfitAdView;
@@ -81,10 +86,9 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
     // DigitalTurbine
     private ViewGroup dtView;
     private InneractiveAdSpot dtAdSpot;
-    private InneractiveAdRequest dtAdRequest;
     private InneractiveAdViewUnitController dtAdController;
 
-    // pangle
+    // Pangle
     private ViewGroup pangleView;
     private PAGBannerAd pagAd;
     private PAGBannerRequest pagRequest;
@@ -93,9 +97,11 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
 
     // Applovin
     private MaxAdView maxAdView;
+    private MaxAdViewAdListener maxAdListener;
 
     // Tnk
     private com.tnkfactory.ad.BannerAdView tnkAdView;
+    private com.tnkfactory.ad.AdListener tnkAdListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,8 +112,10 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
         titleTv.setText(TAG);
         findViewById(R.id.load_btn).setOnClickListener(this);
 
+        adContainer = findViewById(R.id.view_layout);
+
         mEdtAdUnit = findViewById(R.id.unit_id);
-        mEdtAdUnit.setText(PrefManager.getPref(this, PrefManager.KEY_BANNER_AD, "2680f2fc8eee4dbb397589d1b12bc80979ec0ea9"));
+        mEdtAdUnit.setText(PrefManager.getPref(this, PrefManager.KEY_BANNER_AD, UNIT_ID_EXELBID_BANNER));
 
         logText = findViewById(R.id.log_txt);
         logText.setMovementMethod(new ScrollingMovementMethod());
@@ -147,7 +155,8 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
                 printLog("ADMOB", "onInitializationComplete initializationStatus : " + initializationStatus.toString());
             }
         });
-        admobView = findViewById(R.id.admob_view);
+        admobView = new AdView(this);
+        adContainer.addView(admobView);
         admobView.setAdListener(new AdListener() {
             @Override
             public void onAdClosed() {
@@ -182,8 +191,6 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
             }
         });
 
-
-
         /********************************************************************************
          * FaceBook 설정
          *******************************************************************************/
@@ -215,7 +222,6 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
          * kakao adfit 설정
          *******************************************************************************/
         adfitAdView = findViewById(R.id.adfit_view);
-        adfitAdView.setClientId("test-id");
         adfitAdView.setAdListener(new com.kakao.adfit.ads.AdListener() {
             @Override
             public void onAdLoaded() {
@@ -225,7 +231,7 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
 
             @Override
             public void onAdFailed(int i) {
-                printLog("Adfit",": onAdFailed");
+                printLog("Adfit: onAdFailed", String.valueOf(i));
                 loadMediation();
             }
 
@@ -242,7 +248,6 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
         InneractiveAdManager.setUserId("userId");
 
         dtView = findViewById(R.id.dt_view);
-        dtAdRequest = new InneractiveAdRequest(UNIT_ID_DT_BANNER);
         dtAdSpot = InneractiveAdSpotManager.get().createSpot();
         dtAdController = new InneractiveAdViewUnitController();
         dtAdSpot.addUnitController(dtAdController);
@@ -315,12 +320,12 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
         PAGSdk.init(this, pagInitConfig, new PAGSdk.PAGInitCallback() {
             @Override
             public void success() {
-                printLog("pangle", "pangle init success: ");
+                printLog(TAG, "pangle init success: ");
             }
 
             @Override
             public void fail(int code, String msg) {
-                printLog("pangle", "pangle init fail: " + code);
+                printLog(TAG, "pangle init fail: " + code);
             }
         });
 
@@ -410,9 +415,7 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
             }
         });
 
-        // Initialize MaxAdView and set the listener
-        maxAdView = findViewById(R.id.max_view); // Ensure you have a MaxAdView in your layout
-        maxAdView.setListener(new MaxAdViewAdListener() {
+        maxAdListener = new MaxAdViewAdListener() {
             @Override
             public void onAdLoaded(@NonNull MaxAd maxAd) {
                 printLog("APPLOVIN","onAdLoaded");
@@ -454,13 +457,12 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
             public void onAdCollapsed(@NonNull MaxAd maxAd) {
                 printLog("APPLOVIN","onAdCollapsed");
             }
-        });
+        };
 
         /********************************************************************************
          * Tnk 설정
          *******************************************************************************/
-        tnkAdView = findViewById(R.id.tnk_view);
-        tnkAdView.setListener(new com.tnkfactory.ad.AdListener() {
+        tnkAdListener = new com.tnkfactory.ad.AdListener() {
             @Override
             public void onClick(AdItem adItem) {
                 super.onClick(adItem);
@@ -486,13 +488,14 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
                 printLog("TNK","onLoad");
                 tnkAdView.setVisibility(View.VISIBLE);
             }
-        });
+        };
     }
 
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.load_btn) {
             hideAllView();
+
             mediationOrderResult = null;
             // 1. 연동된 타사 광고 목록 설정
             ArrayList<MediationType> mediationUseList =
@@ -506,11 +509,10 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
                             MediationType.APPLOVIN,
                             MediationType.TNK
                     ));
-            // 2. 타사 광고 최적화 순서를 받을 리스너 설정
-            // 3. 타사 광고 목록과 리스너를 Exelbid 광고 객체에 설정한다.
+//             2. 타사 광고 최적화 순서를 받을 리스너 설정
+//             3. 타사 광고 목록과 리스너를 Exelbid 광고 객체에 설정한다.
             ExelBid.getMediationData(SampleBannerMediation.this, mEdtAdUnit.getText().toString(), mediationUseList
                     , new OnMediationOrderResultListener() {
-
                         @Override
                         public void onMediationOrderResult(MediationOrderResult mediationOrderResult) {
                             printLog("Mediation","onMediationOrderResult");
@@ -541,45 +543,65 @@ public class SampleBannerMediation extends SampleBase implements View.OnClickLis
             return;
         }
 
-        currentMediationType = mediationOrderResult.poll();
-        if(currentMediationType != null) {
-            // 타사 SDK의 종류와 형식(배너, 전면, 네이티브) 에 따라서 광고 요청 로직을 적용한다
-            if (currentMediationType.equals(MediationType.EXELBID)) {
-                exelbidAdView.loadAd();
-                printLog("Exelbid","Request...");
-            } else if (currentMediationType.equals(MediationType.ADMOB)) {
-//                MobileAds.setRequestConfiguration(
-//                        new RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345"))
-//                                .build());
-                admobView.loadAd(new AdRequest.Builder().build());
-                printLog("ADMOB","Request...");
-            } else if (currentMediationType.equals(MediationType.FAN)) {
-                fanView = new com.facebook.ads.AdView(this, UNIT_ID_FAN_BANNER, AdSize.BANNER_HEIGHT_50);
-                fanAdView.addView(fanView);
-                fanView.loadAd(fanView.buildLoadAdConfig().withAdListener(fanAdListener).build());
-                printLog("FAN","Request...");
-            } else if (currentMediationType.equals(MediationType.ADFIT)) {
-                adfitAdView.loadAd();
-                printLog("Adfit","Request...");
-            } else if (currentMediationType.equals(MediationType.DT)) {
-                if (dtAdSpot.isReady()) {
-                    dtAdController.unbindView(dtView);
-                }
-                dtAdSpot.requestAd(dtAdRequest);
-                printLog("DT","Request...");
-            } else if (currentMediationType.equals(MediationType.PANGLE)) {
-                if(pagAd != null) {
-                    pangleView.removeView(pagAd.getBannerView());
-                }
-                pagAd.loadAd(UNIT_ID_PANGLE_BANNER, pagRequest, pagAdListener);
-                printLog("PANGLE","Request...");
-            } else if (currentMediationType.equals(MediationType.APPLOVIN)) {
-                maxAdView.loadAd();
-                printLog("APPLOVIN","Request...");
-            } else if (currentMediationType.equals(MediationType.TNK)) {
-                tnkAdView.load();
-                printLog("TNK","Request...");
+        Pair<MediationType, String> currentMediationPair = mediationOrderResult.poll();
+        if(currentMediationPair == null) {
+            return;
+        }
+
+        currentMediationType = currentMediationPair.first;
+        currentMediationUnitId = currentMediationPair.second;
+
+        // 각 SDK 종류에 따라 광고 요청 로직을 적용한다.
+        if (currentMediationType.equals(MediationType.EXELBID)) {
+            exelbidAdView.setAdUnitId(currentMediationUnitId);
+            exelbidAdView.loadAd();
+            printLog("Exelbid","Request...");
+        } else if (currentMediationType.equals(MediationType.ADMOB)) {
+            if(admobView.getAdUnitId() == null){
+                admobView.setAdSize(com.google.android.gms.ads.AdSize.BANNER);
+                admobView.setAdUnitId(currentMediationUnitId);
             }
+            admobView.loadAd(new AdRequest.Builder().build());
+            printLog("ADMOB","Request...");
+        } else if (currentMediationType.equals(MediationType.FAN)) {
+            if(fanView == null || !fanView.getPlacementId().equals(currentMediationUnitId)) {
+                fanView = new com.facebook.ads.AdView(this, currentMediationUnitId, AdSize.BANNER_HEIGHT_50);
+                fanAdView.addView(fanView);
+            }
+            fanView.loadAd(fanView.buildLoadAdConfig().withAdListener(fanAdListener).build());
+            printLog("FAN","Request...");
+        } else if (currentMediationType.equals(MediationType.ADFIT)) {
+            adfitAdView.setClientId(currentMediationUnitId);
+            adfitAdView.loadAd();
+            printLog("ADFIT","Request...");
+        } else if (currentMediationType.equals(MediationType.DT)) {
+            if (dtAdSpot.isReady()) {
+                dtAdController.unbindView(dtView);
+            }
+            dtAdSpot.requestAd(new InneractiveAdRequest(currentMediationUnitId));
+            printLog("DT","Request...");
+        } else if (currentMediationType.equals(MediationType.PANGLE)) {
+            if(pagAd != null) {
+                pangleView.removeView(pagAd.getBannerView());
+            }
+            pagAd.loadAd(currentMediationUnitId, pagRequest, pagAdListener);
+            printLog("PANGLE","Request...");
+        } else if (currentMediationType.equals(MediationType.APPLOVIN)) {
+            if(maxAdView == null || !maxAdView.getAdUnitId().equals(currentMediationUnitId)) {
+                maxAdView = new MaxAdView(currentMediationUnitId, this);
+                maxAdView.setListener(maxAdListener);
+                adContainer.addView(maxAdView);
+            }
+            maxAdView.loadAd();
+            printLog("APPLOVIN","Request...");
+        } else if (currentMediationType.equals(MediationType.TNK)) {
+            if(tnkAdView == null || !tnkAdView.getPlacementId().equals(currentMediationUnitId)) {
+                tnkAdView = new com.tnkfactory.ad.BannerAdView(this, currentMediationUnitId);
+                tnkAdView.setListener(tnkAdListener);
+                adContainer.addView(tnkAdView);
+            }
+            tnkAdView.load();
+            printLog("TNK","Request...");
         }
     }
 

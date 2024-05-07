@@ -10,7 +10,7 @@ import android.text.TextUtils;
 
 @TargetApi(9)
 public class PrefManager {
-	public final static String KEY_INTERSTIAL_AD = "inter_key";
+	public final static String KEY_INTERSTITIAL_AD = "inter_key";
 	public final static String KEY_BANNER_AD = "banner_key";
 	public final static String KEY_NATIVE_AD = "native_key";
 	public final static String KEY_NATIVE_ADAPTER_AD = "native_adapter_key";
@@ -20,10 +20,10 @@ public class PrefManager {
 
 
 	public static String getInterstialAd(Context context, String key, String _default) {
-		if(KEY_INTERSTIAL_AD.equals(key)) {
-			return getPref(context, KEY_INTERSTIAL_AD, getPref(context, KEY_DIALOG_INTERSTIAL_AD, _default));
+		if(KEY_INTERSTITIAL_AD.equals(key)) {
+			return getPref(context, KEY_INTERSTITIAL_AD, getPref(context, KEY_DIALOG_INTERSTIAL_AD, _default));
 		} else {
-			return getPref(context, KEY_DIALOG_INTERSTIAL_AD, getPref(context, KEY_INTERSTIAL_AD, _default));
+			return getPref(context, KEY_DIALOG_INTERSTIAL_AD, getPref(context, KEY_INTERSTITIAL_AD, _default));
 		}
 	}
 

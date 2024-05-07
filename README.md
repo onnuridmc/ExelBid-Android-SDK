@@ -214,7 +214,7 @@
 	2. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	implementation 'com.onnuridmc.exelbid:exelbid:1.9.2'
+        	implementation 'com.onnuridmc.exelbid:exelbid:1.9.8'
 	}
     ```
 ### 빌드 API 수준

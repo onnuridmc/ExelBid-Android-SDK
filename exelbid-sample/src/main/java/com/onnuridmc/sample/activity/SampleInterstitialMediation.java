@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
 
 import com.applovin.mediation.MaxAd;
 import com.applovin.mediation.MaxAdListener;
@@ -71,10 +72,12 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
     private Button showBtn;
     EditText mEdtAdUnit;
 
-    // Exelbid
-    private ExelBidInterstitial exelbidInterstitialAd;
     private MediationOrderResult mediationOrderResult;
     private MediationType currentMediationType;
+    private String currentMediationUnitId;
+
+    // Exelbid
+    private ExelBidInterstitial exelbidInterstitialAd;
 
     // AdMob
     private InterstitialAd adMobInterstitialAd;
@@ -83,11 +86,10 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
 
     //FaceBook
     private com.facebook.ads.InterstitialAd fanInterstitialAd;
-    private com.facebook.ads.InterstitialAd.InterstitialLoadAdConfig fanLoadAdConfig;
+    private InterstitialAdListener fanAdListener;
 
     // DigitalTurbine
     private InneractiveAdSpot dtAdSpot;
-    private InneractiveAdRequest dtAdRequest;
     private InneractiveFullscreenUnitController dtAdController;
 
     // Pangle
@@ -98,9 +100,11 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
 
     // Applovin
     private MaxInterstitialAd maxInterstitialAd;
+    private MaxAdListener maxAdListener;
 
     // TNK
     private InterstitialAdItem tnkInterstitialAd;
+    private AdListener tnkAdListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +120,7 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
         showBtn.setEnabled(false);
 
         mEdtAdUnit = findViewById(R.id.unit_id);
-        mEdtAdUnit.setText(PrefManager.getPref(this, PrefManager.KEY_INTERSTIAL_AD, UNIT_ID_EXELBID_INTERSTITTIAL));
+        mEdtAdUnit.setText(PrefManager.getPref(this, PrefManager.KEY_INTERSTITIAL_AD, UNIT_ID_EXELBID_INTERSTITIAL));
 
         logText = findViewById(R.id.log_txt);
         logText.setMovementMethod(new ScrollingMovementMethod());
@@ -153,9 +157,6 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
             }
         });
 
-        /********************************************************************************
-         * AdMob 설정
-         *******************************************************************************/
         /********************************************************************************
          * AdMob 설정
          *******************************************************************************/
@@ -226,52 +227,47 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
         /********************************************************************************
          * FAN 설정
          *******************************************************************************/
-        fanInterstitialAd = new com.facebook.ads.InterstitialAd(this, UNIT_ID_FAN_INTERSTITTIAL);
-        fanLoadAdConfig = fanInterstitialAd
-                .buildLoadAdConfig()
-                .withAdListener(new InterstitialAdListener() {
-                    @Override
-                    public void onInterstitialDisplayed(Ad ad) {
-                    }
+        fanAdListener = new InterstitialAdListener() {
+            @Override
+            public void onInterstitialDisplayed(Ad ad) {
+            }
 
-                    @Override
-                    public void onInterstitialDismissed(Ad ad) {
-                        fanInterstitialAd.destroy();
-                        fanInterstitialAd = null;
-                    }
+            @Override
+            public void onInterstitialDismissed(Ad ad) {
+                fanInterstitialAd.destroy();
+                fanInterstitialAd = null;
+            }
 
-                    @Override
-                    public void onError(Ad ad, AdError adError) {
-                        printLog("FAN","Fail : " + adError.getErrorMessage());
-                        loadMediation();
-                    }
+            @Override
+            public void onError(Ad ad, AdError adError) {
+                printLog("FAN","Fail : " + adError.getErrorMessage());
+                loadMediation();
+            }
 
-                    @Override
-                    public void onAdLoaded(Ad ad) {
-                        if (fanInterstitialAd == null
-                                || ad != fanInterstitialAd
-                                || !fanInterstitialAd.isAdLoaded()
-                                || fanInterstitialAd.isAdInvalidated()) {
-                            // Ad not ready to show.
-                            printLog("FAN","Fail - Ad not loaded. Click load to request an ad.");
-                            loadMediation();
-                        } else {
-                            // Ad was loaded, show it!
-                            printLog("FAN","Loaded");
-                            showBtn.setEnabled(true);
-                        }
-                    }
+            @Override
+            public void onAdLoaded(Ad ad) {
+                if (fanInterstitialAd == null
+                        || ad != fanInterstitialAd
+                        || !fanInterstitialAd.isAdLoaded()
+                        || fanInterstitialAd.isAdInvalidated()) {
+                    // Ad not ready to show.
+                    printLog("FAN","Fail - Ad not loaded. Click load to request an ad.");
+                    loadMediation();
+                } else {
+                    // Ad was loaded, show it!
+                    printLog("FAN","Loaded");
+                    showBtn.setEnabled(true);
+                }
+            }
 
-                    @Override
-                    public void onAdClicked(Ad ad) {
-                    }
+            @Override
+            public void onAdClicked(Ad ad) {
+            }
 
-                    @Override
-                    public void onLoggingImpression(Ad ad) {
-                    }
-                })
-                .withCacheFlags(EnumSet.of(CacheFlag.VIDEO))
-                .build();
+            @Override
+            public void onLoggingImpression(Ad ad) {
+            }
+        };
 
         /********************************************************************************
          * DigitalTurbine 설정
@@ -280,7 +276,6 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
         InneractiveAdManager.setUserId("userId");
         InneractiveAdManager.setMuteVideo(true);
 
-        dtAdRequest = new InneractiveAdRequest(UNIT_ID_DT_INTERSTITTIAL);
         dtAdSpot = InneractiveAdSpotManager.get().createSpot();
         dtAdSpot.setRequestListener(new InneractiveAdSpot.RequestListener() {
             @Override
@@ -450,8 +445,7 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
             }
         });
 
-        maxInterstitialAd = new MaxInterstitialAd(UNIT_ID_MAX_INTERSTITIAL, this);
-        maxInterstitialAd.setListener(new MaxAdListener() {
+        maxAdListener = new MaxAdListener() {
             @Override
             public void onAdLoaded(MaxAd ad) {
                 printLog("APPLOVIN","onAdLoaded");
@@ -483,13 +477,12 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
             public void onAdDisplayFailed(MaxAd ad, MaxError error) {
                 printLog("APPLOVIN", "onAdDisplayFailed :"+ error.toString());
             }
-        });
+        };
 
         /********************************************************************************
          * TNK 설정
          *******************************************************************************/
-        tnkInterstitialAd = new InterstitialAdItem(this, UNIT_ID_TNK_INTERSTITIAL);
-        tnkInterstitialAd.setListener(new AdListener() {
+        tnkAdListener = new AdListener() {
             @Override
             public void onClose(AdItem adItem, int i) {
                 super.onClose(adItem, i);
@@ -529,7 +522,7 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
                 printLog("TNK","onVideoCompletion");
 
             }
-        });
+        };
     }
 
     @Override
@@ -578,31 +571,48 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
             return;
         }
 
-        currentMediationType = mediationOrderResult.poll();
-        if(currentMediationType != null) {
-            if (currentMediationType.equals(MediationType.EXELBID)) {
-                exelbidInterstitialAd.load();
-                printLog("Exelbid","Request...");
-            } else if (currentMediationType.equals(MediationType.ADMOB)) {
-                AdRequest adRequest = new AdRequest.Builder().build();
-                adMobInterstitialAd.load(SampleInterstitialMediation.this, UNIT_ID_ADMOB_INTERSTITTIAL, adRequest, adMobAdListener);
-                printLog("ADMOB","Request...");
-            } else if (currentMediationType.equals(MediationType.FAN)) {
-                fanInterstitialAd.loadAd(fanLoadAdConfig);
-                printLog("FAN","Request...");
-            } else if (currentMediationType.equals(MediationType.DT)) {
-                dtAdSpot.requestAd(dtAdRequest);
-                printLog("DT","Request...");
-            }  else if (currentMediationType.equals(MediationType.PANGLE)) {
-                pagInterstitialAd.loadAd(UNIT_ID_PANGLE_INTERSTITTIAL, pagRequest, pagAdListener);
-                printLog("PANGLE","Request...");
-            } else if (currentMediationType.equals(MediationType.APPLOVIN)) {
-                maxInterstitialAd.loadAd();
-                printLog("APPLOVIN","Request...");
-            } else if (currentMediationType.equals(MediationType.TNK)) {
-                tnkInterstitialAd.load();
-                printLog("TNK","Request...");
+        Pair<MediationType, String> currentMediationPair = mediationOrderResult.poll();
+        if(currentMediationPair == null) {
+            return;
+        }
+
+        currentMediationType = currentMediationPair.first;
+        currentMediationUnitId = currentMediationPair.second;
+
+        if (currentMediationType.equals(MediationType.EXELBID)) {
+            exelbidInterstitialAd.setAdUnitId(currentMediationUnitId);
+            exelbidInterstitialAd.load();
+            printLog("Exelbid","Request...");
+        } else if (currentMediationType.equals(MediationType.ADMOB)) {
+            AdRequest adRequest = new AdRequest.Builder().build();
+            adMobInterstitialAd.load(SampleInterstitialMediation.this, currentMediationUnitId, adRequest, adMobAdListener);
+            printLog("ADMOB","Request...");
+        } else if (currentMediationType.equals(MediationType.FAN)) {
+            if(fanInterstitialAd == null || !fanInterstitialAd.getPlacementId().equals(currentMediationUnitId)) {
+                fanInterstitialAd = new com.facebook.ads.InterstitialAd(this, currentMediationUnitId);
             }
+            fanInterstitialAd.loadAd(fanInterstitialAd.buildLoadAdConfig().withAdListener(fanAdListener).withCacheFlags(EnumSet.of(CacheFlag.VIDEO)).build());
+            printLog("FAN","Request...");
+        } else if (currentMediationType.equals(MediationType.DT)) {
+            dtAdSpot.requestAd(new InneractiveAdRequest(currentMediationUnitId));
+            printLog("DT","Request...");
+        } else if (currentMediationType.equals(MediationType.PANGLE)) {
+            pagInterstitialAd.loadAd(currentMediationUnitId, pagRequest, pagAdListener);
+            printLog("PANGLE","Request...");
+        } else if (currentMediationType.equals(MediationType.APPLOVIN)) {
+            if(maxInterstitialAd == null || !maxInterstitialAd.getAdUnitId().equals(currentMediationUnitId)) {
+                maxInterstitialAd = new MaxInterstitialAd(currentMediationUnitId, this);
+                maxInterstitialAd.setListener(maxAdListener);
+            }
+            maxInterstitialAd.loadAd();
+            printLog("APPLOVIN","Request...");
+        } else if (currentMediationType.equals(MediationType.TNK)) {
+            if(tnkInterstitialAd == null || !tnkInterstitialAd.getPlacementId().equals(currentMediationUnitId)) {
+                tnkInterstitialAd = new InterstitialAdItem(this, currentMediationUnitId);
+                tnkInterstitialAd.setListener(tnkAdListener);
+            }
+            tnkInterstitialAd.load();
+            printLog("TNK","Request...");
         }
     }
 
@@ -624,8 +634,8 @@ public class SampleInterstitialMediation extends SampleBase implements View.OnCl
                 if (dtAdSpot != null && dtAdSpot.isReady()) {
                     dtAdController.show(this);
                 }
-            }  else if (currentMediationType.equals(MediationType.PANGLE)) {
-                printLog("pangle","Show");
+            } else if (currentMediationType.equals(MediationType.PANGLE)) {
+                printLog("PANGLE","Show");
                 if(pagInterstitialAd != null) {
                     pagInterstitialAd.show(this);
                 }

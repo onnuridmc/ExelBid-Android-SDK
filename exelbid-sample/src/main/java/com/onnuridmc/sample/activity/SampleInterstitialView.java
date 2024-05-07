@@ -48,7 +48,7 @@ public class SampleInterstitialView extends Activity {
                 mInterstitialAd.setTestMode(isChecked);
             }
         });
-        mUnitId = PrefManager.getInterstialAd(this, PrefManager.KEY_INTERSTIAL_AD, AppConstants.UNIT_ID_INTERSTITIAL);
+        mUnitId = PrefManager.getInterstialAd(this, PrefManager.KEY_INTERSTITIAL_AD, AppConstants.UNIT_ID_INTERSTITIAL);
 
         mEdtAdUnit.setText(mUnitId);
 
@@ -98,7 +98,7 @@ public class SampleInterstitialView extends Activity {
             }
             mInterstitialAd.setAdUnitId(unitID);
             if(!unitID.equals(mUnitId)) {
-                PrefManager.setPref(this, PrefManager.KEY_INTERSTIAL_AD, unitID);
+                PrefManager.setPref(this, PrefManager.KEY_INTERSTITIAL_AD, unitID);
             }
 
             mUnitId = unitID;

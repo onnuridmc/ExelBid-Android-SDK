@@ -123,7 +123,7 @@ public class SampleAdfitBizBoardMediation extends SampleBase implements View.OnC
         }
 
         printLog("Mediation List size", "" + mediationOrderResult.getSize());
-        currentMediationType = mediationOrderResult.poll();
+        currentMediationType = mediationOrderResult.poll().first;
         if (currentMediationType != null) {
             if (currentMediationType.equals(MediationType.EXELBID)) {
                 mediationOrderResult = null;

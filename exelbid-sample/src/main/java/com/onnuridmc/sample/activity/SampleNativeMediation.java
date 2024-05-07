@@ -21,9 +21,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
 
 import com.applovin.mediation.MaxAd;
-import com.applovin.mediation.MaxAdRevenueListener;
 import com.applovin.mediation.MaxError;
 import com.applovin.mediation.nativeAds.MaxNativeAdListener;
 import com.applovin.mediation.nativeAds.MaxNativeAdLoader;
@@ -95,17 +95,21 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
     private Button showBtn;
     EditText mEdtAdUnit;
 
-    // Exelbid
     private MediationOrderResult mediationOrderResult;
     private MediationType currentMediationType;
+    private String currentMediationUnitId;
 
+    // Exelbid
     private View exelbidNativeLayout;
-    private ExelBidNative exelBidNativeAd;
+    private ExelBidNative exelbidNativeAd;
 
     // AdMob
     private NativeAd adMobNativeAd;
     FrameLayout adMobNativeLayout;
     AdLoader adMobAdLoader;
+    NativeAd.OnNativeAdLoadedListener admobAdLoadedListener;
+    NativeAdOptions admobNativeAdOptions;
+    AdListener admobAdListener;
 
     //FaceBook
     private @Nullable
@@ -121,7 +125,7 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
     AdFitNativeAdLoader adFitNativeAdLoader;
     private AdFitNativeAdBinder adfitNativeAdBinder;
 
-    // pangle
+    // Pangle
     private FrameLayout pangleNativeLayout;
     private PAGNativeAd pagNativeAd;
     private PAGNativeRequest pagRequest;
@@ -133,10 +137,12 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
     private MaxNativeAdLoader maxNativeAdLoader;
     private MaxAd maxNativeAd;
     private MaxNativeAdView maxNativeAdView;
+    private MaxNativeAdListener maxAdListener;
 
     // Tnk
     private FrameLayout tnkNativeLayout;
     private NativeAdItem tnkNativeAd;
+    private com.tnkfactory.ad.AdListener tnkAdListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,7 +158,8 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
         showBtn.setEnabled(false);
 
         mEdtAdUnit = findViewById(R.id.unit_id);
-        mEdtAdUnit.setText(PrefManager.getPref(this, PrefManager.KEY_NATIVE_AD, UNIT_ID_EXELBID_NATIVE));
+//        mEdtAdUnit.setText(PrefManager.getPref(this, PrefManager.KEY_NATIVE_AD, UNIT_ID_EXELBID_NATIVE));
+        mEdtAdUnit.setText(PrefManager.getPref(this, PrefManager.KEY_NATIVE_AD, "d7b20997ed5f925e617c33a5b198bdce6fcf04b0"));
 
         logText = findViewById(R.id.log_txt);
         logText.setMovementMethod(new ScrollingMovementMethod());
@@ -174,7 +181,7 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
         initFan();
 
         /********************************************************************************
-         * Exelbid 설정
+         * Adfit 설정
          *******************************************************************************/
         initAdfit();
 
@@ -198,7 +205,6 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.load_btn) {
-
             hideAllView();
             showBtn.setEnabled(false);
 
@@ -243,24 +249,45 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
             return;
         }
 
-        printLog("Mediation List size", "" + mediationOrderResult.getSize());
-        currentMediationType = mediationOrderResult.poll();
+        Pair<MediationType, String> currentMediationPair = mediationOrderResult.poll();
+        if(currentMediationPair == null) {
+            return;
+        }
+
+        currentMediationType = currentMediationPair.first;
+        currentMediationUnitId = currentMediationPair.second;
+
         if (currentMediationType != null) {
             if (currentMediationType.equals(MediationType.EXELBID)) {
-                mediationOrderResult = null;
-                exelBidNativeAd.loadAd();
+                exelbidNativeAd.setAdUnitId(currentMediationUnitId);
+                exelbidNativeAd.loadAd();
             } else if (currentMediationType.equals(MediationType.ADMOB)) {
+                adMobAdLoader = new AdLoader.Builder(this, currentMediationUnitId)
+                        .forNativeAd(admobAdLoadedListener)
+                        .withNativeAdOptions(admobNativeAdOptions)
+                        .withAdListener(admobAdListener).build();
                 adMobAdLoader.loadAd(new AdRequest.Builder().build());
             } else if (currentMediationType.equals(MediationType.FAN)) {
-                fanNativeAd = new com.facebook.ads.NativeAd(this, UNIT_ID_FAN_NATIVE);
+                if(fanNativeAd == null || !fanNativeAd.getPlacementId().equals(currentMediationUnitId)) {
+                    fanNativeAd = new com.facebook.ads.NativeAd(this, currentMediationUnitId);
+                }
                 fanNativeAd.loadAd(fanNativeAd.buildLoadAdConfig().withAdListener(fanNativeAdListener).build());
             } else if (currentMediationType.equals(MediationType.ADFIT)) {
+                adFitNativeAdLoader = AdFitNativeAdLoader.create(this, currentMediationUnitId);
                 adFitNativeAdLoader.loadAd(adfitRequest, adFitAdLoadListener);
             } else if (currentMediationType.equals(MediationType.PANGLE)) {
-                pagNativeAd.loadAd(UNIT_ID_PANGLE_NATIVE, pagRequest, pagAdListener);
+                pagNativeAd.loadAd(currentMediationUnitId, pagRequest, pagAdListener);
             } else if (currentMediationType.equals(MediationType.APPLOVIN)) {
+                if(maxNativeAdLoader == null || maxNativeAdLoader.getAdUnitId().equals(currentMediationUnitId)){
+                    maxNativeAdLoader = new MaxNativeAdLoader(currentMediationUnitId, this);
+                    maxNativeAdLoader.setNativeAdListener(maxAdListener);
+                }
                 maxNativeAdLoader.loadAd(maxNativeAdView);
             } else if (currentMediationType.equals(MediationType.TNK)) {
+                if(tnkNativeAd == null || !tnkNativeAd.getPlacementId().equals(currentMediationUnitId)) {
+                    tnkNativeAd = new NativeAdItem(this, currentMediationUnitId);
+                    tnkNativeAd.setListener(tnkAdListener);
+                }
                 tnkNativeAd.load();
             } else {
                 printLog(currentMediationType.toString(), "Not Setting...");
@@ -334,8 +361,8 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
     /** Called when leaving the activity */
     @Override
     public void onPause() {
-        if (exelBidNativeAd != null) {
-            exelBidNativeAd.onPause();
+        if (exelbidNativeAd != null) {
+            exelbidNativeAd.onPause();
         }
         super.onPause();
     }
@@ -344,16 +371,16 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
     @Override
     public void onResume() {
         super.onResume();
-        if (exelBidNativeAd != null) {
-            exelBidNativeAd.onResume();
+        if (exelbidNativeAd != null) {
+            exelbidNativeAd.onResume();
         }
     }
 
     /** Called before the activity is destroyed */
     @Override
     public void onDestroy() {
-        if (exelBidNativeAd != null) {
-            exelBidNativeAd.onDestroy();
+        if (exelbidNativeAd != null) {
+            exelbidNativeAd.onDestroy();
         }
         if (adMobNativeAd != null) {
             adMobNativeAd.destroy();
@@ -381,7 +408,7 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
      */
     private void initExelbid() {
         // 네이티브 요청 객체를 생성한다.
-        exelBidNativeAd = new ExelBidNative(this, mEdtAdUnit.getText().toString(), new OnAdNativeListener() {
+        exelbidNativeAd = new ExelBidNative(this, mEdtAdUnit.getText().toString(), new OnAdNativeListener() {
             @Override
             public void onFailed(ExelBidError error, int statusCode) {
                 printLog("Exelbid","onFailed " + error.toString());
@@ -404,12 +431,12 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
                 printLog("Exelbid","onLoaded");
                 // Exelbid는 자동 노출 처리한다.
                 exelbidNativeLayout.setVisibility(View.VISIBLE);
-                exelBidNativeAd.show();
+                exelbidNativeAd.show();
             }
         });
 
         exelbidNativeLayout = findViewById(R.id.exelbid_native_container);
-        exelBidNativeAd.setNativeViewBinder(new NativeViewBinder.Builder(exelbidNativeLayout)
+        exelbidNativeAd.setNativeViewBinder(new NativeViewBinder.Builder(exelbidNativeLayout)
                 .mainImageId(R.id.native_main_image)
                 .callToActionButtonId(R.id.native_cta)
                 .titleTextViewId(R.id.native_title)
@@ -419,7 +446,7 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
                 .build());
 
         // 네이티브 요청시 필수로 존재해야 하는 값을 셋팅한다. 해당 조건 셋팅으로 인해서 광고가 존재하지 않을 확률이 높아집니다.
-        exelBidNativeAd.setRequiredAsset(new NativeAsset[] {NativeAsset.TITLE, NativeAsset.CTATEXT, NativeAsset.ICON, NativeAsset.MAINIMAGE, NativeAsset.DESC});
+        exelbidNativeAd.setRequiredAsset(new NativeAsset[] {NativeAsset.TITLE, NativeAsset.CTATEXT, NativeAsset.ICON, NativeAsset.MAINIMAGE, NativeAsset.DESC});
 
     }
 
@@ -435,8 +462,7 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
             }
         });
         adMobNativeLayout = findViewById(R.id.admob_native_container);
-        AdLoader.Builder builder = new AdLoader.Builder(this, UNIT_ID_ADMOB_NATIVE);
-        builder.forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+        admobAdLoadedListener = new NativeAd.OnNativeAdLoadedListener() {
             @Override
             public void onNativeAdLoaded(@NonNull NativeAd nativeAd) {
                 // If this callback occurs after the activity is destroyed, you must call destroy and return or you may get a memory leak.
@@ -531,13 +557,11 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
                 printLog("ADMOB","Load");
                 showBtn.setEnabled(true);
             }
-        });
+        };
 
         VideoOptions videoOptions = new VideoOptions.Builder().setStartMuted(true).build();
-        NativeAdOptions nativeAdOptions = new com.google.android.gms.ads.nativead.NativeAdOptions.Builder().setVideoOptions(videoOptions).build();
-        builder.withNativeAdOptions(nativeAdOptions);
-
-        adMobAdLoader = builder.withAdListener(new AdListener() {
+        admobNativeAdOptions = new com.google.android.gms.ads.nativead.NativeAdOptions.Builder().setVideoOptions(videoOptions).build();
+        admobAdListener = new AdListener() {
             @Override
             public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                 super.onAdFailedToLoad(loadAdError);
@@ -548,7 +572,7 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
                 adMobNativeLayout.setVisibility(View.GONE);
                 loadMediation();
             }
-        }).build();
+        };
     }
 
     /**
@@ -557,7 +581,6 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
     private void initFan() {
 
         fanNativeLayout = findViewById(R.id.fan_native_container);
-        fanNativeAd = new com.facebook.ads.NativeAd(this, UNIT_ID_FAN_NATIVE);
         fanNativeAdListener = new NativeAdListener() {
             @Override
             public void onMediaDownloaded(Ad ad) {
@@ -713,7 +736,6 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
      */
     private void initAdfit() {
         adfitNativeLayout = findViewById(R.id.adfit_native_container);
-        adFitNativeAdLoader = AdFitNativeAdLoader.create(this, "test-id");
         adfitRequest = new AdFitNativeAdRequest.Builder()
                 .setAdInfoIconPosition(AdFitAdInfoIconPosition.RIGHT_TOP) // 광고 정보 아이콘 위치 설정 (container view 내에서의 광고 아이콘 위치)
                 .setVideoAutoPlayPolicy(AdFitVideoAutoPlayPolicy.WIFI_ONLY) // 비디오 광고 자동 재생 정책 설정
@@ -749,7 +771,7 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
                 // 광고 노출
                 adfitNativeAdBinder = binder;
                 binder.bind(nativeAdLayout);
-
+                showBtn.setEnabled(true);
             }
 
             @Override
@@ -771,12 +793,12 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
         PAGSdk.init(this, pagInitConfig, new PAGSdk.PAGInitCallback() {
             @Override
             public void success() {
-                Log.i(TAG, "pangle init success: ");
+                printLog("PANGLE","Init Success");
             }
 
             @Override
             public void fail(int code, String msg) {
-                Log.i(TAG, "pangle init fail: " + code);
+                printLog("PANGLE","Init Fail"+msg);
             }
         });
 
@@ -823,18 +845,16 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
         pagAdListener = new PAGNativeAdLoadListener() {
             @Override
             public void onError(int i, String s) {
-                Log.d("PANGLE","onError");
-                showBtn.setEnabled(false);
+                printLog("PANGLE","onError");
                 pangleNativeLayout.setVisibility(View.GONE);
                 loadMediation();
             }
 
             @Override
             public void onAdLoaded(PAGNativeAd pagNativeAd) {
-                Log.d("PANGLE","onAdLoaded");
+                printLog("PANGLE","onAdLoaded");
                 if (pagNativeAd != null) {
                     SampleNativeMediation.this.pagNativeAd = pagNativeAd;
-                    showBtn.setEnabled(true);
                     PAGNativeAdData adData = SampleNativeMediation.this.pagNativeAd.getNativeAdData();
                     if (adData == null){
                         return;
@@ -881,6 +901,7 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
 
                     pangleNativeLayout.removeAllViews();
                     pangleNativeLayout.addView(nativeAdView);
+                    showBtn.setEnabled(true);
                 }
             }
         };
@@ -888,16 +909,15 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
         pagInteractListener = new PAGNativeAdInteractionListener() {
             @Override
             public void onAdShowed() {
-                Log.d("PANGLE","onAdShowed");
+                printLog("PANGLE","onAdShowed");
             }
-
             @Override
             public void onAdClicked() {
-                Log.d("PANGLE","onAdClicked");
+                printLog("PANGLE","onAdClicked");
             }
             @Override
             public void onAdDismissed() {
-                Log.d("PANGLE","onAdDismissed");
+                printLog("PANGLE","onAdDismissed");
             }
         };
     }
@@ -913,52 +933,40 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
         } );
 
         maxNativeLayout = findViewById(R.id.max_native_container);
+        maxAdListener = new MaxNativeAdListener() {
+            @Override
+            public void onNativeAdLoaded(@Nullable MaxNativeAdView maxNativeAdView, @NonNull MaxAd maxAd) {
+                super.onNativeAdLoaded(maxNativeAdView, maxAd);
+                printLog("APPLOVIN","onNativeAdLoaded");
 
-        if(maxNativeAdLoader == null) {
-            maxNativeAdLoader = new MaxNativeAdLoader(UNIT_ID_MAX_NATIVE, SampleNativeMediation.this);
-            maxNativeAdLoader.setRevenueListener(new MaxAdRevenueListener() {
-                @Override
-                public void onAdRevenuePaid(@NonNull MaxAd maxAd) {
-
-                }
-            });
-
-            maxNativeAdLoader.setNativeAdListener(new MaxNativeAdListener() {
-                @Override
-                public void onNativeAdLoaded(@Nullable MaxNativeAdView maxNativeAdView, @NonNull MaxAd maxAd) {
-                    super.onNativeAdLoaded(maxNativeAdView, maxAd);
-                    printLog("APPLOVIN","onNativeAdLoaded");
-
-                    // Clean up any pre-existing native ad to prevent memory leaks.
-                    if ( maxNativeAd != null )
-                    {
-                        maxNativeAdLoader.destroy( maxNativeAd );
-                    }
-
-                    // Save ad for cleanup.
-                    maxNativeAd = maxAd;
-
-                    maxNativeLayout.removeAllViews();
-                    maxNativeLayout.addView(maxNativeAdView);
-                    showBtn.setEnabled(true);
+                // Clean up any pre-existing native ad to prevent memory leaks.
+                if ( maxNativeAd != null )
+                {
+                    maxNativeAdLoader.destroy( maxNativeAd );
                 }
 
-                @Override
-                public void onNativeAdLoadFailed(@NonNull String s, @NonNull MaxError maxError) {
-                    super.onNativeAdLoadFailed(s, maxError);
-                    printLog("APPLOVIN","onNativeAdLoadFailed");
-                    maxNativeLayout.setVisibility(View.GONE);
-                    loadMediation();
-                }
+                // Save ad for cleanup.
+                maxNativeAd = maxAd;
 
-                @Override
-                public void onNativeAdClicked(@NonNull MaxAd maxAd) {
-                    super.onNativeAdClicked(maxAd);
-                    printLog("APPLOVIN","onNativeAdClicked");
-                }
-            });
-        }
+                maxNativeLayout.removeAllViews();
+                maxNativeLayout.addView(maxNativeAdView);
+                showBtn.setEnabled(true);
+            }
 
+            @Override
+            public void onNativeAdLoadFailed(@NonNull String s, @NonNull MaxError maxError) {
+                super.onNativeAdLoadFailed(s, maxError);
+                printLog("APPLOVIN","onNativeAdLoadFailed");
+                maxNativeLayout.setVisibility(View.GONE);
+                loadMediation();
+            }
+
+            @Override
+            public void onNativeAdClicked(@NonNull MaxAd maxAd) {
+                super.onNativeAdClicked(maxAd);
+                printLog("APPLOVIN","onNativeAdClicked");
+            }
+        };
         MaxNativeAdViewBinder binder = new MaxNativeAdViewBinder.Builder( R.layout.applovin_native_item )
                 .setTitleTextViewId( R.id.native_title )
                 .setBodyTextViewId( R.id.native_text )
@@ -975,9 +983,7 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
     /** Tnk 설정 */
     private void initTnk() {
         tnkNativeLayout = findViewById(R.id.tnk_native_container);
-
-        tnkNativeAd = new NativeAdItem(this, UNIT_ID_TNK_NATIVE);
-        tnkNativeAd.setListener(new com.tnkfactory.ad.AdListener() {
+        tnkAdListener = new com.tnkfactory.ad.AdListener() {
             @Override
             public void onClose(AdItem adItem, int i) {
                 super.onClose(adItem, i);
@@ -1038,6 +1044,6 @@ public class SampleNativeMediation extends SampleBase implements View.OnClickLis
                 super.onVideoCompletion(adItem, i);
                 printLog("TNK","onVideoCompletion");
             }
-        });
+        };
     }
 }
