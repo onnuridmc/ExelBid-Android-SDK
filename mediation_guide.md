@@ -23,13 +23,14 @@ Exelbid Android SDK를 이용한 광고 연동시 Mediation 연동의 경우, �
             * SDK 버전은 [기본 가이드](https://github.com/onnuridmc/ExelBid-Android-SDK#exelbid-sdk-%EC%B6%94%EA%B0%80%ED%95%98%EA%B8%B0)에서 최신 버전 확인 적용합니다.
             ```java
             dependencies {
-                    implementation 'com.onnuridmc.exelbid:exelbid:1.8.4'
+                    implementation 'com.onnuridmc.exelbid:exelbid:1.9.8'
             }
-6. ExelBid.getMediationData 을 호출하여 최적화 순서 호출
-ExelBid.getMediationData
+6. ```ExelBid.getMediationData``` 을 호출하여 최적화 순서 호출
+
 ## 미디에이션 설정
 1. 연동된 미디에이션(광고 SDK) 목록 설정
-    연동 되어진 미디에이션(sdk 연동)리스트를 전달한다.
+
+    연동된 미디에이션(sdk 연동)리스트를 전달한다.
     - Exelbid에서는 SDK에서 미디에이션 최적화를 위해서 연동 가능한 광고 SDK들을 ***Enum***(***MediationType***)으로 제공한다
     - ***ArrayList*** 형태로 설정한다.
     - 해당 값을 설정하지 않는 경우, 대시보드에 설정된 미디에이션 타입이 디폴트로 적용됩니다.
@@ -125,7 +126,7 @@ ExelBid.getMediationData
                     });
     ```
 5. 샘플([SampleBannerMediation.java](https://github.com/onnuridmc/ExelBid-Android-SDK/blob/master/exelbid-sample/src/main/java/com/onnuridmc/sample/activity/SampleBannerMediation.java) 배너 기본 예제) 설명
-    * ***OnMediationOrderResultListener***를 통해서 응답받은 ***MediationOrderResult***객체는 ***poll()*** 함수 호출시마다 순서대로 MediationType 객체를 반환한다.
+    * ***OnMediationOrderResultListener***를 통해서 응답받은 ***MediationOrderResult***객체는 ***poll()*** 함수 호출 시마다 순서대로 ```Pair<MediationType, String>``` 객체를 반환한다.
     * 광고 SDK의 종류와 형식(배너, 전면, 네이티브) 에 따라서 광고 요청 로직을 적용한다
     * loadMediation
     
@@ -135,46 +136,76 @@ ExelBid.getMediationData
             if(mMediationOrderResult == null) {
                 return;
             }
-            MediationType mediationType = mMediationOrderResult.poll();
-            currentMediationType = mediationType;
+            Pair<MediationType, String> currentMediationPair = mediationOrderResult.poll();
+            if(currentMediationPair == null) {
+                return;
+            }
+            currentMediationType = currentMediationPair.first;
+            currentMediationUnitId = currentMediationPair.second;
     
             // 광고 SDK의 종류와 형식(배너, 전면, 네이티브) 에 따라서 광고 요청 로직을 적용한다
-            if(currentMediationType != null) {
-                if(currentMediationType.equals(MediationType.EXELBID)) {
-                    exelbidAdView.loadAd();
+             if (currentMediationType.equals(MediationType.EXELBID)) {
+                exelbidAdView.setAdUnitId(currentMediationUnitId);
+                exelbidAdView.loadAd();
+            } else if (currentMediationType.equals(MediationType.ADMOB)) {
+                if(admobView.getAdUnitId() == null){
+                    admobView.setAdSize(com.google.android.gms.ads.AdSize.BANNER);
+                    admobView.setAdUnitId(currentMediationUnitId);
                 }
-            } else if(currentMediationType.equals(MediationType.ADMOB)) {
-                admobView.loadAd(new AdRequest.Builder().build());  
-            } else if(currentMediationType.equals(MediationType.FAN)) {
-                fanView = new com.facebook.ads.AdView(this, UNIT_ID_FAN_BANNER, AdSize.BANNER_HEIGHT_50);
-                fanAdView.addView(fanView);
+                admobView.loadAd(new AdRequest.Builder().build());
+            } else if (currentMediationType.equals(MediationType.FAN)) {
+                if(fanView == null || !fanView.getPlacementId().equals(currentMediationUnitId)) {
+                    fanView = new com.facebook.ads.AdView(this, currentMediationUnitId, AdSize.BANNER_HEIGHT_50);
+                    fanAdView.addView(fanView);
+                }
                 fanView.loadAd(fanView.buildLoadAdConfig().withAdListener(fanAdListener).build());
-            } else if(currentMediationType.equals(MediationType.ADFIT)) {
+            } else if (currentMediationType.equals(MediationType.ADFIT)) {
+                adfitAdView.setClientId(currentMediationUnitId);
                 adfitAdView.loadAd();
             } else if (currentMediationType.equals(MediationType.DT)) {
                 if (dtAdSpot.isReady()) {
                     dtAdController.unbindView(dtView);
                 }
-                dtAdSpot.requestAd(dtAdRequest);
+                dtAdSpot.requestAd(new InneractiveAdRequest(currentMediationUnitId));
             } else if (currentMediationType.equals(MediationType.PANGLE)) {
-                pagAd.loadAd(UNIT_ID_PANGLE_BANNER, pagRequest, pagAdListener);
+                if(pagAd != null) {
+                    pangleView.removeView(pagAd.getBannerView());
+                }
+                pagAd.loadAd(currentMediationUnitId, pagRequest, pagAdListener);
             } else if (currentMediationType.equals(MediationType.APPLOVIN)) {
+                if(maxAdView == null || !maxAdView.getAdUnitId().equals(currentMediationUnitId)) {
+                    maxAdView = new MaxAdView(currentMediationUnitId, this);
+                    maxAdView.setListener(maxAdListener);
+                    adContainer.addView(maxAdView);
+                }
                 maxAdView.loadAd();
             } else if (currentMediationType.equals(MediationType.TNK)) {
+                if(tnkAdView == null || !tnkAdView.getPlacementId().equals(currentMediationUnitId)) {
+                    tnkAdView = new com.tnkfactory.ad.BannerAdView(this, currentMediationUnitId);
+                    tnkAdView.setListener(tnkAdListener);
+                    adContainer.addView(tnkAdView);
+                }
                 tnkAdView.load();
             }
         }
         ```
 6. MediationOrderResult
-    * ***int getSize()*** - 응답된 미디에이션 광록 목록의 개수를 반환
-    * ***MediationType poll()*** - 응답된 미디에이션 광록 목록에서 최우선 순위의 ***MediationType***을 반환 후 목록에서 삭제
-    * ***reset()*** - ***OnMediationOrderResultListener***를 통해서 응답 받은 목록 개수와 순서로 ***MediationOrderResult***를 초기화 한다.
+    * ***int getSize()*** - 응답된 미디에이션 광고 목록의 개수를 반환
+    * ***Pair<MediationType, String> poll()*** - 응답된 미디에이션 광고 목록에서 최우선 순위의 미디에이션 데이터 ```Pair<MediationType, String>```을 반환 후 목록에서 삭제
+      - ***MediationType*** : 현재 순서의 미디에이션 타입
+      - ***String*** : 현재 순서의 광고 유닛 아이디 (미디에이션 타입에 해당하는 광고 SDK의 지면 아이디)
+    * ***reset()*** - ```OnMediationOrderResultListener```를 통해서 응답 받은 목록 개수와 순서로 ```MediationOrderResult```를 초기화
 
 
-### 전면, 네이티브 형태는 위의 배너와 같은 방식으로 처리한다.
+### 위의 배너 샘플과 같은 방식으로 광고 타입 별 샘플을 참고하여 적용합니다.
 - 배너 광고 미디에이션 샘플 : [SampleBannerMediation.java](https://github.com/onnuridmc/ExelBid-Android-SDK/blob/master/exelbid-sample/src/main/java/com/onnuridmc/sample/activity/SampleBannerMediation.java)
 - 전면 광고 미디에이션 샘플 : [SampleInterstitialMediation.java](https://github.com/onnuridmc/ExelBid-Android-SDK/blob/master/exelbid-sample/src/main/java/com/onnuridmc/sample/activity/SampleInterstitialMediation.java)
+
+    - 전면 비디오 광고 : 전면 광고와 동일하게 처리합니다. 전면 광고 미디에이션 샘플을 참고해주세요. 광고 SDK 별 비디오 설정은 각 SDK 가이드를 참고해주세요.
+
 - 네이티브 광고 미디에이션 샘플 : [SampleNativeMediation.java](https://github.com/onnuridmc/ExelBid-Android-SDK/blob/master/exelbid-sample/src/main/java/com/onnuridmc/sample/activity/SampleNativeMediation.java)
+
+    - 네이티브 동영상 광고 : 네이티브 광고와 동일하게 적용합니다. 네이티브 광고 미디에이션 샘플을 참고해주세요. 광고 SDK 별 비디오 설정은 각 SDK 가이드를 참고해주세요.
 
 ### ExelBid-Android-SDK 연동 가이드를 통한 기본 연동  - [ExelBid-Android-SDK 연동 가이드 참조](https://github.com/onnuridmc/ExelBid-Android-SDK)
 ### 외에 Exelbid 및 타사 광고 SDK 연동은 각각의 해당 가이드를 참조해 설정한다.
