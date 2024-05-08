@@ -23,7 +23,7 @@ Exelbid Android SDK를 이용한 광고 연동시 Mediation 연동의 경우, �
             * SDK 버전은 [기본 가이드](https://github.com/onnuridmc/ExelBid-Android-SDK#exelbid-sdk-%EC%B6%94%EA%B0%80%ED%95%98%EA%B8%B0)에서 최신 버전 확인 적용합니다.
             ```java
             dependencies {
-                    implementation 'com.onnuridmc.exelbid:exelbid:1.9.8'
+                    implementation 'com.onnuridmc.exelbid:exelbid:1.9.8.1'
             }
 6. ```ExelBid.getMediationData``` 을 호출하여 최적화 순서 호출
 

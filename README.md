@@ -32,7 +32,10 @@
 
 
 ## Version History
-**Version 1.9.8**
+**Version 1.9.8.1**
+  * 프로가드 룰 업데이트
+
+**~~Version 1.9.8~~**
   * 미디에이션 유닛 아이디 적용
 
 **Version 1.9.7**
@@ -214,7 +217,7 @@
 	2. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	implementation 'com.onnuridmc.exelbid:exelbid:1.9.8'
+        	implementation 'com.onnuridmc.exelbid:exelbid:1.9.8.1'
 	}
     ```
 ### 빌드 API 수준
