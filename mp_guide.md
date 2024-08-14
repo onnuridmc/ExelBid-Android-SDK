@@ -31,7 +31,7 @@
 
 >띠 배너 형태의 광고를 사용합니다.
 
-[<b>배너 샘플 소스 링크<b>](https://github.com/onnuridmc/ExelBid-Android-SDK/blob/master/exelbid-sample/src/main/java/com/onnuridmc/sample/activity/SampleMotivPartnersBannerView.java)
+[<b>배너 샘플 소스 링크</b>](https://github.com/onnuridmc/ExelBid-Android-SDK/blob/master/exelbid-sample/src/main/java/com/onnuridmc/sample/activity/SampleMotivPartnersBannerView.java)
 
 1.  배너 광고 인스턴스를 원하는 layout위치에다가 생성합니다.
     ```xml
@@ -73,7 +73,7 @@
     ```
 
 ### 네이티브
-[<b>네이티브 샘플 소스 링크<b>](https://github.com/onnuridmc/ExelBid-Android-SDK/blob/master/exelbid-sample/src/main/java/com/onnuridmc/sample/activity/SampleMotivPartnersNative.java)
+[<b>네이티브 샘플 소스 링크</b>](https://github.com/onnuridmc/ExelBid-Android-SDK/blob/master/exelbid-sample/src/main/java/com/onnuridmc/sample/activity/SampleMotivPartnersNative.java)
 1. 네이티브 광고 인스턴스를 생성합니다.
     ```java
     MPartnersNative mNativeAd = new MPartnersNative(this, mUnitId, new OnAdNativeListener() {
