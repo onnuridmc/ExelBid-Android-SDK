@@ -50,12 +50,12 @@ android {
 
 def exoplayer_version = '2.13.3'
 dependencies {
-//    implementation fileTree(dir: 'libs', include: ['exelbid-release.aar'])
+//    implementation fileTree(dir: 'libs', include: ['exelbid-sdk-debug.aar'])
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.kakao.adfit:ads-base:3.5.2'
-    implementation 'com.onnuridmc.exelbid:exelbid:1.9.8.1'
+    implementation 'com.onnuridmc.exelbid:exelbid:1.9.8.2'
     implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
     implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
 

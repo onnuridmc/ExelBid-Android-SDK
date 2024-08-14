@@ -22,6 +22,8 @@ import com.onnuridmc.sample.activity.SampleBannerView;
 import com.onnuridmc.sample.activity.SampleDialog;
 import com.onnuridmc.sample.activity.SampleInterstitialMediation;
 import com.onnuridmc.sample.activity.SampleInterstitialView;
+import com.onnuridmc.sample.activity.SampleMotivPartnersBannerView;
+import com.onnuridmc.sample.activity.SampleMotivPartnersNative;
 import com.onnuridmc.sample.activity.SampleNative;
 import com.onnuridmc.sample.activity.SampleNativeBanner;
 import com.onnuridmc.sample.activity.SampleNativeInterstitial;
@@ -71,6 +73,8 @@ public class MainActivity extends Activity {
         mAdapter.add(new Pair<String, Class<?>>("배너 Mediation", SampleBannerMediation.class));
         mAdapter.add(new Pair<String, Class<?>>("전면 Mediation", SampleInterstitialMediation.class));
         mAdapter.add(new Pair<String, Class<?>>("네이티브 Mediation", SampleNativeMediation.class));
+        mAdapter.add(new Pair<String, Class<?>>("Motiv Partners Banner", SampleMotivPartnersBannerView.class));
+        mAdapter.add(new Pair<String, Class<?>>("Motiv Partners Native", SampleMotivPartnersNative.class));
 
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(new OnItemClickListener() {

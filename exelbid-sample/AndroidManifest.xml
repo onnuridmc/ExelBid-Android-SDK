@@ -65,6 +65,12 @@
         <activity android:name=".activity.SampleNativeMediation"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
+        <activity android:name=".activity.SampleMotivPartnersBannerView"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+        <activity android:name=".activity.SampleMotivPartnersNative"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
 
         <activity android:name="com.onnuridmc.exelbid.common.ExelBidActivity"
                   android:configChanges="keyboardHidden|orientation|screenSize"
