@@ -55,7 +55,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.kakao.adfit:ads-base:3.5.2'
-    implementation 'com.onnuridmc.exelbid:exelbid:1.9.8.2'
+    implementation 'com.onnuridmc.exelbid:exelbid:1.9.9.1'
     implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
     implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
 
