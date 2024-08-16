@@ -16,10 +16,10 @@
 
   - 운영팀에게 채널 아이디를 발급받습니다.
   - Motiv partners 광고는 Exelbid SDK를 통해서 적용 할 수 있습니다.
-  지원 버전은 v1.9.9 이상에서 지원됩니다.
+  지원 버전은 v1.9.9.1 이상에서 지원됩니다.
     ```java
     dependencies {
-            implementation 'com.onnuridmc.exelbid:exelbid:1.9.9'
+            implementation 'com.onnuridmc.exelbid:exelbid:1.9.9.1'
     }
     ```
           
