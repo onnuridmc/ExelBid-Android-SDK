@@ -14,6 +14,9 @@
 - [Motiv Partners](./mp_guide.md)
 
 ## Version History
+
+**Version 1.9.9.1**
+  * MPartners 기능 추가
 <details>
 <summary>히스토리 보기</summary>
 
@@ -192,7 +195,7 @@
 	2. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	implementation 'com.onnuridmc.exelbid:exelbid:1.9.8.1'
+        	implementation 'com.onnuridmc.exelbid:exelbid:1.9.9.1'
 	}
     ```
 ### 빌드 API 수준
