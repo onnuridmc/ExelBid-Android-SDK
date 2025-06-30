@@ -1,11 +1,12 @@
 package com.onnuridmc.sample.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
-public class SampleBase extends Activity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class SampleBase extends AppCompatActivity {
 
     protected final String TAG = getClass().getSimpleName();
     protected static final String UNIT_ID_EXELBID_BANNER = "4e0675ecdde6e9a9eac083b681c5068b0648895b";

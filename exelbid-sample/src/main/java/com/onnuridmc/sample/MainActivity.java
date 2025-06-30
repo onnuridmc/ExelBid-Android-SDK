@@ -1,21 +1,20 @@
 package com.onnuridmc.sample;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.onnuridmc.sample.activity.SampleBannerMediation;
 import com.onnuridmc.sample.activity.SampleBannerView;
@@ -30,7 +29,7 @@ import com.onnuridmc.sample.activity.SampleNativeInterstitial;
 import com.onnuridmc.sample.activity.SampleNativeMediation;
 import com.onnuridmc.sample.activity.SampleNativeVideo;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     private ListView mListView;
     private InAdapter mAdapter;
@@ -52,14 +51,11 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.act_main);
-        TextView titleView = (TextView) findViewById(R.id.title);
-        titleView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
+        TextView titleView = findViewById(R.id.title);
+        titleView.setOnClickListener(v -> {
+            // Title click event - can be used for additional functionality
         });
-        mListView = (ListView) findViewById(R.id.listview);
+        mListView = findViewById(R.id.listview);
 
         mAdapter = new InAdapter(this);
 
@@ -77,11 +73,9 @@ public class MainActivity extends Activity {
         mAdapter.add(new Pair<String, Class<?>>("Motiv Partners Native", SampleMotivPartnersNative.class));
 
         mListView.setAdapter(mAdapter);
-        mListView.setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> paramAdapterView, View paramView, int position, long paramLong) {
-                Pair<String, Class<?>> item = mAdapter.getItem(position);
+        mListView.setOnItemClickListener((parent, view, position, id) -> {
+            Pair<String, Class<?>> item = mAdapter.getItem(position);
+            if (item != null) {
                 Intent intent = new Intent(MainActivity.this, item.second);
                 intent.putExtra(getString(R.string.str_title), item.first);
                 startActivity(intent);

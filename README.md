@@ -15,6 +15,10 @@
 
 ## Version History
 
+**Version 2.0.1**
+  * 네이티브 뷰어빌리티 체크 기능 업데이트(MRC 50%, MRC 100% 지원)
+  * ExoPlayer Media3 버전으로 라이브러리 업데이트
+
 **Version 1.9.9.1**
   * MPartners 기능 추가
 <details>
@@ -195,7 +199,7 @@
 	2. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	implementation 'com.onnuridmc.exelbid:exelbid:1.9.9.1'
+        	implementation 'com.onnuridmc.exelbid:exelbid:2.0.1'
 	}
     ```
 ### 빌드 API 수준

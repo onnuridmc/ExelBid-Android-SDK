@@ -1,13 +1,16 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+    val agpVersion = "8.2.2"
+    val kotlinVersion = "1.9.22"
+    
     repositories {
-        mavenCentral()
-//        jcenter()
         google()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.1'
+        classpath("com.android.tools.build:gradle:$agpVersion")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -17,10 +20,10 @@ allprojects {
     repositories {
         mavenCentral()
         maven {
-            url 'https://artifact.bytedance.com/repository/pangle'
+            url = uri("https://artifact.bytedance.com/repository/pangle")
         }
         maven {
-            url 'https://repository.tnkad.net:8443/repository/public/'
+            url = uri("https://repository.tnkad.net:8443/repository/public/")
         }
     }
-}
+} 
