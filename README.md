@@ -16,8 +16,8 @@
 ## Version History
 
 **Version 2.0.1**
-  * 네이티브 뷰어빌리티 체크 기능 업데이트(MRC 50%, MRC 100% 지원)
   * ExoPlayer Media3 버전으로 라이브러리 업데이트
+  * 기타 안정성 업데이트
 
 **Version 1.9.9.1**
   * MPartners 기능 추가
