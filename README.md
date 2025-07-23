@@ -15,9 +15,12 @@
 
 ## Version History
 
+**Version 2.0.2**
+* 추가 안정성 업데이트
+
 **Version 2.0.1**
-  * ExoPlayer Media3 버전으로 라이브러리 업데이트
-  * 기타 안정성 업데이트
+* ExoPlayer Media3 버전으로 라이브러리 업데이트
+* 기타 안정성 업데이트
 
 **Version 1.9.9.1**
   * MPartners 기능 추가
@@ -199,7 +202,7 @@
 	2. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	implementation 'com.onnuridmc.exelbid:exelbid:2.0.1'
+        	implementation 'com.onnuridmc.exelbid:exelbid:2.0.2'
 	}
     ```
 ### 빌드 API 수준

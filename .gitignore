@@ -83,3 +83,5 @@ lint/tmp/
 *.hprof
 .idea/
 OPTIMIZATION_CHANGELOG.md
+CLAUDE.md
+.claude/settings.local.json

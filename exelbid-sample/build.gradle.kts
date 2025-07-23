@@ -82,7 +82,7 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
     
     // ExelBid SDK
-    implementation("com.onnuridmc.exelbid:exelbid:2.0.1")
+    implementation("com.onnuridmc.exelbid:exelbid:2.0.2")
     
     // Media Player
     implementation("androidx.media3:media3-exoplayer:${exoplayerVersion}")
