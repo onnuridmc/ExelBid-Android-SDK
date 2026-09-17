@@ -2,15 +2,18 @@
 # 목차
 =================
 - [Version History](#version-history)
-- [어플리케이션 설정](sdk_setting_guide.md#어플리케이션-설정)
-  - [ExelBid SDK 추가하기](sdk_setting_guide.md#exelbid-sdk-추가하기)
-  - [Google Library 추가하기](sdk_setting_guide.md#google-library-추가하기)
-  - [프로가드 설정](sdk_setting_guide.md#프로가드-설정)
-  - [AndroidManifest 설정](sdk_setting_guide.md#androidmanifest-설정)
-  - [Permission 설정](sdk_setting_guide.md#permission-설정)
-  - [Android 9 Api Level 28+ 사용 설정시 적용 사항](sdk_setting_guide.md#android-9-api-level-28-사용-설정시-적용-사항)
+- [어플리케이션 설정](#어플리케이션-설정)
+  - [ExelBid SDK 추가하기](#exelbid-sdk-추가하기)
+  - [Google Library 추가하기](#google-library-추가하기)
+  - [프로가드 설정](#프로가드-설정)
+  - [AndroidManifest 설정](#androidmanifest-설정)
+  - [Permission 설정](#permission-설정)
+  - [Android 9 Api Level 28+ 사용 설정시 적용 사항](#android-9-api-level-28-사용-설정시-적용-사항)
 - [광고 적용하기](./ad_guide.md)
 - [Exelbid Mediation](./mediation_guide.md)
+- 타 미디에이션에 Exelbid 연동하기
+  - [Google AdMob (Custom Event)](./admob_custom_event.md)
+  - [AppLovin MAX (Custom Network)](./applovin_custom_network.md)
 - [Motiv Partners](./mp_guide.md)
 
 ## Version History
@@ -250,6 +253,10 @@ _* eclipse를 사용하는 경우에는 Google Play Service 라이브러리 프�
 <br/>
 
 ### 프로가드 설정
+
+> **v1.9.8.1 이상에서는 아래 규칙을 직접 추가하실 필요가 없습니다.**
+> Exelbid SDK가 consumer ProGuard 규칙으로 함께 배포하므로 자동 적용됩니다.
+> 아래 내용은 구버전 사용 시 참고용입니다.
 
 ```java
 -keep class com.google.android.gms.ads.identifier.AdvertisingIdClient{public *;}
