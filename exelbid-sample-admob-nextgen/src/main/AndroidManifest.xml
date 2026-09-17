@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="false"
+        android:label="ExelBid NextGen"
+        android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+        android:usesCleartextTraffic="true">
+
+        <!-- Next-Gen SDK는 AdMob 앱 ID를 매니페스트 meta-data가 아니라
+             MobileAds.initialize()의 InitializationConfig로 코드에서 전달한다. -->
+
+        <activity
+            android:name=".NextGenMainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".NextGenBannerActivity" />
+        <activity android:name=".NextGenInterstitialActivity" />
+        <activity android:name=".NextGenNativeActivity" />
+
+        <!-- ExelBid이 낙찰됐을 때 전면 표시·클릭 랜딩·비디오 재생에 필요 (매체 필수 선언과 동일) -->
+        <activity
+            android:name="com.onnuridmc.exelbid.common.ExelBidActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name="com.onnuridmc.exelbid.lib.vast.VideoPlayerActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+    </application>
+</manifest>

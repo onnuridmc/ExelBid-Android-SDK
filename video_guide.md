@@ -44,7 +44,7 @@ dependencies {
 > 메인 이미지 대신 비디오를 노출 한다.
 
 - 레이아웃 구성시 com.onnuridmc.exelbid.lib.vast.NativeVideoView로 비디오뷰를 추가 적용한다.
-- [Sample NativeVideo Layout Link](https://github.com/onnuridmc/ExelBid-Android-SDK/blob/master/exelbid-sample/res/layout/act_native.xml)
+- [Sample NativeVideo Layout Link](exelbid-sample-basic/src/main/res/layout/act_native.xml)
 ```xml
         ...
         <LinearLayout
@@ -81,7 +81,7 @@ dependencies {
         ...
 ```
 - NativeViewBinder 객체 생성시 mediaViewId를 통해 위의 NativeVideoView의 리소스 ID를 추가한다.
-- [SampleNativeVideo.java Link](https://github.com/onnuridmc/ExelBid-Android-SDK/blob/master/exelbid-sample/src/main/java/com/onnuridmc/sample/activity/SampleNativeVideo.java)
+- [SampleNativeVideo.java Link](exelbid-sample-basic/src/main/java/com/onnuridmc/sample/activity/SampleNativeVideo.java)
 - 주의) mediaViewId로 NativeVideoView 설정시 com.google.android.exoplayer~ 라이브러리 종속성 설정이 없다면 Exception 발생
 ```java
         mNativeAd.setNativeViewBinder(new NativeViewBinder.Builder(mNativeRootLayout)

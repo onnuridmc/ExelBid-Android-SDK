@@ -172,14 +172,17 @@ adView.loadAd(new AdRequest.Builder().build());
 
 ### 샘플 코드
 
-이 저장소의 `exelbid-sample` 모듈에 형식별 동작 샘플이 있습니다.
+이 저장소의 `exelbid-sample-admob` 모듈에 형식별 동작 샘플이 있습니다.
+(GMA Next-Gen SDK용 샘플은 별도 모듈 `exelbid-sample-admob-nextgen` —
+레거시와 Next-Gen SDK는 한 앱에 공존할 수 없어 모듈이 분리되어 있습니다.)
 각 샘플의 광고 호출 코드에는 `[AdMob 기본 연동 N]` 주석으로 표준 연동 단계가 표시되어 있어,
 **미디에이션 적용 시에도 코드가 표준 AdMob 그대로임**을 코드 위에서 확인하실 수 있습니다.
 
-샘플 앱을 빌드해 실행하면 메인 목록 하단의 **"AdMob 배너/전면/네이티브 (ExelBid 어댑터)"** 메뉴로 진입합니다.
+샘플 앱(`./gradlew :exelbid-sample-admob:assembleDebug`)을 빌드해 실행하면
+메인 목록의 **"AdMob 배너/전면/네이티브 (ExelBid 어댑터)"** 메뉴로 진입합니다.
 각 화면에서 어댑터 등록 여부, 워터폴 시도 순서, 낙찰 어댑터를 바로 확인할 수 있습니다.
 
-#### 배너 — [`SampleAdmobBanner`](exelbid-sample/src/main/java/com/onnuridmc/sample/activity/SampleAdmobBanner.java)
+#### 배너 — [`SampleAdmobBanner`](exelbid-sample-admob/src/main/java/com/onnuridmc/sample/activity/SampleAdmobBanner.java)
 
 | 단계 | 내용 |
 |---|---|
@@ -188,7 +191,7 @@ adView.loadAd(new AdRequest.Builder().build());
 | 5~6 | 뷰 계층에 추가 → `loadAd()` — 이 호출 안에서 워터폴이 진행됨 |
 | 7 | 생명주기 전달 (`resume`/`pause`/`destroy`) |
 
-#### 전면 — [`SampleAdmobInterstitial`](exelbid-sample/src/main/java/com/onnuridmc/sample/activity/SampleAdmobInterstitial.java)
+#### 전면 — [`SampleAdmobInterstitial`](exelbid-sample-admob/src/main/java/com/onnuridmc/sample/activity/SampleAdmobInterstitial.java)
 
 | 단계 | 내용 |
 |---|---|
@@ -196,7 +199,7 @@ adView.loadAd(new AdRequest.Builder().build());
 | 3 | `FullScreenContentCallback` 등록 — 표시/노출/클릭/닫힘 이벤트 수신 |
 | 4 | 원하는 시점에 `show()` — Exelbid 낙찰 시 이 호출로 Exelbid 전면 화면이 열림 |
 
-#### 네이티브 — [`SampleAdmobNative`](exelbid-sample/src/main/java/com/onnuridmc/sample/activity/SampleAdmobNative.java)
+#### 네이티브 — [`SampleAdmobNative`](exelbid-sample-admob/src/main/java/com/onnuridmc/sample/activity/SampleAdmobNative.java)
 
 | 단계 | 내용 |
 |---|---|
@@ -205,7 +208,7 @@ adView.loadAd(new AdRequest.Builder().build());
 | 7 | 애셋 값 바인딩 — headline만 필수, 나머지는 null 체크 (Exelbid 응답에는 별점·advertiser 없음) |
 | 8 | 뷰를 화면에 붙인 뒤 `setNativeAd()` — 이 호출로 노출·클릭 추적 시작 |
 
-#### 공통 진단 화면 — [`SampleAdmobMediationBase`](exelbid-sample/src/main/java/com/onnuridmc/sample/activity/SampleAdmobMediationBase.java)
+#### 공통 진단 화면 — [`SampleAdmobMediationBase`](exelbid-sample-admob/src/main/java/com/onnuridmc/sample/activity/SampleAdmobMediationBase.java)
 
 `MobileAds.initialize()`(기본 연동 0단계) 외의 코드는 모두 **연동 검증용 진단 코드**이며 매체 앱에는 필요하지 않습니다.
 
@@ -369,6 +372,12 @@ new Thread(() -> MobileAds.initialize(
         new InitializationConfig.Builder("ca-app-pub-XXXX~YYYY").build(),
         initializationStatus -> { /* 초기화 완료 */ })).start();
 ```
+
+### 샘플 코드
+
+이 저장소의 [`exelbid-sample-admob-nextgen`](exelbid-sample-admob-nextgen) 모듈이
+Next-Gen SDK 연동 샘플입니다. 초기화(앱 ID 코드 전달)부터 배너/전면/네이티브 3형식의
+로드·표시와 워터폴 진단 화면까지 포함합니다.
 
 ### 검증 정보
 

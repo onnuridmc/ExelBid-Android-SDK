@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:networkSecurityConfig="@xml/network_security_config">
+        <activity android:name="com.onnuridmc.sample.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="com.onnuridmc.sample.activity.SampleBannerMediation"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity android:name="com.onnuridmc.sample.activity.SampleInterstitialMediation"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity android:name="com.onnuridmc.sample.activity.SampleNativeMediation"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity android:name="com.onnuridmc.sample.activity.SampleAdfitBizBoardMediation"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <!-- GMA(play-services-ads)가 포함된 앱은 AdMob 앱 ID meta-data가 없으면
+             초기화 시점에 크래시한다. ExelBid 데모 계정의 앱 ID. -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3021369012722157~1149498357"/>
+        <!-- AppLovin SDK 키 -->
+        <meta-data
+            android:name="applovin.sdk.key"
+            android:value="fFdurAkhsk02FX8-aKkXQrz1zreVfbSxPSqs-nyDskF6Fc_dkEGDp4b_6UyT-S7o8hLnAnL_E9fstPGC5I2tOH" />
+        <meta-data
+            android:name="AppLovin.sdk.verbose_logging"
+            android:value="true" />
+    </application>
+</manifest>

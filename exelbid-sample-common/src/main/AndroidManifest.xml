@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application>
+        <!-- ExelBid SDK 필수 선언 — common을 의존하는 모든 샘플 앱 매니페스트에 병합된다.
+             전면 광고 표시·클릭 랜딩·비디오 재생에 필요 (매체 앱 필수 선언과 동일). -->
+        <activity
+            android:name="com.onnuridmc.exelbid.common.ExelBidActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name="com.onnuridmc.exelbid.lib.vast.VideoPlayerActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+    </application>
+</manifest>

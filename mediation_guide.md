@@ -125,7 +125,7 @@ Exelbid Android SDK를 이용한 광고 연동시 Mediation 연동의 경우, �
                         }
                     });
     ```
-5. 샘플([SampleBannerMediation.java](https://github.com/onnuridmc/ExelBid-Android-SDK/blob/master/exelbid-sample/src/main/java/com/onnuridmc/sample/activity/SampleBannerMediation.java) 배너 기본 예제) 설명
+5. 샘플([SampleBannerMediation.java](exelbid-sample-mediation/src/main/java/com/onnuridmc/sample/activity/SampleBannerMediation.java) 배너 기본 예제) 설명
     * ***OnMediationOrderResultListener***를 통해서 응답받은 ***MediationOrderResult***객체는 ***poll()*** 함수 호출 시마다 순서대로 ```Pair<MediationType, String>``` 객체를 반환한다.
     * 광고 SDK의 종류와 형식(배너, 전면, 네이티브) 에 따라서 광고 요청 로직을 적용한다
     * loadMediation
@@ -198,12 +198,12 @@ Exelbid Android SDK를 이용한 광고 연동시 Mediation 연동의 경우, �
 
 
 ### 위의 배너 샘플과 같은 방식으로 광고 타입 별 샘플을 참고하여 적용합니다.
-- 배너 광고 미디에이션 샘플 : [SampleBannerMediation.java](https://github.com/onnuridmc/ExelBid-Android-SDK/blob/master/exelbid-sample/src/main/java/com/onnuridmc/sample/activity/SampleBannerMediation.java)
-- 전면 광고 미디에이션 샘플 : [SampleInterstitialMediation.java](https://github.com/onnuridmc/ExelBid-Android-SDK/blob/master/exelbid-sample/src/main/java/com/onnuridmc/sample/activity/SampleInterstitialMediation.java)
+- 배너 광고 미디에이션 샘플 : [SampleBannerMediation.java](exelbid-sample-mediation/src/main/java/com/onnuridmc/sample/activity/SampleBannerMediation.java)
+- 전면 광고 미디에이션 샘플 : [SampleInterstitialMediation.java](exelbid-sample-mediation/src/main/java/com/onnuridmc/sample/activity/SampleInterstitialMediation.java)
 
     - 전면 비디오 광고 : 전면 광고와 동일하게 처리합니다. 전면 광고 미디에이션 샘플을 참고해주세요. 광고 SDK 별 비디오 설정은 각 SDK 가이드를 참고해주세요.
 
-- 네이티브 광고 미디에이션 샘플 : [SampleNativeMediation.java](https://github.com/onnuridmc/ExelBid-Android-SDK/blob/master/exelbid-sample/src/main/java/com/onnuridmc/sample/activity/SampleNativeMediation.java)
+- 네이티브 광고 미디에이션 샘플 : [SampleNativeMediation.java](exelbid-sample-mediation/src/main/java/com/onnuridmc/sample/activity/SampleNativeMediation.java)
 
     - 네이티브 동영상 광고 : 네이티브 광고와 동일하게 적용합니다. 네이티브 광고 미디에이션 샘플을 참고해주세요. 광고 SDK 별 비디오 설정은 각 SDK 가이드를 참고해주세요.
 

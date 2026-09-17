@@ -2,6 +2,7 @@
 # 목차
 =================
 - [Version History](#version-history)
+- [샘플 모듈 안내](#샘플-모듈-안내)
 - [어플리케이션 설정](#어플리케이션-설정)
   - [ExelBid SDK 추가하기](#exelbid-sdk-추가하기)
   - [Google Library 추가하기](#google-library-추가하기)
@@ -15,6 +16,29 @@
   - [Google AdMob (Custom Event)](./admob_custom_event.md)
   - [AppLovin MAX (Custom Network)](./applovin_custom_network.md)
 - [Motiv Partners](./mp_guide.md)
+
+## 샘플 모듈 안내
+
+연동 시나리오별로 샘플 앱 모듈이 분리되어 있습니다.
+각 모듈의 `build.gradle.kts`가 해당 시나리오에 필요한 의존성 전체를 보여줍니다.
+
+| 모듈 | 내용 | 관련 가이드 |
+|---|---|---|
+| `exelbid-sample-basic` | ExelBid 기본 연동 (배너/전면/네이티브/다이얼로그/비디오) | [광고 적용하기](./ad_guide.md) |
+| `exelbid-sample-mp` | Motiv Partners 연동 | [Motiv Partners](./mp_guide.md) |
+| `exelbid-sample-mediation` | ExelBid 미디에이션 (타 광고 SDK 7종) | [Exelbid Mediation](./mediation_guide.md) |
+| `exelbid-sample-admob` | AdMob 커스텀 이벤트 — 레거시 GMA | [AdMob Custom Event](./admob_custom_event.md) |
+| `exelbid-sample-admob-nextgen` | AdMob 커스텀 이벤트 — GMA Next-Gen SDK | [AdMob Custom Event](./admob_custom_event.md) |
+| `exelbid-sample-common` | 샘플 공용 코드/리소스 라이브러리 (앱 아님) | - |
+
+```bash
+# 예: 기본 연동 샘플 빌드
+./gradlew :exelbid-sample-basic:assembleDebug
+```
+
+> 레거시 GMA(`play-services-ads`)와 Next-Gen(`ads-mobile-sdk`)은 한 앱에 공존할 수
+> 없으므로 AdMob 샘플이 두 모듈로 나뉘어 있습니다. 각 샘플 앱은 applicationId가 달라
+> 한 기기에 동시 설치할 수 있습니다.
 
 ## Version History
 

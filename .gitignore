@@ -85,3 +85,7 @@ lint/tmp/
 OPTIMIZATION_CHANGELOG.md
 CLAUDE.md
 .claude/settings.local.json
+
+# Claude Code 하네스는 로컬 전용 (공개 저장소에 올리지 않음 - CLAUDE.md 제외 정책과 동일)
+.claude/
+.mcp.json

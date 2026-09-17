@@ -18,12 +18,9 @@ buildscript {
 
 allprojects {
     repositories {
+        google()
         mavenCentral()
-        maven {
-            url = uri("https://artifact.bytedance.com/repository/pangle")
-        }
-        maven {
-            url = uri("https://repository.tnkad.net:8443/repository/public/")
-        }
+        // 서드파티 광고 SDK 전용 저장소(kakao/tnk/pangle)는 장애 격리를 위해
+        // exelbid-sample-mediation 모듈에만 선언한다.
     }
 } 
