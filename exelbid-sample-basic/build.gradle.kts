@@ -46,6 +46,9 @@ dependencies {
     // ExelBid 기본 연동은 이 의존성 하나로 충분하다
     implementation("com.onnuridmc.exelbid:exelbid:2.1.0")
 
+    // 광고 식별자(ADID) 수집용 — GMA(play-services-ads)를 쓰지 않는 앱은 직접 추가한다
+    implementation("com.google.android.gms:play-services-ads-identifier:18.0.1")
+
     // ExelBid 비디오 광고(네이티브 비디오/VAST) 재생용 —
     // SDK가 compileOnly로 참조하므로 비디오 광고를 쓰는 앱이 직접 제공해야 한다
     implementation("androidx.media3:media3-exoplayer:1.2.0")
