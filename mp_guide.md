@@ -1,5 +1,5 @@
 
-## Motiv Partners 적용하기
+# Motiv Partners 적용하기
 
 - [시작하기 전에](#시작하기-전에)
 - [시작하기](#시작하기)
@@ -8,30 +8,31 @@
 - [네이티브](#네이티브)
 
 
-### 시작하기 전에
+## 시작하기 전에
   > Motiv Partners 연동 가이드 입니다. Exelbid SDK를 사용하며 광고 연동 프로세스는 대동소이합니다.
 
 
-### 시작하기
+## 시작하기
 
   - 운영팀에게 채널 아이디를 발급받습니다.
   - Motiv partners 광고는 Exelbid SDK를 통해서 적용 할 수 있습니다.
-  지원 버전은 v1.9.9.1 이상에서 지원됩니다.
-    ```java
+  v1.9.9.1 이상에서 지원됩니다.
+    ```gradle
     dependencies {
-            implementation 'com.onnuridmc.exelbid:exelbid:1.9.9.1'
+            implementation 'com.onnuridmc.exelbid:exelbid:2.1.0'
     }
     ```
+  - 샘플 전체는 [`exelbid-sample-mp`](exelbid-sample-mp) 모듈에 있습니다.
           
-### 인스턴스 공통 메소드
+## 인스턴스 공통 메소드
 
-* ``setChannelId(String)`` : 채널 아이디를 셋팅 합니다.
+- ``setChannelId(String)`` : 채널 아이디를 셋팅 합니다.
 
-### 배너광고
+## 배너광고
 
 >띠 배너 형태의 광고를 사용합니다.
 
-[<b>배너 샘플 소스 링크</b>](exelbid-sample-mp/src/main/java/com/onnuridmc/sample/activity/SampleMotivPartnersBannerView.java)
+[**배너 샘플 소스 링크**](exelbid-sample-mp/src/main/java/com/onnuridmc/sample/activity/SampleMotivPartnersBannerView.java)
 
 1.  배너 광고 인스턴스를 원하는 layout위치에다가 생성합니다.
     ```xml
@@ -62,7 +63,7 @@
     ```
 
 6. 광고 이벤트 등록
-  * ``setAdListener(OnBannerAdListener)``
+  - ``setAdListener(OnBannerAdListener)``
     - ``onAdLoaded()`` : 광고가 로딩된 시점에 호출 됩니다.
     - ``onAdFailed(ExelBidError)`` : 서버로부터 광고를 가져오지 못한 경우에 호출 됩니다.
     - ``onAdClicked()`` : 광고 클릭시 호출 됩니다.
@@ -72,8 +73,8 @@
     destroy()
     ```
 
-### 네이티브
-[<b>네이티브 샘플 소스 링크</b>](exelbid-sample-mp/src/main/java/com/onnuridmc/sample/activity/SampleMotivPartnersNative.java)
+## 네이티브
+[**네이티브 샘플 소스 링크**](exelbid-sample-mp/src/main/java/com/onnuridmc/sample/activity/SampleMotivPartnersNative.java)
 1. 네이티브 광고 인스턴스를 생성합니다.
     ```java
     MPartnersNative mNativeAd = new MPartnersNative(this, mUnitId, new OnAdNativeListener() {
@@ -210,8 +211,8 @@
 	```java
     //광고를 노출시킬 준비가 되어있는지 체크한다.
 	(boolean) isReady() 
-
-9. 네이티브 광고 노출
+	```
+6. 네이티브 광고 노출
     ```java
     show() //네이티브 광고가 올바르게 로딩 된 경우에 Binder에 등록된 정보에 광고 데이터를 바인딩 합니다.
     ```

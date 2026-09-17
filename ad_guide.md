@@ -1,5 +1,5 @@
 
-## 광고 적용하기
+# 광고 적용하기
 
 - [시작하기 전에](#시작하기-전에)
 - [시작하기](#시작하기)
@@ -18,12 +18,12 @@
 
 
 
-### 시작하기 전에
-  > Exelbid에서는 광고 요청에 대한 응답 후 노출까지의 시간(노출 캐시 시간)을 30분 이내로 권장합니다.(IAB 권장) <br>
+## 시작하기 전에
+  > Exelbid에서는 광고 요청에 대한 응답 후 노출까지의 시간(노출 캐시 시간)을 30분 이내로 권장합니다.(IAB 권장) <br/>
 광고 응답 이후 노출 시간 차이가 해당 시간보다 길어지면 광고 캠페인에 따라서 노출이 무효 처리 될 수 있습니다.
 
 
-### 시작하기
+## 시작하기
 
   1. 계정을 생성합니다
   2.  Inventory -> App -> + Create New App을 선택합니다.<br/>
@@ -41,11 +41,11 @@
 *	``addKeyword(String, String)`` : Custom 메타 데이터 (Key, Value)
 *	``setTestMode(boolean)`` : 광고의 테스트를 위해 설정하는 값입니다. 통계에 적용 되지 않으며 항상 광고가 노출되게 됩니다.
 *	``setAdUnitId(String)`` : 광고 아이디를 셋팅 합니다.
-* ``setCoppa(boolean)`` : 선택사항으로 미국 아동 온라인 사생활 보호법에 따라 13세 미만의 사용자를 설정하면 개인 정보를 제한하여 광고 입찰 처리됩니다. (IP, Device ID, Geo 정보등)
+- ``setCoppa(boolean)`` : 선택사항으로 미국 아동 온라인 사생활 보호법에 따라 13세 미만의 사용자를 설정하면 개인 정보를 제한하여 광고 입찰 처리됩니다. (IP, Device ID, Geo 정보등)
 *	``setRewarded(boolean);`` : 지면의 리워드 여부를 설정한다.
 
 	      
-### 배너광고
+## 배너광고
 
 >띠 배너 형태의 광고를 사용합니다.
 
@@ -77,7 +77,7 @@
     ```
 
 6. 광고 이벤트 등록
-  * ``setAdListener(OnBannerAdListener)``
+  - ``setAdListener(OnBannerAdListener)``
     - ``onAdLoaded()`` : 광고가 로딩된 시점에 호출 됩니다.
     - ``onAdFailed(ExelBidError)`` : 서버로부터 광고를 가져오지 못한 경우에 호출 됩니다.
     - ``onAdClicked()`` : 광고 클릭시 호출 됩니다.
@@ -92,7 +92,7 @@
     destroy()
     ```
 
-### 전면 광고
+## 전면 광고
 1.	전면 광고 인스턴스를 생성합니다.
     ```java
     ExelBidInterstitial mInterstitialAd = new ExelBidInterstitial(this, "홈페이지에서 발급받은 전면광고 유닛 아이디");
@@ -107,8 +107,8 @@
     //전면 광고를 노출시킬 준비가 되어있는지 체크한다.
 	(boolean) isReady() 
     /**
-     * 전면 광고를 노출시킬 준비가 되어있는지, 광고 로드후 현재 까지의 시간이 특정 시간이 지났는지를 체크한다.
-     * adCachTimeSecond 광고 로드후 현재 까지의 시간
+     - 전면 광고를 노출시킬 준비가 되어있는지, 광고 로드후 현재 까지의 시간이 특정 시간이 지났는지를 체크한다.
+     - adCachTimeSecond 광고 로드후 현재 까지의 시간
      */
 	(boolean) isReady(int adCachTimeSecond) 
 	```
@@ -132,25 +132,19 @@
 	destroy()
 	```
 
-### 전면 광고 - 비디오 
-1. build.gradle 에 비디오 컨포넌트 라이브러리 종속성 추가 (비디오 광고 공통)
+## 전면 광고 - 비디오
+1. build.gradle 에 비디오 컴포넌트 라이브러리 종속성 추가 (비디오 광고 공통)
 
-    - Exelbid에서는 비디오 플레이어를 ExoPlayer2 기반으로 동작 적용된다.
-    - 미 적용시 Exception발생 혹은 광고 노출 되지 않음
-      ```java
-      def exoplayer_version = '2.13.3'
+    - Exelbid의 비디오 플레이어는 androidx.media3(ExoPlayer) 기반으로 동작합니다.
+    - 미적용 시 Exception이 발생하거나 광고가 노출되지 않습니다.
+      ```gradle
       dependencies {
-          implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
-          implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
+          implementation 'androidx.media3:media3-exoplayer:1.2.0'
+          implementation 'androidx.media3:media3-ui:1.2.0'
+          implementation 'androidx.media3:media3-common:1.2.0'
       }
       ```
-2. minSdkVersion 24 미만 버전 (비디오 광고 공통)
-
-    - minSdkVersion 24 미만 버전에서는 gradle.properties 에 아래와 같이 적용 필요 (Gradle 플러그인 버그로 인한)
-      ```java
-      android.enableDexingArtifactTransform=false
-      ```
-3. 기존 전면 노출시 사용되는 ExelbidActivity 대신 비디오 노출을 처리하는 VideoPlayerActivity를 manifest에 등록
+2. 기존 전면 노출시 사용되는 ExelbidActivity 대신 비디오 노출을 처리하는 VideoPlayerActivity를 manifest에 등록
 
     - AndroidManifest 설정
       ```xml
@@ -159,7 +153,7 @@
       </activity>
       ```    
 
-### 네이티브
+## 네이티브
 1. 네이티브 광고 인스턴스를 생성합니다.
     ```java
     ExelBidNative mNativeAd = new ExelBidNative(this, mUnitId, new OnAdNativeListener() {
@@ -258,24 +252,18 @@
       아이콘 이미지가 이미지뷰에 바인딩 되기전에 호출 됩니다. bitmap은 다운받은 IconImage이며 ImageView의 width, height 값이 넘어 옵니다.
 
 5. VIDEO 적용
-   1) build.gradle 에 비디오 컨포넌트 라이브러리 종속성 추가 (비디오 광고 공통)
+   1) build.gradle 에 비디오 컴포넌트 라이브러리 종속성 추가 (비디오 광고 공통)
 
-       - Exelbid에서는 비디오 플레이어를 ExoPlayer2 기반으로 동작 적용된다.
-       - mediaViewId로 NativeVideoView 설정시 com.google.android.exoplayer~ 라이브러리 종속성 설정이 없다면 Exception 발생
-          ```java
-          def exoplayer_version = '2.13.3'
+       - Exelbid의 비디오 플레이어는 androidx.media3(ExoPlayer) 기반으로 동작합니다.
+       - mediaViewId로 NativeVideoView 설정시 media3 라이브러리 종속성 설정이 없다면 Exception 발생
+          ```gradle
           dependencies {
-              implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
-              implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
+              implementation 'androidx.media3:media3-exoplayer:1.2.0'
+              implementation 'androidx.media3:media3-ui:1.2.0'
+              implementation 'androidx.media3:media3-common:1.2.0'
           }
           ```
-   2) minSdkVersion 24 미만 버전 (비디오 광고 공통)
-
-       - minSdkVersion 24 미만 버전에서는 gradle.properties 에 아래와 같이 적용 필요 (Gradle 플러그인 버그로 인한)
-          ```java
-          android.enableDexingArtifactTransform=false
-          ```
-   3) 레이아웃 구성시 **com.onnuridmc.exelbid.lib.vast.NativeVideoView**로 비디오뷰를 추가 적용한다.
+   2) 레이아웃 구성시 **com.onnuridmc.exelbid.lib.vast.NativeVideoView**로 비디오뷰를 추가 적용한다.
 
       ```xml
       ...
@@ -314,8 +302,8 @@
     //광고를 노출시킬 준비가 되어있는지 체크한다.
 	(boolean) isReady() 
     /**
-     * 광고를 노출시킬 준비가 되어있는지, 광고 로드후 현재 까지의 시간이 특정 시간이 지났는지를 체크한다.
-     * adCachTimeSecond 광고 로드후 현재 까지의 시간
+     - 광고를 노출시킬 준비가 되어있는지, 광고 로드후 현재 까지의 시간이 특정 시간이 지났는지를 체크한다.
+     - adCachTimeSecond 광고 로드후 현재 까지의 시간
      */
 	(boolean) isReady(int adCachTimeSecond) 
 	```
@@ -325,7 +313,7 @@
     show() //네이티브 광고가 올바르게 로딩 된 경우에 Binder에 등록된 정보에 광고 데이터를 바인딩 합니다.
     ```
 
-### 전면 네이티브 광고 
+## 전면 네이티브 광고
   
 1. ExelBidNative 생성시 전면 리스너(OnInterstitialAdListener)를 바인딩한다.
     ```java
@@ -374,7 +362,7 @@
 5. 전면 네이티브 광고 노출(show)시 전달 된 레이아웃으로 구성된 새로운 전면(Activity) 화면에 광고가 노출된다.
 
 
-### 전면 타이머 기능
+## 전면 타이머 기능
 광고의 전환 성과 향상을 위해 일정 시간 노출을 보장하는 타이머 기능을 제공한다.
 1. 전면 형식의 광고(배너, 비디오, 네이티브)의 경우에만 적용 가능하다. (ExelBidNative, ExelBidInterstitial) 
 2. 적용 
@@ -384,7 +372,7 @@
     exelbidInterstitial.setTimer(5);
     ```
 
-### 다이얼로그 공통 메소드
+## 다이얼로그 공통 메소드
 - ``loadAd()`` : 광고를 가져옵니다.
 - ``show()`` : 다이얼로그를 노출합니다.
 - ``(boolean) isReady()`` : 광고를 노출할 준비가 되었는지 체크합니다.
@@ -392,7 +380,7 @@
 
 
 <a name="다이얼로그-광고-전면"></a>
-### 다이얼로그 광고 (전면)
+## 다이얼로그 광고 (전면)
 >ExelBidInterstitialDialog를 상속받은 클래스를 생성해야 합니다.
 어플리케이션에서 Dialog의 UI를 설정해야 합니다.
 
@@ -435,7 +423,7 @@
     ```
 
 <a name="다이얼로그-광고-네이티브"></a>
-### 다이얼로그 광고 (네이티브)
+## 다이얼로그 광고 (네이티브)
 >ExelBidNativeDialog를 상속받은 클래스를 생성해야 합니다.
 어플리케이션에서 Dialog의 UI를 설정해야 합니다.
 
@@ -464,7 +452,7 @@
     }
     ```
 
-### 광고 클릭시 브라우저 앱 선택 설정
+## 광고 클릭시 브라우저 앱 선택 설정
 >광고 클릭시 랜딩이 이루어지는 브라우저 앱을 설정한다.<br/>
 최초 앱 실행시(MainActivity등) 한번 설정하며, 등록 순서가 호출 순서이다<br/>
 ※ Ver 1.4.7 이후 부터는 설정값을 파일(Preference)에 저장
@@ -473,12 +461,12 @@
 ExelBid.addTargetBrowser(context, "com.android.chrome"); // 크롬 브라우저
 ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브라우저
 ```
-* 위와 같시 설정후 광고 클릭시 
+- 위와 같시 설정후 광고 클릭시 
 1. 크롬 브라우저로 선택 호출
 2. 크롬 브라우저 앱이 없을 경우 두번째 삼성 브라우저 선택 호출
 3. 삼성 브라우저 앱이 없을 경우 기본 브라우저 호출
 
-* 브라우저 설정 및 관리 함수<br/>
+- 브라우저 설정 및 관리 함수<br/>
     - ``boolean clearTargetBrowser(Context context)`` : 브라우저 설정을 초기화(설정 없음) 한다.
     - ``boolean addTargetBrowser(Context context, String packagename)`` : 기존 설정된 리스트에 추가 설정한다. 기존에 해당 브라우저가 존재하면 false 반환.
     - ``boolean addTargetBrowser(Context context, String packagename, int index)`` : 기존 설정된 리스트 특정 위치(index)에 추가 설정한다. 존에 해당 브라우저가 존재하거나, index가 범위 밖이면 false 반환.
@@ -488,9 +476,9 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
     - ``ArrayList<String> getTargetBrowserList(Context context)`` : 저장된 브라우저 패키지명 리스트를 가져온다.
     - ``String getTargetBrowser(Context context, int index)`` : 해당 index에 저장된 브라우저 패키지명을 가져온다.
     - ``boolean removeTargetBrowser(Context context, String packagename)`` : 전달된 packagename 브라우저를 삭제한다. 삭제 시 true 반환
-    - ``boolean removeTargetBrowser(Context context, int index)`` : 전달된 index에 저장된 브라우저를 삭제한다. 삭제 시 true 반환<br><br>
+    - ``boolean removeTargetBrowser(Context context, int index)`` : 전달된 index에 저장된 브라우저를 삭제한다. 삭제 시 true 반환<br/><br/>
         
-* 패키지 공개 설정
+- 패키지 공개 설정
     - Android 11 이상을 타겟팅시 아래와 같이 Manifest에 적용된 앱 패키지를 공개 처리한다. 
     - 해당 설정은 구글 개발자 가이드 ([Android 11의 패키지 공개 상태 관리](https://developer.android.com/about/versions/11/privacy/package-visibility)) 에 따릅니다.
     
@@ -505,13 +493,13 @@ ExelBid.addTargetBrowser(context, "com.sec.android.app.sbrowser"); // 삼성 브
       </manifest>
       ```
 
-### UID2.0
+## UID2.0
 
 >광고 타켓팅을 위해 필요한 아이디입니다. (v1.8.4 이상)
-* 운영팀에 따로 문의 바랍니다.
+- 운영팀에 따로 문의 바랍니다.
 
 
-### Ads.txt App-ads.txt 적용하기
+## Ads.txt App-ads.txt 적용하기
 Exelbid에서도 웹지면에서의 App.txt 그리고 앱지면을 위한 App-ads.txt를 적극 권장하며 지원하고 있습니다.<br/>
 Ads.txt, App-ads.txt에 대해서, 그리고 Exelbid에서 적용하는 방법은 아래에 링크 페이지를 참고해 주세요.
 
