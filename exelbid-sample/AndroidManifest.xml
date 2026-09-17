@@ -71,6 +71,16 @@
         <activity android:name=".activity.SampleMotivPartnersNative"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
+        <!-- AdMob Mediation (ExelBid Custom Event) Sample -->
+        <activity android:name=".activity.SampleAdmobBanner"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+        <activity android:name=".activity.SampleAdmobInterstitial"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+        <activity android:name=".activity.SampleAdmobNative"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
 
         <activity android:name="com.onnuridmc.exelbid.common.ExelBidActivity"
                   android:configChanges="keyboardHidden|orientation|screenSize"
@@ -80,10 +90,11 @@
             android:name="com.onnuridmc.exelbid.lib.vast.VideoPlayerActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"></activity>
 
-        <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
+        <!-- ExelBid 데모 AdMob 앱 ID. AdMob 미디에이션 샘플의 광고 유닛이 이 앱 소속이므로
+             함께 써야 미디에이션이 동작한다. 매체 적용 시 자신의 AdMob 앱 ID로 교체할 것. -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713"/>
+            android:value="ca-app-pub-3021369012722157~1149498357"/>
         <!--   앱러빈    -->
         <meta-data
             android:name="applovin.sdk.key"

@@ -13,6 +13,7 @@ SDK를 추가하고 AdMob 대시보드에 클래스명을 등록하면 됩니다
 - [3. AdMob 대시보드 설정](#3-admob-대시보드-설정)
 - [4. 연동 확인](#4-연동-확인)
 - [5. 문제 해결](#5-문제-해결)
+- [GMA Next-Gen SDK 지원](#gma-next-gen-sdk-지원)
 - [알아두실 사항](#알아두실-사항)
 
 ---
@@ -22,7 +23,8 @@ SDK를 추가하고 AdMob 대시보드에 클래스명을 등록하면 됩니다
 | 항목 | 내용 |
 |---|---|
 | Exelbid SDK | **2.1.0 이상** |
-| Google Mobile Ads SDK | **22.6.0 이상** |
+| Google Mobile Ads SDK (레거시, `play-services-ads`) | **22.6.0 이상** |
+| GMA Next-Gen SDK (`ads-mobile-sdk`) | **1.4.0 검증 완료** — [상세](#gma-next-gen-sdk-지원) |
 | 지원 광고 형식 | 배너, 전면광고, 네이티브 광고 고급형 |
 | 미지원 광고 형식 | 보상형, 보상형 전면, 앱 오프닝 |
 | 미디에이션 방식 | 폭포식(워터폴). 입찰(비딩)은 지원하지 않습니다 |
@@ -45,7 +47,8 @@ Exelbid SDK 자체의 `minSdk`는 **21**입니다.
 ### 검증 범위
 
 - 어댑터는 GMA **25.4.0** 기준으로 컴파일하되, **22.6.0부터 존재하는 API만** 사용합니다.
-- 실기기 동작 검증은 GMA **22.6.0** 환경(Android 14, R8 적용 release 빌드)에서 수행했습니다.
+- 실기기 동작 검증은 GMA(레거시) **22.6.0** 환경(Android 14, R8 적용 release 빌드)에서 수행했습니다.
+- **GMA Next-Gen SDK 1.4.0** 환경에서도 배너/전면/네이티브 3형식의 낙찰·렌더·노출 집계를 실기기로 검증했습니다.
 
 ---
 
@@ -167,6 +170,53 @@ adView.setAdSize(AdSize.BANNER);
 adView.loadAd(new AdRequest.Builder().build());
 ```
 
+### 샘플 코드
+
+이 저장소의 `exelbid-sample` 모듈에 형식별 동작 샘플이 있습니다.
+각 샘플의 광고 호출 코드에는 `[AdMob 기본 연동 N]` 주석으로 표준 연동 단계가 표시되어 있어,
+**미디에이션 적용 시에도 코드가 표준 AdMob 그대로임**을 코드 위에서 확인하실 수 있습니다.
+
+샘플 앱을 빌드해 실행하면 메인 목록 하단의 **"AdMob 배너/전면/네이티브 (ExelBid 어댑터)"** 메뉴로 진입합니다.
+각 화면에서 어댑터 등록 여부, 워터폴 시도 순서, 낙찰 어댑터를 바로 확인할 수 있습니다.
+
+#### 배너 — [`SampleAdmobBanner`](exelbid-sample/src/main/java/com/onnuridmc/sample/activity/SampleAdmobBanner.java)
+
+| 단계 | 내용 |
+|---|---|
+| 1~3 | `AdView` 생성 → 유닛 ID 설정 → 크기 설정 |
+| 4 | `AdListener` 등록 — Exelbid이 낙찰돼도 로드/노출/클릭 콜백은 동일하게 수신 |
+| 5~6 | 뷰 계층에 추가 → `loadAd()` — 이 호출 안에서 워터폴이 진행됨 |
+| 7 | 생명주기 전달 (`resume`/`pause`/`destroy`) |
+
+#### 전면 — [`SampleAdmobInterstitial`](exelbid-sample/src/main/java/com/onnuridmc/sample/activity/SampleAdmobInterstitial.java)
+
+| 단계 | 내용 |
+|---|---|
+| 1~2 | `InterstitialAd.load()` → 성공 콜백에서 인스턴스 보관 (전면은 1회용) |
+| 3 | `FullScreenContentCallback` 등록 — 표시/노출/클릭/닫힘 이벤트 수신 |
+| 4 | 원하는 시점에 `show()` — Exelbid 낙찰 시 이 호출로 Exelbid 전면 화면이 열림 |
+
+#### 네이티브 — [`SampleAdmobNative`](exelbid-sample/src/main/java/com/onnuridmc/sample/activity/SampleAdmobNative.java)
+
+| 단계 | 내용 |
+|---|---|
+| 1~4 | `AdLoader` 구성 → `forNativeAd` 수신 콜백 → 리스너 → `loadAd()` |
+| 5~6 | `NativeAdView` 준비 → 애셋 뷰 등록 (등록된 뷰가 클릭 대상) |
+| 7 | 애셋 값 바인딩 — headline만 필수, 나머지는 null 체크 (Exelbid 응답에는 별점·advertiser 없음) |
+| 8 | 뷰를 화면에 붙인 뒤 `setNativeAd()` — 이 호출로 노출·클릭 추적 시작 |
+
+#### 공통 진단 화면 — [`SampleAdmobMediationBase`](exelbid-sample/src/main/java/com/onnuridmc/sample/activity/SampleAdmobMediationBase.java)
+
+`MobileAds.initialize()`(기본 연동 0단계) 외의 코드는 모두 **연동 검증용 진단 코드**이며 매체 앱에는 필요하지 않습니다.
+
+- **어댑터 초기화 현황** — `ExelBidCustomEvent : READY` 가 보이면 어댑터가 정상 등록된 것
+- **워터폴 시도 순서** — `ResponseInfo.getAdapterResponses()`로 Exelbid이 호출됐는지, 몇 ms에 성공했는지 표시
+- **낙찰 어댑터** — Exelbid이 광고를 채웠는지 최종 확인
+- **광고 검사기 버튼** — `MobileAds.openAdInspector()` 실행
+
+> **매체 적용 시**: 샘플의 AdMob 앱 ID(`AndroidManifest.xml`)와 광고 유닛 ID(`AppConstants.java`)는
+> Exelbid 데모 계정의 값입니다. 매체 앱에서는 자신의 AdMob 앱 ID·유닛 ID로 교체해야 합니다.
+
 ---
 
 ## 3. AdMob 대시보드 설정
@@ -287,6 +337,54 @@ for (AdapterResponseInfo response : responseInfo.getAdapterResponses()) {
 
 ---
 
+## GMA Next-Gen SDK 지원
+
+Google은 차세대 [GMA Next-Gen SDK](https://developers.google.com/admob/android/next-gen/quick-start?hl=ko)
+(`com.google.android.libraries.ads.mobile.sdk:ads-mobile-sdk`)를 출시하면서 기존
+`play-services-ads`를 **레거시**로 분류했습니다 (Google 개발자 문서의 플랫폼 선택에서
+"Android" = Next-Gen, "Android(레거시)" = 기존 SDK).
+
+**Next-Gen SDK를 사용하는 앱에서도 Exelbid 어댑터는 수정 없이 그대로 동작합니다.**
+Next-Gen SDK가 미디에이션 어댑터 API(`com.google.android.gms.ads.mediation` 패키지)를
+자체 포함하여 어댑터 호환성을 유지하기 때문입니다.
+AdMob 대시보드 설정(Class Name / Parameter)도 레거시와 완전히 동일합니다.
+
+### 레거시 대비 연동 차이점
+
+본 가이드의 1~2장은 레거시 SDK 기준입니다. Next-Gen 앱에서는 아래 항목만 다릅니다.
+
+| 항목 | 레거시 (`play-services-ads`) | Next-Gen (`ads-mobile-sdk`) |
+|---|---|---|
+| AdMob 앱 ID | AndroidManifest `meta-data` | 코드에서 `InitializationConfig.Builder(앱ID)` 로 전달 |
+| SDK 초기화 | 권장 (미호출 시 자동) | **필수** — 초기화 전 로드 시 예외 발생. 백그라운드 스레드 호출 권장 |
+| 요구 minSdk | GMA 버전에 따라 19~23 | **24** |
+| `play-services-ads` exclude | 해당 없음 | 일반 어댑터는 전역 exclude 필요하지만, **Exelbid SDK는 `compileOnly` 참조라 exclude 설정이 필요 없습니다** |
+
+**Exelbid 관련 설정(SDK 의존성 추가, Exelbid Activity 2종 선언, 프로가드)은 레거시와 동일하게 적용하시면 됩니다.**
+
+```java
+// Next-Gen 초기화 예시 - 앱 ID를 코드로 전달한다
+new Thread(() -> MobileAds.initialize(
+        context,
+        new InitializationConfig.Builder("ca-app-pub-XXXX~YYYY").build(),
+        initializationStatus -> { /* 초기화 완료 */ })).start();
+```
+
+### 검증 정보
+
+Next-Gen SDK **1.4.0** + Exelbid SDK **2.1.0** 조합으로 실기기(Android 14, release 빌드)에서 확인:
+
+- 어댑터 초기화: 초기화 상태 맵에 `ExelBidCustomEvent : COMPLETE`
+- 배너 / 전면 / 네이티브: 워터폴 낙찰, 렌더링, 노출 집계 정상
+- Ad Inspector: Custom Event **Fill** 확인
+
+> **주의**: 레거시 SDK와 Next-Gen SDK는 한 앱에 공존할 수 없습니다(중복 클래스 충돌).
+> 다른 미디에이션 어댑터를 함께 쓰는 경우 해당 어댑터가 끌고 오는 `play-services-ads`를
+> Google의 [마이그레이션 가이드](https://developers.google.com/admob/android/next-gen/migration?hl=ko)에
+> 따라 exclude 처리해야 합니다.
+
+---
+
 ## 알아두실 사항
 
 ### 워터폴 방식이며 입찰은 지원하지 않습니다
@@ -362,8 +460,7 @@ Exelbid SDK 자체 갱신은 어댑터에서 자동으로 비활성화되므로 
 ## 참고
 
 - [Exelbid SDK 기본 가이드](./README.md)
-- [광고 적용하기](./ad_guide.md)
-- [AppLovin 연동](./applovin_custom_network.md)
+- [Google AdMob 광고 연동 가이드](https://developers.google.com/admob/android/quick-start?hl=ko)
 - [Google 맞춤 이벤트 문서](https://developers.google.com/admob/android/custom-events/setup)
 - [AdMob 맞춤 이벤트 설정 도움말](https://support.google.com/admob/answer/13407144)
 

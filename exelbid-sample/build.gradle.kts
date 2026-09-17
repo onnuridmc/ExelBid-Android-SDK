@@ -81,8 +81,8 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("com.google.android.material:material:1.11.0")
     
-    // ExelBid SDK
-    implementation("com.onnuridmc.exelbid:exelbid:2.0.2")
+    // ExelBid SDK (2.1.0부터 AdMob 커스텀 이벤트 어댑터 포함)
+    implementation("com.onnuridmc.exelbid:exelbid:2.1.0")
     
     // Media Player
     implementation("androidx.media3:media3-exoplayer:${exoplayerVersion}")
@@ -100,7 +100,8 @@ dependencies {
     implementation("com.fyber:marketplace-sdk:8.3.7")
     implementation("com.pangle.global:ads-sdk:5.8.0.5")
     implementation("com.applovin:applovin-sdk:12.6.0")
-    implementation("com.tnkfactory:pub:7.21.9")
+    // 7.21.9는 TNK 저장소에 존재하지 않음(7.21.x 라인은 7.21.4까지)
+    implementation("com.tnkfactory:pub:7.21.4")
     
     // Test dependencies
     testImplementation("junit:junit:4.13.2")

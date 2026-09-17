@@ -16,6 +16,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.onnuridmc.sample.activity.SampleAdmobBanner;
+import com.onnuridmc.sample.activity.SampleAdmobInterstitial;
+import com.onnuridmc.sample.activity.SampleAdmobNative;
 import com.onnuridmc.sample.activity.SampleBannerMediation;
 import com.onnuridmc.sample.activity.SampleBannerView;
 import com.onnuridmc.sample.activity.SampleDialog;
@@ -71,6 +74,9 @@ public class MainActivity extends AppCompatActivity {
         mAdapter.add(new Pair<String, Class<?>>("네이티브 Mediation", SampleNativeMediation.class));
         mAdapter.add(new Pair<String, Class<?>>("Motiv Partners Banner", SampleMotivPartnersBannerView.class));
         mAdapter.add(new Pair<String, Class<?>>("Motiv Partners Native", SampleMotivPartnersNative.class));
+        mAdapter.add(new Pair<String, Class<?>>("AdMob 배너 (ExelBid 어댑터)", SampleAdmobBanner.class));
+        mAdapter.add(new Pair<String, Class<?>>("AdMob 전면 (ExelBid 어댑터)", SampleAdmobInterstitial.class));
+        mAdapter.add(new Pair<String, Class<?>>("AdMob 네이티브 (ExelBid 어댑터)", SampleAdmobNative.class));
 
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener((parent, view, position, id) -> {
