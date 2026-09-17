@@ -18,6 +18,13 @@
 
 ## Version History
 
+**Version 2.1.0**
+* Google AdMob 미디에이션 커스텀 이벤트 어댑터 SDK 포함 (배너 / 전면 / 네이티브)
+  * 매체에서 어댑터를 직접 구현할 필요 없이 대시보드 등록만으로 연동 — [연동 가이드](./admob_custom_event.md)
+* 네이티브 광고 뷰어빌리티 추적 API 추가 (`startViewabilityTracking` / `stopViewabilityTracking`)
+  * 외부에서 렌더한 뷰에도 MRC 노출 처리를 적용할 수 있습니다
+* 기타 안정성 업데이트
+
 **Version 2.0.2**
 * 추가 안정성 업데이트
 
@@ -205,7 +212,7 @@
 	2. 모듈의 build.gradle파일에 dependencies에 아래 항목을 추가합니다.
 	```java
     dependencies {
-        	implementation 'com.onnuridmc.exelbid:exelbid:2.0.2'
+        	implementation 'com.onnuridmc.exelbid:exelbid:2.1.0'
 	}
     ```
 ### 빌드 API 수준
@@ -226,7 +233,16 @@
         targetSdkVersion 28
     }
 ```    
-* v1.6.0 이상 버전 - AndroidX Migrate 적용 - (참조)
+* v2.0.0 이상 버전 - (현재)
+```xml
+    defaultConfig {
+        minSdkVersion 21
+    }
+```
+> Google Mobile Ads SDK를 함께 사용하는 경우 GMA 버전에 따라 더 높은 `minSdk`가 필요합니다.
+> GMA 22.x는 19, 23.x는 21, **24.0.0 이상은 23**을 요구합니다.
+
+* v1.6.0 ~ v1.9.x - AndroidX Migrate 적용 - (참조)
 ```xml
     defaultConfig {
         minSdkVersion 16
